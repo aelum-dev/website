@@ -4,8 +4,6 @@ This is the official landing site for [AestheticOS](https://github.com/Kornienko
 
 AestheticOS is a beautiful, **fully offline** Arch Linux distro. Boot the live ISO and the installer launches on its own — answer a few questions and finish with a polished Hyprland + DankMaterialShell desktop. No internet, ever.
 
-![AestheticOS landing site](docs/site-preview.png)
-
 ## 🎯 What's on the site
 
 - **Hero** — the one-line pitch, key stats (~1 min install, 4.7 GB, zero network), and the ISO preview.
