@@ -1,0 +1,28 @@
+---
+---
+
+<section class="section">
+  <div class="container">
+    <div class="reveal section-head">
+      <div class="cli-card">
+        <div class="cli-titlebar">
+          <span class="cli-dot cli-dot-r"></span>
+          <span class="cli-dot cli-dot-y"></span>
+          <span class="cli-dot cli-dot-g"></span>
+          <span class="cli-title">aestheticos-installer-cli</span>
+        </div>
+        <pre class="cli-code"><code><span style="color:var(--accent-green)"># GUI</span>
+<span style="color:var(--accent-3)">sudo</span> ./build/bin/aestheticos-installer
+
+<span style="color:var(--accent-green)"># CLI — full install</span>
+<span style="color:var(--accent-3)">sudo</span> ./build/bin/aestheticos-installer-cli <span style="color:var(--accent-2)">--install /dev/vda</span>
+
+<span style="color:var(--accent-green)"># CLI — btrfs root instead of ext4</span>
+<span style="color:var(--accent-3)">sudo</span> ./build/bin/aestheticos-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem btrfs</span></code></pre>
+      </div>
+      <p class="cli-note">
+        Prefer headless or scripted installs? The installer also ships a CLI. It runs entirely from the live ISO — no internet connection required.
+      </p>
+    </div>
+  </div>
+</section>

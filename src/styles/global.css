@@ -168,6 +168,22 @@ body {
 .section-no-top { padding-top: 0; }
 .section-head { display: flex; flex-direction: column; align-items: flex-start; }
 
+/* Skip link for keyboard / screen-reader users */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--surface-border);
+  color: var(--accent);
+  font-weight: 600;
+  transition: top 0.2s var(--ease);
+}
+.skip-link:focus { top: 0.5rem; }
+
 /* Two-column hero layout */
 .hero-grid {
   display: grid;
@@ -178,6 +194,11 @@ body {
 
 /* Responsive card grids — auto-fitting, uniform height */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(var(--cell-min, 280px), 1fr)); gap: var(--grid-gap, var(--space-5)); margin-top: var(--grid-top, var(--space-10)); }
+
+/* Grid presets (replaces duplicated inline style attributes) */
+.grid-features { --cell-min: 300px; }
+.grid-software { --cell-min: 240px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
+.grid-steps { --cell-min: 260px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
 .card-grid .card { height: 100%; }
 
 /* Flex row of items with even spacing */
@@ -218,10 +239,6 @@ a {
 code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.9em;
-}
-
-.section {
-  padding-block: clamp(4rem, 9vw, 8rem);
 }
 
 .eyebrow {
@@ -402,7 +419,6 @@ code {
 .section-head { margin-bottom: var(--space-10); }
 
 /* Feature / software cards */
-.card-pad-lg { padding: 1.75rem; }
 .card-pad-md { padding: var(--space-6); }
 .card-grid h3 { font-size: 1.25rem; font-weight: 700; }
 .card-grid h3 + p, .card-grid p { margin-top: var(--space-2); color: var(--text-dim); }
@@ -450,8 +466,7 @@ code {
 /* Nav GitHub button */
 .nav-gh { padding: 0.55rem 1.1rem; font-size: 0.9rem; }
 
-/* Footer */
-.footer-row { padding-block: 3rem; }
+/* Footer (brand row) */
 .footer-brand { font-weight: 700; color: var(--text); }
 .footer-links { margin-left: auto; }
 .footer-glyph { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: grid; place-items: center; color: #12091c; }

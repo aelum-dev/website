@@ -1,0 +1,43 @@
+---
+import Card from './Card.astro';
+import { installSteps } from '../lib/site';
+---
+
+<section id="install" class="section">
+  <div class="container">
+    <div class="reveal section-head">
+      <span class="eyebrow">The installer</span>
+      <h2 class="section-title">A few questions. That's it.</h2>
+      <p class="section-sub">
+        Just boot the ISO and answer a few questions in a clean wizard.
+        No terminal, no internet, no fuss.
+      </p>
+    </div>
+
+    <div class="card-grid grid-steps">
+      {installSteps.map((step) => (
+        <Card title={step.title} description={step.description} size="lg" className="step-card">
+          <span class="step-num">{step.num}</span>
+        </Card>
+      ))}
+    </div>
+
+    <div class="reveal step-cta">
+      <div class="card card-pad-lg flex-row between">
+        <div class="stack gap-2" style="align-items:flex-start;">
+          <h3>ext4 or btrfs?</h3>
+          <p>btrfs ships with a sensible automatic subvolume layout.</p>
+        </div>
+        <div class="flex gap-3">
+          <span class="card selected-fs">
+            <code>btrfs</code>
+            <span>recommended</span>
+          </span>
+          <span class="card">
+            <code>ext4</code>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

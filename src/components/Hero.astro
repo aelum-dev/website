@@ -1,0 +1,69 @@
+---
+import Star from './Star.astro';
+---
+
+<section class="section hero-pad">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <span class="eyebrow"><Star size={12} /> Fully offline · No internet required</span>
+        <h1 class="section-title hero-title">
+          A beautiful <span class="text-gradient">offline</span> Arch Linux.
+        </h1>
+        <p class="hero-lead">
+          Boot the ISO. The installer starts on its own. You finish with a polished
+          Hyprland desktop — no terminal, no network, no fuss.
+        </p>
+        <div class="flex gap-4 hero-actions">
+          <slot name="actions" />
+        </div>
+
+        <dl class="flex hero-stats gap-8">
+          <div class="stat">
+            <dt>Install time</dt>
+            <dd>~1<span>min</span></dd>
+          </div>
+          <div class="stat">
+            <dt>Installed size</dt>
+            <dd>4.7<span>GB</span></dd>
+          </div>
+          <div class="stat">
+            <dt>Network needed</dt>
+            <dd class="stat-green">Never</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="reveal hero-mockup-wrap" style="transition-delay:120ms;">
+        <div class="card hero-mockup">
+          <div class="mockup-shell">
+            <div class="mockup-titlebar">
+              <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+              <span class="mockup-title">AestheticOS</span>
+              <span class="mockup-clock">12:00</span>
+            </div>
+            <div class="mockup-body">
+              <nav class="mockup-sidebar" aria-hidden="true">
+                <span class="si si-1"></span><span class="si si-2"></span><span class="si si-3"></span><span class="si si-4"></span><span class="si si-5"></span>
+              </nav>
+              <div class="mockup-main">
+                <div class="mockup-widget">
+                  <div class="mockup-colors">
+                    <span style="background:#a67480"></span>
+                    <span style="background:#8e7579"></span>
+                    <span style="background:#a08864"></span>
+                    <span style="background:#63e6a0"></span>
+                  </div>
+                  <b>Material You theming</b>
+                  <div class="mockup-lines">
+                    <i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
