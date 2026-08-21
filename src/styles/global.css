@@ -448,7 +448,15 @@ code {
 .lang-head { margin-bottom: var(--space-6); }
 .lang-head p { color: var(--text-faint); font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase; }
 .lang-chips { max-width: 820px; margin-inline: auto; gap: var(--space-2); }
-.lang-chip { padding: var(--space-2) var(--space-4); font-size: 0.9rem; color: var(--text-dim); }
+.lang-chip {
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  /* Chips are small and numerous (28); skipping backdrop-blur keeps scrolling smooth.
+     Uses an opaque surface instead of a frosted one to avoid 28 live blur layers. */
+  background: var(--bg-elevated);
+  backdrop-filter: none;
+}
 
 /* CLI terminal */
 .cli-card { overflow: hidden; background: var(--bg-elevated); border-color: var(--surface-border); margin-inline: auto; max-width: 760px; }
