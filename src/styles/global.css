@@ -19,7 +19,7 @@
   --accent: #a67480;
   --accent-2: #8e7579;
   --accent-3: #a08864;
-  --accent-green: #a08864;
+  --accent-green: #63e6a0;
 
   /* Shadows tinted by the accent */
   --accent-shadow: rgba(166, 116, 128, 0.30);
@@ -47,6 +47,26 @@
 
   /* --- Standard section vertical padding --- */
   --section-gap: clamp(4rem, 9vw, 8rem);
+}
+
+/* Dark palette — same mauve/rose/tan accents, inverted dark surfaces */
+[data-theme="dark"] {
+  --bg: #151114;
+  --bg-elevated: #1e1720;
+  --surface: rgba(30, 23, 32, 0.72);
+  --surface-border: #2c2330;
+
+  --text: #ece2e3;
+  --text-dim: #a59496;
+  --text-faint: #7a6a6c;
+
+  --accent: #cfa3ae;
+  --accent-2: #b48ea4;
+  --accent-3: #c3ab82;
+  --accent-green: #6ee6a8;
+
+  --accent-shadow: rgba(207, 163, 174, 0.22);
+  --accent-shadow-strong: rgba(207, 163, 174, 0.38);
 }
 
 * {
@@ -335,7 +355,7 @@ code {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;
-  background: linear-gradient(160deg, #fbf6f0 0%, #f1e5e6 100%);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--bg) 92%, #ffffff) 0%, color-mix(in srgb, var(--bg) 80%, var(--surface-border)) 100%);
 }
 .mockup-titlebar {
   display: flex; align-items: center; gap: 8px;
@@ -514,7 +534,7 @@ code {
   top: 0;
   z-index: 50;
   backdrop-filter: blur(14px);
-  background: rgba(250, 247, 246, 0.75);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
   border-bottom: 1px solid var(--surface-border);
 }
 .nav-inner {
@@ -554,6 +574,39 @@ code {
   transition: color 0.2s;
 }
 .nav-links a:hover { color: var(--text); }
+
+/* Theme toggle */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), background 0.3s, color 0.3s, border-color 0.3s;
+}
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.theme-toggle-icon {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+.theme-toggle-icon svg { width: 18px; height: 18px; }
+[data-theme="dark"] .theme-toggle [data-theme-icon="light"] { display: none; }
+[data-theme="light"] .theme-toggle [data-theme-icon="dark"] { display: none; }
 
 @media (max-width: 760px) {
   .nav-links .hide-mobile { display: none; }

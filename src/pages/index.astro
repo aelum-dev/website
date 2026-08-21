@@ -58,6 +58,9 @@ const jsonLd = {
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/star.svg" />
 
+    <!-- Theme must be applied before first paint to avoid a flash. -->
+    <script src="scripts/theme.js" is:inline></script>
+
     <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
   </head>
   <body>
@@ -88,5 +91,6 @@ const jsonLd = {
 
     <noscript><style>.reveal{opacity:1 !important;transform:none !important;transition:none !important}</style></noscript>
     <script type="module" src="scripts/reveal.js"></script>
+    <script src="scripts/theme-toggle.js" is:inline></script>
   </body>
 </html>
