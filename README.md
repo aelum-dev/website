@@ -22,6 +22,20 @@ src/
     global.css
 ```
 
+## 🚀 Deploy to GitHub Pages
+
+This site is configured to deploy as a GitHub Pages **project/site page** at
+`https://<your-username>.github.io/AestheticOS-Web/`.
+
+1. Push this repository to GitHub (repo named `AestheticOS`).
+2. Go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+3. On every push to `main`, the `.github/workflows/pages.yml` workflow builds
+   the site and publishes it automatically.
+
+> The Astro `base` is set to `/AestheticOS-Web/` in `astro.config.mjs`, which is
+> required for project/site pages. If you ever change the repo name, update it
+> there too.
+
 ## 🧭 Commands
 
 All commands are run from the root of the project, from a terminal:
