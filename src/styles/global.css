@@ -166,6 +166,9 @@ body {
 /* Section scaffolding */
 .section { padding-block: var(--section-gap); display: flex; flex-direction: column; }
 .section-no-top { padding-top: 0; }
+
+/* Anchor targets settle below the sticky nav, so in-page links don't hide under it */
+#features, #desktop, #install { scroll-margin-top: calc(70px + 1.5rem); }
 .section-head { display: flex; flex-direction: column; align-items: flex-start; }
 
 /* Skip link for keyboard / screen-reader users */
