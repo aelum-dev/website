@@ -201,7 +201,7 @@ body {
 /* Grid presets (replaces duplicated inline style attributes) */
 .grid-features { --cell-min: 300px; }
 .grid-software { --cell-min: 240px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
-.grid-steps { --cell-min: 260px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
+.grid-steps { --cell-min: 300px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
 .card-grid .card { height: 100%; }
 
 /* Flex row of items with even spacing */
@@ -217,6 +217,7 @@ body {
   font-size: 2.6rem;
   font-weight: 900;
   line-height: 1;
+  margin-bottom: var(--space-4);
   background: linear-gradient(120deg, var(--accent), var(--accent-2));
   -webkit-background-clip: text;
   background-clip: text;

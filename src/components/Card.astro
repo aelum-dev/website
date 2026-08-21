@@ -19,6 +19,7 @@ const { title = undefined, description = undefined, color = undefined, size = 'l
       <Star size={18} />
     </div>
   )}
+  <slot name="top" />
   {title && <h3>{title}</h3>}
   {description && <p>{description}</p>}
   <slot />
