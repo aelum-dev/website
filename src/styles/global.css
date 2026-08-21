@@ -439,11 +439,17 @@ code {
 .step-cta .stack { align-items: flex-start; }
 .step-cta .stack h3 { font-weight: 700; font-size: 1.2rem; }
 .step-cta .stack p { margin: 0; }
-.selected-fs { border-color: var(--accent); }
+.selected-fs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-color: var(--accent);
+}
 .selected-fs code { font-size: 1.05rem; }
 .selected-fs span {
+  order: -1;
   display: block;
-  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--accent);
