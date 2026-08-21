@@ -441,7 +441,15 @@ code {
 .step-cta .stack p { margin: 0; }
 .selected-fs { border-color: var(--accent); }
 .selected-fs code { font-size: 1.05rem; }
-.selected-fs span { font-size: 0.72rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+.selected-fs span {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
 .step-cta .card code { font-size: 1.05rem; }
 
 /* Language chips */
