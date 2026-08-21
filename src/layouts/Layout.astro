@@ -1,0 +1,59 @@
+---
+// Shared document shell: owns the <head> boilerplate (meta tags, OG/Twitter
+// cards, favicon, theme scripts) so pages don't duplicate it.
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+// Derive canonical / OG image URLs from Astro's config so the base path and
+// site URL stay in a single place (astro.config.mjs) instead of being
+// hardcoded in every page.
+const canonical = Astro.url.href;
+const imageUrl = new URL('og-image.png', Astro.url).href;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <!-- Reflect both schemes so form controls/scrollbars match the active theme. -->
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#faf7f6" />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:site_name" content="AestheticOS" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/star.svg" />
+
+    <!-- Theme must be applied before first paint to avoid a flash. -->
+    <script src="scripts/theme.js" is:inline></script>
+
+    <!-- Pages can inject extra head markup (e.g. structured data) here. -->
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important;transition:none !important}</style></noscript>
+    <script src="scripts/reveal.js" defer></script>
+    <script src="scripts/theme-toggle.js" is:inline></script>
+  </body>
+</html>

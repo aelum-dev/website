@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import Features from '../components/Features.astro';
@@ -15,8 +16,6 @@ import { isoRepo, ghRepo } from '../lib/site';
 const title = 'AestheticOS — Beautiful, fully offline Arch Linux';
 const description =
   'AestheticOS — a beautiful, fully offline Arch Linux distro. Boot it, run the installer, and get a polished Hyprland desktop. No internet, ever.';
-const canonical = 'https://KornienkoDev.github.io/AestheticOS-Web/';
-const imageUrl = canonical + 'og-image.png';
 
 // Structured data so search engines understand the project.
 const jsonLd = {
@@ -25,72 +24,39 @@ const jsonLd = {
   name: 'AestheticOS',
   operatingSystem: 'Arch Linux',
   description,
-  url: canonical,
+  url: Astro.url.href,
   applicationCategory: 'System Tool',
   sameAs: [isoRepo, ghRepo],
 };
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#faf7f6" />
-    <link rel="canonical" href={canonical} />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content={imageUrl} />
-    <meta property="og:site_name" content="AestheticOS" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={imageUrl} />
-
-    <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="/star.svg" />
-
-    <!-- Theme must be applied before first paint to avoid a flash. -->
-    <script src="scripts/theme.js" is:inline></script>
-
+<Layout title={title} description={description}>
+  <Fragment slot="head">
     <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-  </head>
-  <body>
-    <a class="skip-link" href="#top">Skip to main content</a>
-    <div class="bg-field" aria-hidden="true"></div>
+  </Fragment>
 
-    <Nav />
+  <a class="skip-link" href="#top">Skip to main content</a>
+  <div class="bg-field" aria-hidden="true"></div>
 
-    <main id="top">
-      <Hero>
-        <slot name="actions" slot="actions">
-          <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener">
-            <Star size={16} /> Get the ISO
-          </a>
-          <a class="btn btn-ghost" href="#install">Watch it install</a>
-        </slot>
-      </Hero>
+  <Nav />
 
-      <Features />
-      <Desktop />
-      <Install />
-      <Languages />
-      <CLI />
-      <CTA />
-    </main>
+  <main id="top">
+    <Hero>
+      <slot name="actions" slot="actions">
+        <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener">
+          <Star size={16} /> Get the ISO
+        </a>
+        <a class="btn btn-ghost" href="#install">Watch it install</a>
+      </slot>
+    </Hero>
 
-    <Footer />
+    <Features />
+    <Desktop />
+    <Install />
+    <Languages />
+    <CLI />
+    <CTA />
+  </main>
 
-    <noscript><style>.reveal{opacity:1 !important;transform:none !important;transition:none !important}</style></noscript>
-    <script type="module" src="scripts/reveal.js"></script>
-    <script src="scripts/theme-toggle.js" is:inline></script>
-  </body>
-</html>
+  <Footer />
+</Layout>

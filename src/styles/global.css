@@ -2,7 +2,6 @@
 
 :root {
   /* Light palette — DankMaterialShell (DMS) colors */
-  /* Source: /home/power007/Projects/AestheticOS-Installer/frontend/src/style.css */
 
   /* Surface & Background */
   --bg: #faf7f6;
@@ -39,14 +38,21 @@
   --space-4: 1rem;
   --space-5: 1.25rem;
   --space-6: 1.5rem;
+  --space-7: 1.75rem;
   --space-8: 2rem;
   --space-10: 2.5rem;
+  --space-11: 2.75rem;
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
 
   /* --- Standard section vertical padding --- */
   --section-gap: clamp(4rem, 9vw, 8rem);
+
+  /* Terminal title-bar (traffic-light) dots — shared by the desktop mockup and CLI window */
+  --dot-red: #ff5f56;
+  --dot-yellow: #ffbd2e;
+  --dot-green: #27c93f;
 }
 
 /* Dark palette — same mauve/rose/tan accents, inverted dark surfaces */
@@ -96,8 +102,7 @@ body {
   pointer-events: none;
 }
 .bg-field::before,
-.bg-field::after,
-.bg-field .orb {
+.bg-field::after {
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
@@ -220,15 +225,15 @@ body {
 
 /* Grid presets (replaces duplicated inline style attributes) */
 .grid-features { --cell-min: 300px; }
-.grid-software { --cell-min: 240px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
-.grid-steps { --cell-min: 300px; --grid-gap: var(--space-4); --grid-top: var(--space-11, 2.75rem); }
+.grid-software { --cell-min: 240px; --grid-gap: var(--space-4); --grid-top: var(--space-11); }
+.grid-steps { --cell-min: 300px; --grid-gap: var(--space-4); --grid-top: var(--space-11); }
 .card-grid .card { height: 100%; }
 
 /* Flex row of items with even spacing */
 .flex-row { display: flex; flex-wrap: wrap; align-items: center; }
 
 /* Feature card padding (uniform) */
-.card-pad-lg { padding: var(--space-7, 1.75rem); }
+.card-pad-lg { padding: var(--space-7); }
 .card-pad-md { padding: var(--space-6); }
 .card-pad-sm { padding: var(--space-5); }
 
@@ -365,9 +370,9 @@ code {
 .mockup-titlebar .dot-r, .mockup-titlebar .dot-y, .mockup-titlebar .dot-g {
   width: 11px; height: 11px; border-radius: 50%; display: block;
 }
-.mockup-titlebar .dot-r { background: #ff5f56; }
-.mockup-titlebar .dot-y { background: #ffbd2e; }
-.mockup-titlebar .dot-g { background: #27c93f; }
+.mockup-titlebar .dot-r { background: var(--dot-red); }
+.mockup-titlebar .dot-y { background: var(--dot-yellow); }
+.mockup-titlebar .dot-g { background: var(--dot-green); }
 .mockup-titlebar .mockup-title {
   margin-left: 6px; font-size: .82rem; font-weight: 700; letter-spacing: .03em; color: var(--text);
 }
@@ -443,7 +448,6 @@ code {
 .section-head { margin-bottom: var(--space-10); }
 
 /* Feature / software cards */
-.card-pad-md { padding: var(--space-6); }
 .card-grid h3 { font-size: 1.25rem; font-weight: 700; }
 .card-grid h3 + p, .card-grid p { margin-top: var(--space-2); color: var(--text-dim); }
 .card-grid .card-pad-md h3 { font-size: 1.1rem; }
@@ -454,7 +458,7 @@ code {
 .step-card h3 { margin-top: var(--space-3); font-weight: 700; font-size: 1.15rem; }
 .step-card p { margin-top: var(--space-2); color: var(--text-dim); }
 .step-cta { margin-top: var(--space-10); }
-.step-cta .card { padding: var(--space-7, 1.75rem) !important; }
+.step-cta .card { padding: var(--space-7) !important; }
 .between { justify-content: space-between; }
 .step-cta .stack { align-items: flex-start; }
 .step-cta .stack h3 { font-weight: 700; font-size: 1.2rem; }
@@ -496,9 +500,9 @@ code {
 .cli-card { overflow: hidden; background: var(--bg-elevated); border-color: var(--surface-border); margin-inline: auto; max-width: 760px; }
 .cli-titlebar { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--surface-border); }
 .cli-dot { width: 12px; height: 12px; border-radius: 50%; display: block; }
-.cli-dot-r { background: #ff5f56; }
-.cli-dot-y { background: #ffbd2e; }
-.cli-dot-g { background: #27c93f; }
+.cli-dot-r { background: var(--dot-red); }
+.cli-dot-y { background: var(--dot-yellow); }
+.cli-dot-g { background: var(--dot-green); }
 .cli-title { margin-left: var(--space-3); color: var(--text-faint); font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; }
 .cli-code { margin: 0; padding: 1.4rem 1.3rem; overflow-x: auto; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.92rem; line-height: 1.9; color: var(--text-dim); }
 .cli-note { margin-top: var(--space-5); color: var(--text-dim); max-width: 62ch; margin-inline: auto; text-align: center; }

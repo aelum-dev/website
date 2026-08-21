@@ -21,7 +21,8 @@
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-theme-toggle]');
     if (!btn) return;
-    // The button toggles light <-> dark; "auto" follows the OS.
+    // Flip light <-> dark. The initial theme still follows the OS unless the
+    // user has made an explicit choice (see theme.js); this button just toggles.
     const next = current() === 'dark' ? 'light' : 'dark';
     set(next);
   });

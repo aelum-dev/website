@@ -1,25 +1,18 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import Star from '../components/Star.astro';
 import { isoRepo } from '../lib/site';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Page not found for AestheticOS." />
-    <title>404 — Not found | AestheticOS</title>
-  </head>
-  <body>
-    <div class="bg-field" aria-hidden="true"></div>
-    <main class="not-found">
-      <div class="container not-found-card">
-        <span class="glyph"><Star size={28} /></span>
-        <h1>404</h1>
-        <p>This page drifted off into space.</p>
-        <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener">View the ISO repo</a>
-        <a class="btn btn-ghost" href="/AestheticOS-Web/">Back to home</a>
-      </div>
-    </main>
-  </body>
-</html>
+<Layout title="404 — Not found | AestheticOS" description="Page not found for AestheticOS.">
+  <div class="bg-field" aria-hidden="true"></div>
+  <main class="not-found">
+    <div class="container not-found-card">
+      <span class="glyph"><Star size={28} /></span>
+      <h1>404</h1>
+      <p>This page drifted off into space.</p>
+      <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener">View the ISO repo</a>
+      <a class="btn btn-ghost" href="/">Back to home</a>
+    </div>
+  </main>
+</Layout>
