@@ -990,6 +990,7 @@ code {
   width: 34px;
   height: 34px;
   border-radius: 10px;
+  overflow: hidden;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   display: grid;
   place-items: center;

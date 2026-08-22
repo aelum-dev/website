@@ -1,12 +1,19 @@
 ---
-import Star from "./Star.astro";
 import { ghRepo } from "../lib/site";
 ---
 
 <header class="nav">
   <div class="container nav-inner">
     <a class="brand" href="#top">
-      <span class="glyph"><Star size={18} /></span>
+      <span class="glyph"
+        ><img
+          src="favicon-32.png"
+          alt="AestheticOS logo"
+          width="34"
+          height="34"
+          loading="eager"
+        /></span
+      >
       <span>AestheticOS</span>
     </a>
     <nav class="nav-links" aria-label="Primary">
