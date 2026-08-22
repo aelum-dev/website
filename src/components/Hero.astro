@@ -14,7 +14,8 @@ import Star from "./Star.astro";
         </h1>
         <p class="hero-lead">
           Boot the ISO. The installer starts on its own. You finish with a
-          polished Hyprland desktop with a DankMaterialShell — no terminal, no network, no fuss.
+          polished Hyprland desktop with a DankMaterialShell — no terminal, no
+          network, no fuss.
         </p>
         <div class="flex gap-4 hero-actions">
           <slot name="actions" />
@@ -36,36 +37,27 @@ import Star from "./Star.astro";
         </dl>
       </div>
 
-      <div class="reveal hero-mockup-wrap" style="transition-delay:120ms;">
-        <div class="card hero-mockup">
-          <div class="mockup-shell">
-            <div class="mockup-titlebar">
-              <span class="dot-r"></span><span class="dot-y"></span><span
-                class="dot-g"></span>
-              <span class="mockup-title">AestheticOS</span>
-              <span class="mockup-clock">12:00</span>
-            </div>
-            <div class="mockup-body">
-              <nav class="mockup-sidebar" aria-hidden="true">
-                <span class="si si-1"></span><span class="si si-2"></span><span
-                  class="si si-3"></span><span class="si si-4"></span><span
-                  class="si si-5"></span>
-              </nav>
-              <div class="mockup-main">
-                <div class="mockup-widget">
-                  <div class="mockup-colors">
-                    <span style="background:#a67480"></span>
-                    <span style="background:#8e7579"></span>
-                    <span style="background:#a08864"></span>
-                    <span style="background:#63e6a0"></span>
-                  </div>
-                  <b>Material You theming</b>
-                  <div class="mockup-lines">
-                    <i></i><i></i><i></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="reveal reveal-hero-visual" aria-hidden="true">
+        <div class="hero-visual">
+          <div class="hero-shot hero-shot--dark">
+            <img
+              src="images/hero-dark.png"
+              width="2560"
+              height="1440"
+              alt="AestheticOS desktop terminal in dark theme"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <div class="hero-shot hero-shot--light">
+            <img
+              src="images/hero-light.png"
+              width="2560"
+              height="1440"
+              alt="AestheticOS desktop terminal in light theme"
+              loading="eager"
+              fetchpriority="high"
+            />
           </div>
         </div>
       </div>
