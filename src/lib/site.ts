@@ -84,7 +84,7 @@ export const features: Feature[] = [
   {
     color: "#ff7ac6",
     icon: "f85a", // nerd-fonts: memory
-    title: "Zram swap",
+    title: "ZRAM swap",
     description:
       "Compressed RAM swap instead of a swap file — fast, responsive, and no disk space reserved for a swap file.",
   },

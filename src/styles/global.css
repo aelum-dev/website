@@ -505,13 +505,19 @@ code {
 }
 
 /* Cards */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
 .dot {
   width: 40px;
   height: 40px;
   border-radius: 11px;
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0;
   background: color-mix(in srgb, var(--c) 18%, transparent);
   color: var(--c);
 }

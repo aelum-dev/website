@@ -24,19 +24,23 @@ const {
 <div class={"card card-pad-" + size + (className ? " " + className : "")}>
   {
     color && title && (
-      <div class="dot" style="--c:{color}">
-        {icon ? (
-          <span class="nf-icon" aria-hidden="true">
-            {String.fromCodePoint(parseInt(icon, 16))}
-          </span>
-        ) : (
-          <Star size={18} />
-        )}
+      <div class="card-title-row">
+        <div class="dot" style="--c:{color}">
+          {
+            icon ? (
+              <span class="nf-icon" aria-hidden="true">
+                {String.fromCodePoint(parseInt(icon, 16))}
+              </span>
+            ) : (
+              <Star size={18} />
+            )
+          }
+        </div>
+        <slot name="top" />
+        <h3>{title}</h3>
       </div>
     )
   }
-  <slot name="top" />
-  {title && <h3>{title}</h3>}
   {description && <p>{description}</p>}
   <slot />
 </div>
