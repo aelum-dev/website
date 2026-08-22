@@ -61,6 +61,7 @@ All copy is derived from the upstream project READMEs:
 - For **canonical/absolute URLs** (OG/Twitter images in `Layout.astro`), derive them from Astro's config with `new URL("og-image.png", Astro.url).href` so the base and site URL stay in one place.
 - Do not hardcode the base string; keep it in `astro.config.mjs`.
 - **Favicons:** rounded, optimized PNGs live in `public/` (`favicon-16.png`, `favicon-32.png`) and are referenced in `Layout.astro`. They are derived from the master `public/logo.png` (downscaled with rounded corners). Prefer these small favicons over the large `logo.png` in hot paths like the header.
+- **OG share image (`og-image.png`)** is exported from its vector source `public/og-image.svg` — never hand-edit the PNG. It drives social/Telegram link previews, so update both the SVG copy and re-export when the site text or logo changes. Re-export with headless Chromium (it loads the self-hosted Nunito woff2, which `rsvg`/cairo cannot): copy `src/styles/fonts/nunito-v16-latin-regular.woff2` to `public/nunito.woff2` (the SVG references it), inline the SVG into an HTML wrapper sized 1200×630, and screenshot with `chromium --headless=new --window-size=1200,630 --screenshot=public/og-image.png file://…/wrapper.html`.
 
 ## Gotchas
 
