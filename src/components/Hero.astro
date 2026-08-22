@@ -5,35 +5,10 @@ import Star from "./Star.astro";
 <section class="section hero-pad">
   <div class="container">
     <div class="hero-grid">
-      <div class="reveal">
-        <span class="eyebrow"
-          ><Star size={12} /> Fully offline · No internet required</span
-        >
+      <div class="reveal hero-title-wrap">
         <h1 class="section-title hero-title">
-          A beautiful <span class="text-gradient">offline</span> Arch-based distro.
+          <span class="text-gradient">Beautiful</span> themed Arch-based distro.
         </h1>
-        <p class="hero-lead">
-          Boot the ISO. The installer starts on its own. <br /> You finish with a
-          polished Hyprland desktop with a DankMaterialShell — no terminal, no network.
-        </p>
-        <div class="flex gap-4 hero-actions">
-          <slot name="actions" />
-        </div>
-
-        <dl class="hero-stats">
-          <div class="stat">
-            <dt>Install time</dt>
-            <dd>~1<span>min</span></dd>
-          </div>
-          <div class="stat">
-            <dt>Installed size</dt>
-            <dd>4.7<span>GB</span></dd>
-          </div>
-          <div class="stat">
-            <dt>Network needed</dt>
-            <dd class="stat-accent">Never</dd>
-          </div>
-        </dl>
       </div>
 
       <div class="reveal reveal-hero-visual" aria-hidden="true">
@@ -59,6 +34,33 @@ import Star from "./Star.astro";
             />
           </div>
         </div>
+      </div>
+
+      <div class="reveal hero-below">
+        <span class="eyebrow"
+          ><Star size={12} /> Fully offline installer · No internet required to install</span
+        >
+        <p class="hero-lead">
+          Polished Hyprland desktop with a DankMaterialShell and QT/GTK3/4 theming configured.
+        </p>
+        <div class="flex gap-4 hero-actions">
+          <slot name="actions" />
+        </div>
+
+        <dl class="hero-stats">
+          <div class="stat">
+            <dt>Install time</dt>
+            <dd>~1<span>min</span></dd>
+          </div>
+          <div class="stat">
+            <dt>Installed size</dt>
+            <dd>4.7<span>GB</span></dd>
+          </div>
+          <div class="stat">
+            <dt>Network needed to install</dt>
+            <dd class="stat-accent">Never</dd>
+          </div>
+        </dl>
       </div>
     </div>
   </div>

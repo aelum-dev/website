@@ -355,12 +355,18 @@ body {
   top: 0.5rem;
 }
 
-/* Two-column hero layout */
+/* Hero layout (narrow): screenshot on top, then heading, then the rest */
 .hero-grid {
   display: grid;
-  grid-template-columns: 0.92fr 1.18fr;
-  gap: var(--space-10);
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+}
+.reveal-hero-visual {
+  order: 1;
+}
+.hero-title-wrap,
+.hero-below {
+  order: 2;
 }
 
 /* Responsive card grids — auto-fitting, uniform height */
@@ -461,7 +467,7 @@ code {
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
   margin-top: 1.25rem;
-  max-width: 22ch;
+  max-width: 30ch;
 }
 
 .section-sub {
@@ -549,11 +555,28 @@ code {
     background 0.4s;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1025px) {
+  /* Wide screens: heading left of screenshot, everything else below */
   .hero-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
+    grid-template-columns: 3fr 7fr;
+    grid-template-rows: auto auto;
+    gap: var(--space-10);
   }
+  .hero-title-wrap {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .reveal-hero-visual {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .hero-below {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 1024px) {
   .hero-stats {
     grid-template-columns: 1fr;
     gap: var(--space-5);
@@ -574,11 +597,17 @@ code {
   font-size: clamp(2.6rem, 7vw, 4.6rem);
   font-weight: 900;
 }
+.hero-below {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 .hero-lead {
   margin-top: var(--space-6);
   color: var(--text-dim);
   font-size: clamp(1.05rem, 2.2vw, 1.3rem);
-  max-width: 52ch;
+  max-width: 80ch;
 }
 .hero-actions {
   margin-top: var(--space-8);
@@ -616,10 +645,15 @@ code {
 /* Hero visual — theme-aware desktop screenshot showcase */
 .reveal-hero-visual {
   display: grid;
+  place-items: center;
 }
 .hero-visual {
   position: relative;
   isolation: isolate;
+  box-sizing: border-box;
+  /* 16:9 frame, height capped at 42vh, never wider than the column */
+  width: min(100%, calc(54vh * 16 / 9));
+  aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
   padding: 1.25rem;
@@ -642,14 +676,15 @@ code {
 }
 .hero-shot {
   width: 100%;
+  height: 100%;
   border-radius: 14px;
-  object-fit: contain;
   display: none;
 }
 .hero-shot img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   border-radius: 14px;
 }
 /* Show the matching screenshot for the active theme */
@@ -673,9 +708,6 @@ code {
 }
 
 @media (max-width: 1024px) {
-  .reveal-hero-visual {
-    order: -1;
-  }
   .hero-visual {
     padding: 0.75rem;
   }
