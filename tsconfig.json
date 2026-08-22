@@ -3,6 +3,6 @@
   "include": ["src/**/*", ".astro/types.d.ts"],
   "exclude": ["dist", ".astro", "node_modules"],
   "compilerOptions": {
-    "typoCheck": true
+    "strict": true
   }
 }
