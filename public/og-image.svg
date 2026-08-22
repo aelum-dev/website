@@ -32,14 +32,14 @@
   <circle cx="150" cy="560" r="200" fill="#a08864" opacity="0.16" filter="url(#soft)"/>
 
   <!-- brand logo badge (rounded "A") -->
-  <g transform="translate(900 205)" clip-path="url(#badgeclip)">
+  <g transform="translate(895 255)" clip-path="url(#badgeclip)">
     <image href="logo.png" x="0" y="0" width="210" height="210"/>
   </g>
 
   <!-- headline -->
   <text x="80" y="165" font-size="94" font-weight="800" fill="#3d3234">AestheticOS</text>
   <text x="82" y="236" font-size="42" font-weight="800" class="gradient-text">Beautifully themed Arch-based distro</text>
-  <text x="82" y="288" font-size="29" fill="#9a8a8c">Polished Hyprland desktop · DankMaterialShell · QT/GTK theming</text>
+  <text x="82" y="288" font-size="26" fill="#9a8a8c">Polished Hyprland desktop with DankMaterialShell</text>
 
   <!-- chip -->
   <g transform="translate(82 326)">
