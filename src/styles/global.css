@@ -609,8 +609,8 @@ code {
   font-size: 1rem;
   color: var(--text-dim);
 }
-.stat-green {
-  color: var(--accent-green);
+.stat-accent {
+  color: var(--accent);
 }
 
 /* Hero visual — theme-aware desktop screenshot showcase */
