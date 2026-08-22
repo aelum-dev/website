@@ -40,6 +40,7 @@ export const languages = [
 
 export interface Feature {
   color: string;
+  icon: string;
   title: string;
   description: string;
 }
@@ -47,36 +48,42 @@ export interface Feature {
 export const features: Feature[] = [
   {
     color: "#9b7ff2",
+    icon: "faa9", // nerd-fonts: wifi-off
     title: "Fully offline, ever",
     description:
       "Every package is embedded in the ISO and served from an embedded local mirror. Zero network dependency — not during install, not after. Boot it anywhere.",
   },
   {
     color: "#ff7ac6",
+    icon: "fba7", // nerd-fonts: robot
     title: "Zero-touch boot",
     description:
       "greetd launches a barebones Hyprland that starts the installer automatically on first boot. No manual commands, no thinking about it.",
   },
   {
     color: "#6fd0ff",
+    icon: "fa80", // nerd-fonts: volume-off
     title: "Silent boot",
     description:
       "A clean UEFI splash with the Plymouth BGRT theme shows your OEM logo — no console spam, no boot-time noise.",
   },
   {
     color: "#63e6a0",
+    icon: "f879", // nerd-fonts: monitor-multiple
     title: "Auto monitor scaling",
     description:
       "Detects the connected monitor and applies the right Hyprland scale automatically, so the installer is crisp on 1080p, 1440p, or 4K.",
   },
   {
     color: "#9b7ff2",
+    icon: "fa1a", // nerd-fonts: timer
     title: "~1 minute install",
     description:
       "Because every package is already included, install takes about a minute and the complete OS uses roughly 4.7 GB after install.",
   },
   {
     color: "#ff7ac6",
+    icon: "f85a", // nerd-fonts: memory
     title: "Zram swap",
     description:
       "Compressed RAM swap instead of a swap file — fast, responsive, and no disk space reserved for a swap file.",

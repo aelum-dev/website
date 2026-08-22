@@ -25,6 +25,20 @@
   font-display: swap;
   src: url("./fonts/JetBrainsMono[wght].woff2") format("woff2");
 }
+/* Nerd Fonts (Symbols) — self-hosted icon glyph set used for feature cards. */
+@font-face {
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/NerdFontsSymbols.woff2") format("woff2");
+}
+.nf-icon {
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-size: 26px;
+  line-height: 1;
+  vertical-align: -0.12em;
+}
 
 :root {
   /* Light palette — DankMaterialShell (DMS) colors */

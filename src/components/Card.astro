@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   color?: string;
+  icon?: string;
   size?: "md" | "lg";
   className?: string;
 }
@@ -14,6 +15,7 @@ const {
   title = undefined,
   description = undefined,
   color = undefined,
+  icon = undefined,
   size = "lg",
   className = "",
 } = Astro.props;
@@ -23,7 +25,13 @@ const {
   {
     color && title && (
       <div class="dot" style="--c:{color}">
-        <Star size={18} />
+        {icon ? (
+          <span class="nf-icon" aria-hidden="true">
+            {String.fromCodePoint(parseInt(icon, 16))}
+          </span>
+        ) : (
+          <Star size={18} />
+        )}
       </div>
     )
   }
