@@ -43,7 +43,7 @@
 
   <!-- chip -->
   <g transform="translate(82 326)">
-    <rect width="248" height="60" rx="30" fill="url(#grad)"/>
-    <text x="124" y="39" text-anchor="middle" font-size="27" font-weight="700" fill="#fff">Fully offline, ever</text>
+    <rect width="380" height="60" rx="30" fill="url(#grad)"/>
+    <text x="190" y="39" text-anchor="middle" font-size="27" font-weight="700" fill="#fff">Fully offline installer</text>
   </g>
 </svg>
