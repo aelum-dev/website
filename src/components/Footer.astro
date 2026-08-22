@@ -1,12 +1,18 @@
 ---
-import Star from "./Star.astro";
 import { isoRepo, ghRepo, hyprlandUrl, wailsUrl } from "../lib/site";
 ---
 
 <footer class="footer">
   <div class="container footer-row">
     <div class="flex items-center gap-3 footer-brand">
-      <span class="glyph footer-glyph"><Star size={15} /></span>
+      <span class="glyph footer-glyph"
+        ><img
+          src="favicon-32.png"
+          alt="AestheticOS logo"
+          width="28"
+          height="28"
+        /></span
+      >
       <span>AestheticOS</span>
     </div>
     <div class="flex flex-wrap items-center gap-6 footer-links">
