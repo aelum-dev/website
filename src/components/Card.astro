@@ -26,15 +26,13 @@ const {
     color && title && (
       <div class="card-title-row">
         <div class="dot" style="--c:{color}">
-          {
-            icon ? (
-              <span class="nf-icon" aria-hidden="true">
-                {String.fromCodePoint(parseInt(icon, 16))}
-              </span>
-            ) : (
-              <Star size={18} />
-            )
-          }
+          {icon ? (
+            <span class="nf-icon" aria-hidden="true">
+              {String.fromCodePoint(parseInt(icon, 16))}
+            </span>
+          ) : (
+            <Star size={18} />
+          )}
         </div>
         <slot name="top" />
         <h3>{title}</h3>

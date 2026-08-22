@@ -50,6 +50,7 @@ npm run check      # prettier --check . && astro check   # run before committing
 ## Content Sources
 
 All copy is derived from the upstream project READMEs:
+
 - [AestheticOS](https://github.com/KornienkoDev/AestheticOS)
 - [AestheticOS-Installer](https://github.com/KornienkoDev/AestheticOS-Installer)
 
