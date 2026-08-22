@@ -1,24 +1,32 @@
 ---
 // Reusable glassy card. Optional colored icon slot keeps feature cards DRY.
-import Star from './Star.astro';
+import Star from "./Star.astro";
 
 interface Props {
   title?: string;
   description?: string;
   color?: string;
-  size?: 'md' | 'lg';
+  size?: "md" | "lg";
   className?: string;
 }
 
-const { title = undefined, description = undefined, color = undefined, size = 'lg', className = '' } = Astro.props;
+const {
+  title = undefined,
+  description = undefined,
+  color = undefined,
+  size = "lg",
+  className = "",
+} = Astro.props;
 ---
 
-<div class={'card card-pad-' + size + (className ? ' ' + className : '')}>
-  {(color && title) && (
-    <div class="dot" style="--c:{color}">
-      <Star size={18} />
-    </div>
-  )}
+<div class={"card card-pad-" + size + (className ? " " + className : "")}>
+  {
+    color && title && (
+      <div class="dot" style="--c:{color}">
+        <Star size={18} />
+      </div>
+    )
+  }
   <slot name="top" />
   {title && <h3>{title}</h3>}
   {description && <p>{description}</p>}

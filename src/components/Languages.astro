@@ -1,5 +1,5 @@
 ---
-import { languages } from '../lib/site';
+import { languages } from "../lib/site";
 ---
 
 <section class="section section-no-top">
@@ -8,9 +8,7 @@ import { languages } from '../lib/site';
       <p>The installer speaks {languages.length} languages</p>
     </div>
     <div class="flex flex-wrap justify-center lang-chips">
-      {languages.map((lang) => (
-        <span class="card lang-chip">{lang}</span>
-      ))}
+      {languages.map((lang) => <span class="card lang-chip">{lang}</span>)}
     </div>
   </div>
 </section>

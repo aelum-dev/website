@@ -1,6 +1,6 @@
 ---
-import Card from './Card.astro';
-import { software } from '../lib/site';
+import Card from "./Card.astro";
+import { software } from "../lib/site";
 ---
 
 <section id="desktop" class="section section-no-top">
@@ -9,15 +9,18 @@ import { software } from '../lib/site';
       <span class="eyebrow">What you install</span>
       <h2 class="section-title">A finished desktop, not a checklist.</h2>
       <p class="section-sub">
-        The installer hands you a complete, pre-configured system — ready to use the moment install finishes.
-        GTK and Qt apps are matugen-themed out of the box, zero configuration required.
+        The installer hands you a complete, pre-configured system — ready to use
+        the moment install finishes. GTK and Qt apps are matugen-themed out of
+        the box, zero configuration required.
       </p>
     </div>
 
     <div class="card-grid grid-software">
-      {software.map((app) => (
-        <Card title={app.title} description={app.description} size="md" />
-      ))}
+      {
+        software.map((app) => (
+          <Card title={app.title} description={app.description} size="md" />
+        ))
+      }
     </div>
   </div>
 </section>

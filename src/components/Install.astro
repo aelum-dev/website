@@ -1,6 +1,6 @@
 ---
-import Card from './Card.astro';
-import { installSteps } from '../lib/site';
+import Card from "./Card.astro";
+import { installSteps } from "../lib/site";
 ---
 
 <section id="install" class="section section-no-top">
@@ -9,17 +9,26 @@ import { installSteps } from '../lib/site';
       <span class="eyebrow">The installer</span>
       <h2 class="section-title">A few questions. That's it.</h2>
       <p class="section-sub">
-        Just boot the ISO and answer a few questions in a clean wizard.
-        No terminal, no internet, no fuss.
+        Just boot the ISO and answer a few questions in a clean wizard. No
+        terminal, no internet, no fuss.
       </p>
     </div>
 
     <div class="card-grid grid-steps">
-      {installSteps.map((step) => (
-        <Card title={step.title} description={step.description} size="lg" className="step-card">
-          <span slot="top" class="step-num">{step.num}</span>
-        </Card>
-      ))}
+      {
+        installSteps.map((step) => (
+          <Card
+            title={step.title}
+            description={step.description}
+            size="lg"
+            className="step-card"
+          >
+            <span slot="top" class="step-num">
+              {step.num}
+            </span>
+          </Card>
+        ))
+      }
     </div>
 
     <div class="reveal step-cta">

@@ -1,38 +1,43 @@
 ---
-import '../styles/global.css';
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import Features from '../components/Features.astro';
-import Desktop from '../components/Desktop.astro';
-import Install from '../components/Install.astro';
-import Languages from '../components/Languages.astro';
-import CLI from '../components/CLI.astro';
-import CTA from '../components/CTA.astro';
-import Footer from '../components/Footer.astro';
-import Star from '../components/Star.astro';
-import { isoRepo, ghRepo } from '../lib/site';
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Features from "../components/Features.astro";
+import Desktop from "../components/Desktop.astro";
+import Install from "../components/Install.astro";
+import Languages from "../components/Languages.astro";
+import CLI from "../components/CLI.astro";
+import CTA from "../components/CTA.astro";
+import Footer from "../components/Footer.astro";
+import Star from "../components/Star.astro";
+import { isoRepo } from "../lib/site";
 
-const title = 'AestheticOS — Beautiful, fully offline Arch Linux';
+const title = "AestheticOS — Beautiful, fully offline Arch Linux";
 const description =
-  'AestheticOS — a beautiful, fully offline Arch Linux distro. Boot it, run the installer, and get a polished Hyprland desktop. No internet, ever.';
+  "AestheticOS — a beautiful, fully offline Arch Linux distro. Boot it, run the installer, and get a polished Hyprland desktop. No internet, ever.";
 
 // Structured data so search engines understand the project.
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'AestheticOS',
-  operatingSystem: 'Arch Linux',
-  description,
-  url: Astro.url.href,
-  applicationCategory: 'System Tool',
-  sameAs: [isoRepo, ghRepo],
-};
+// Rendered inline as a JSON-LD literal so it is present in the static HTML
+// (server-side), which is what search engines expect. Note: `sameAs` is
+// reserved for identity pages (social profiles, etc.), not source repos.
+// The ISO and installer repos are already linked in the visible page
+// (Hero + CTA/Footer), so they remain discoverable.
 ---
 
 <Layout title={title} description={description}>
   <Fragment slot="head">
-    <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "AestheticOS",
+        "operatingSystem": "Arch Linux",
+        "description": "AestheticOS — a beautiful, fully offline Arch Linux distro. Boot it, run the installer, and get a polished Hyprland desktop. No internet, ever.",
+        "applicationCategory": "System Tool",
+        "url": "https://kornienkodev.github.io/AestheticOS-Web/"
+      }
+    </script>
   </Fragment>
 
   <a class="skip-link" href="#top">Skip to main content</a>
@@ -43,7 +48,12 @@ const jsonLd = {
   <main id="top">
     <Hero>
       <slot name="actions" slot="actions">
-        <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener">
+        <a
+          class="btn btn-primary"
+          href={isoRepo}
+          target="_blank"
+          rel="noopener"
+        >
           <Star size={16} /> Get the ISO
         </a>
         <a class="btn btn-ghost" href="#install">Watch it install</a>

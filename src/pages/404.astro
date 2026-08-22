@@ -1,17 +1,22 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Star from '../components/Star.astro';
-import { isoRepo } from '../lib/site';
+import Layout from "../layouts/Layout.astro";
+import Star from "../components/Star.astro";
+import { isoRepo } from "../lib/site";
 ---
 
-<Layout title="404 — Not found | AestheticOS" description="Page not found for AestheticOS.">
+<Layout
+  title="404 — Not found | AestheticOS"
+  description="Page not found for AestheticOS."
+>
   <div class="bg-field" aria-hidden="true"></div>
   <main class="not-found">
     <div class="container not-found-card">
       <span class="glyph"><Star size={28} /></span>
       <h1>404</h1>
       <p>This page drifted off into space.</p>
-      <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener">View the ISO repo</a>
+      <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener"
+        >View the ISO repo</a
+      >
       <a class="btn btn-ghost" href="/">Back to home</a>
     </div>
   </main>
