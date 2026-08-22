@@ -5,21 +5,25 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("fonts/nunito-v16-latin-regular.woff2") format("woff2");
+  /* Relative to this CSS file (src/styles/). Vite resolves these into the
+     asset pipeline at build time: the woff2 files are hashed into
+     _astro/fonts/ and Astro prepends the configured `base`, so the emitted
+     URLs are correct both on the dev server and the GitHub Pages subpath. */
+  src: url("./fonts/nunito-v16-latin-regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "Nunito";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("fonts/nunito-v16-cyrillic-regular.woff2") format("woff2");
+  src: url("./fonts/nunito-v16-cyrillic-regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("fonts/JetBrainsMono[wght].woff2") format("woff2");
+  src: url("./fonts/JetBrainsMono[wght].woff2") format("woff2");
 }
 
 :root {
