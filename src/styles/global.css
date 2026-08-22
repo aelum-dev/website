@@ -70,6 +70,10 @@
   --maxw: 1120px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* Light/dark theme transition timing. */
+  --theme-duration: 650ms;
+  --theme-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
   /* --- Consistent spacing scale (used by flex containers) --- */
   --space-0: 0;
   --space-1: 0.25rem;
@@ -117,6 +121,18 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* Smooth light/dark color morph. Longhands (not the shorthand) are used so this
+   merges with any per-element transitions already defined — hover states,
+   reveal animations, etc. keep their own timing. */
+*,
+*::before,
+*::after {
+  transition-property:
+    background-color, border-color, color, box-shadow, opacity;
+  transition-duration: var(--theme-duration);
+  transition-timing-function: var(--theme-ease);
 }
 
 html {
@@ -1026,6 +1042,72 @@ code {
   align-items: center;
 }
 
+/* ============================================================
+   Theme transition — radial "ink" morph anchored to the toggle
+   ============================================================ */
+.theme-morph {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* The blob is centered on the top-left corner (translate -50%/-50%) and scaled
+   about its own center, so it grows outward from that corner. Its diameter is
+   far larger than the viewport diagonal, so at full scale it covers the whole
+   screen (clipped by the container's overflow: hidden). */
+.theme-morph .blob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300vmax;
+  height: 300vmax;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%) scale(0);
+}
+/* Destination-origin modifier: the light theme morphs in from the bottom-right
+   corner instead of the top-left. */
+.theme-morph .blob--br {
+  top: auto;
+  left: auto;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%) scale(0);
+}
+.theme-morph.active .blob {
+  animation: theme-morph-tl var(--theme-duration) var(--theme-ease) forwards;
+}
+.theme-morph.active .blob--br {
+  animation: theme-morph-br var(--theme-duration) var(--theme-ease) forwards;
+}
+@keyframes theme-morph-tl {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.9;
+  }
+  35% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+@keyframes theme-morph-br {
+  0% {
+    transform: translate(50%, 50%) scale(0);
+    opacity: 0.9;
+  }
+  35% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(50%, 50%) scale(1);
+    opacity: 0;
+  }
+}
+
 /* Scroll reveal */
 .reveal {
   opacity: 0;
@@ -1046,6 +1128,14 @@ code {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+  .theme-morph {
+    display: none;
   }
   html {
     scroll-behavior: auto;
