@@ -10,7 +10,6 @@ import Languages from "../components/Languages.astro";
 import CLI from "../components/CLI.astro";
 import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
-import Star from "../components/Star.astro";
 import { isoRepo } from "../lib/site";
 
 const title = "AestheticOS — Beautiful, fully offline Arch Linux";
@@ -54,7 +53,9 @@ const description =
           target="_blank"
           rel="noopener"
         >
-          <Star size={16} /> Get the ISO
+          <span class="nf-icon" aria-hidden="true" style="font-size:1.6rem">
+            {String.fromCodePoint(0xf0ed)}
+          </span> Get the ISO
         </a>
         <a class="btn btn-ghost" href="#install">Watch it install</a>
       </slot>
