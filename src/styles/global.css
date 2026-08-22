@@ -770,6 +770,18 @@ code {
 .step-cta .card {
   padding: var(--space-7) !important;
 }
+.step-cta .flex > .card {
+  flex: 1;
+  min-width: 0;
+  align-self: flex-start;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-4) !important;
+  min-height: 5rem;
+}
 .between {
   justify-content: space-between;
 }
@@ -784,23 +796,28 @@ code {
   margin: 0;
 }
 .selected-fs {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
   border-color: var(--accent);
 }
 .selected-fs code {
   font-size: 1.05rem;
 }
 .selected-fs span {
-  order: -1;
-  display: block;
-  margin-bottom: 0.35rem;
+  position: static;
+  display: inline-block;
+  padding-inline: 2rem;
+  text-align: center;
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  pointer-events: none;
 }
 .step-cta .card code {
   font-size: 1.05rem;
