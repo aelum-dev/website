@@ -113,7 +113,7 @@ export const software: Software[] = [
   },
   {
     title: "Firefox",
-    description: "Firefox browser, pre-configured and themed to match.",
+    description: "The browser, pre-configured and themed to match.",
   },
   { title: "PipeWire", description: "Modern audio handling, ready to go." },
   {
