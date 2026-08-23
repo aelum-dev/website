@@ -7,6 +7,7 @@ interface Props {
   description?: string;
   color?: string;
   icon?: string;
+  badge?: string;
   size?: "md" | "lg";
   className?: string;
 }
@@ -16,6 +17,7 @@ const {
   description = undefined,
   color = undefined,
   icon = undefined,
+  badge = undefined,
   size = "lg",
   className = "",
 } = Astro.props;
@@ -25,6 +27,7 @@ const {
   {
     color && title && (
       <div class="card-title-row">
+        {badge && <span class="card-badge">{badge}</span>}
         <div class="dot" style="--c:{color}">
           {icon ? (
             <span class="nf-icon" aria-hidden="true">
@@ -34,7 +37,6 @@ const {
             <Star size={18} />
           )}
         </div>
-        <slot name="top" />
         <h3>{title}</h3>
       </div>
     )

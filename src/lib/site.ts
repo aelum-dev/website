@@ -133,6 +133,7 @@ export const software: Software[] = [
 
 export interface Step {
   num: string;
+  icon: string;
   title: string;
   description: string;
 }
@@ -140,33 +141,39 @@ export interface Step {
 export const installSteps: Step[] = [
   {
     num: "01",
+    icon: "f0ac", // nerd-fonts: globe
     title: "Pick a language",
     description:
       "Choose from 28 languages. This sets the installer UI, your system locale, and the mirror country.",
   },
   {
     num: "02",
+    icon: "f508", // nerd-fonts: account-circle
     title: "Create your user",
     description: "Set up your username and password in a couple of fields.",
   },
   {
     num: "03",
+    icon: "f7c9", // nerd-fonts: harddisk
     title: "Choose a disk",
     description: "Select the target drive and pick between ext4 or btrfs.",
   },
   {
     num: "04",
+    icon: "f046", // nerd-fonts: check
     title: "Confirm",
     description: "Review the summary, then hit install. That's it.",
   },
   {
     num: "05",
+    icon: "f120", // nerd-fonts: terminal
     title: "Watch it go",
     description:
       "The installer runs entirely from the live ISO — no internet needed.",
   },
   {
     num: "06",
+    icon: "f878", // nerd-fonts: monitor
     title: "Boot into it",
     description: "Reboot into a finished Hyprland + DankMaterialShell desktop.",
   },

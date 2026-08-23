@@ -35,14 +35,13 @@ import { installSteps } from "../lib/site";
         installSteps.map((step) => (
           <Card
             title={step.title}
+            icon={step.icon}
+            badge={step.num}
             description={step.description}
+            color="#9b7ff2"
             size="lg"
             className="step-card"
-          >
-            <span slot="top" class="step-num">
-              {step.num}
-            </span>
-          </Card>
+          />
         ))
       }
     </div>
