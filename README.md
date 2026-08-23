@@ -7,8 +7,8 @@ AestheticOS is an Arch Linux distro with a **fully offline installer**. Boot the
 ## What's on the site
 
 - **Hero** — the one-line pitch, key stats (~1 min install, 4.7 GB, no network during install), and the ISO preview.
-- **Features** — why AestheticOS: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, zram.
-- **What you install** — the finished desktop: Hyprland, DMS greeter, matugen, Alacritty, Firefox, PipeWire, Plymouth, GTK/Qt theming.
+- **Features** — why AestheticOS: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, minimal live ISO.
+- **What you install** — the finished desktop: Hyprland, DMS greeter, matugen, Firefox, PipeWire, Plymouth, GTK/Qt theming, ZRAM swap.
 - **The installer** — the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages.
 - **CLI** — headless / scripted install examples.

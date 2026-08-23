@@ -10,7 +10,7 @@ import Languages from "../components/Languages.astro";
 import CLI from "../components/CLI.astro";
 import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
-import { isoRepo } from "../lib/site";
+import { mainRepo } from "../lib/site";
 
 const title = "AestheticOS — an Arch Linux distro with an offline installer";
 const description =
@@ -51,7 +51,7 @@ const description =
       <slot name="actions" slot="actions">
         <a
           class="btn btn-primary"
-          href={isoRepo}
+          href={mainRepo}
           target="_blank"
           rel="noopener"
         >

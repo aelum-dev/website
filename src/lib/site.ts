@@ -1,7 +1,8 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
-export const ghRepo = "https://github.com/KornienkoDev/AestheticOS-Installer";
-export const isoRepo = "https://github.com/KornienkoDev/AestheticOS";
+export const mainRepo = "https://github.com/KornienkoDev/AestheticOS";
+export const installerRepo =
+  "https://github.com/KornienkoDev/AestheticOS-Installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";
@@ -17,7 +18,8 @@ export const languages = [
   "Português",
   "Русский",
   "Українська",
-  "中文",
+  "简体中文",
+  "繁體中文",
   "日本語",
   "한국어",
   "Tiếng Việt",
@@ -25,18 +27,17 @@ export const languages = [
   "Nederlands",
   "Svenska",
   "Norsk",
-  "Čeština",
   "Magyar",
-  "Română",
   "Ελληνικά",
   "Türkçe",
   "עברית",
-  "हिन्दी",
-  "বাংলা",
-  "தமிழ்",
-  "ไทย",
-  "पर्सी",
   "فارسی",
+  "العربية",
+  "Български",
+  "Català",
+  "Esperanto",
+  "Suomi",
+  "Bahasa Indonesia",
 ];
 
 export interface Feature {

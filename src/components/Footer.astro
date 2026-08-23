@@ -1,5 +1,11 @@
 ---
-import { isoRepo, ghRepo, hyprlandUrl, dmsUrl, wailsUrl } from "../lib/site";
+import {
+  mainRepo,
+  installerRepo,
+  hyprlandUrl,
+  dmsUrl,
+  wailsUrl,
+} from "../lib/site";
 ---
 
 <footer class="footer">
@@ -16,8 +22,8 @@ import { isoRepo, ghRepo, hyprlandUrl, dmsUrl, wailsUrl } from "../lib/site";
       <span>AestheticOS</span>
     </div>
     <div class="flex flex-wrap items-center gap-6 footer-links">
-      <a href={isoRepo} target="_blank" rel="noopener">AestheticOS (ISO)</a>
-      <a href={ghRepo} target="_blank" rel="noopener">AestheticOS Installer</a>
+      <a href={mainRepo} target="_blank" rel="noopener">AestheticOS</a>
+      <a href={installerRepo} target="_blank" rel="noopener">Installer</a>
       <a href={hyprlandUrl} target="_blank" rel="noopener">Hyprland</a>
       <a href={dmsUrl} target="_blank" rel="noopener">DankMaterialShell</a>
       <a href={wailsUrl} target="_blank" rel="noopener">Wails v2</a>

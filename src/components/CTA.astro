@@ -1,5 +1,5 @@
 ---
-import { isoRepo, ghRepo, ventoyUrl } from "../lib/site";
+import { mainRepo, installerRepo, ventoyUrl } from "../lib/site";
 ---
 
 <section id="cta" class="section section-no-top">
@@ -22,13 +22,16 @@ import { isoRepo, ghRepo, ventoyUrl } from "../lib/site";
         <div class="flex justify-center gap-4 cta-actions">
           <a
             class="btn btn-primary"
-            href={isoRepo}
+            href={mainRepo}
             target="_blank"
             rel="noopener"
             ><span class="nf-icon" aria-hidden="true">&#xf09b;</span> Build the ISO</a
           >
-          <a class="btn btn-ghost" href={ghRepo} target="_blank" rel="noopener"
-            >Build the installer</a
+          <a
+            class="btn btn-ghost"
+            href={installerRepo}
+            target="_blank"
+            rel="noopener">Build the installer</a
           >
         </div>
       </div>

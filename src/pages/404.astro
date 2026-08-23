@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Star from "../components/Star.astro";
-import { isoRepo } from "../lib/site";
+import { mainRepo } from "../lib/site";
 ---
 
 <Layout
@@ -14,10 +14,10 @@ import { isoRepo } from "../lib/site";
       <span class="glyph"><Star size={28} /></span>
       <h1>404</h1>
       <p>This page drifted off into space.</p>
-      <a class="btn btn-primary" href={isoRepo} target="_blank" rel="noopener"
+      <a class="btn btn-primary" href="/">Back to home</a>
+      <a class="btn btn-ghost" href={mainRepo} target="_blank" rel="noopener"
         >View the ISO repo</a
       >
-      <a class="btn btn-ghost" href="/">Back to home</a>
     </div>
   </main>
 </Layout>
