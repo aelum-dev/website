@@ -49,16 +49,16 @@ export const features: Feature[] = [
   {
     color: "#9b7ff2",
     icon: "faa9", // nerd-fonts: wifi-off
-    title: "Fully offline, ever",
+    title: "Fully offline installer",
     description:
-      "Every package is embedded in the ISO and served from an embedded local mirror. Zero network dependency — not during install, not after. Boot it anywhere.",
+      "Every package is embedded in the ISO and served from an embedded local mirror. Zero network dependency during install.",
   },
   {
     color: "#ff7ac6",
     icon: "fba7", // nerd-fonts: robot
     title: "Zero-touch boot",
     description:
-      "greetd launches a barebones Hyprland that starts the installer automatically on first boot. No manual commands, no thinking about it.",
+      "Greetd launches a barebones Hyprland that starts the installer automatically on first boot. No manual commands, no thinking about it.",
   },
   {
     color: "#6fd0ff",
@@ -72,7 +72,7 @@ export const features: Feature[] = [
     icon: "f879", // nerd-fonts: monitor-multiple
     title: "Auto monitor scaling",
     description:
-      "Detects the connected monitor and applies the right Hyprland scale automatically, so the installer is crisp on 1080p, 1440p, or 4K.",
+      "Live ISO detects the connected monitor and applies the right Hyprland scale automatically, so the installer is crisp on 1080p, 1440p, or 4K.",
   },
   {
     color: "#9b7ff2",
@@ -103,7 +103,7 @@ export const software: Software[] = [
   },
   {
     title: "DMS Greeter",
-    description: "greetd login — fast, elegant, and beautiful out of the box.",
+    description: "DMS Greeter — fast, elegant, and beautiful out of the box. Synced with desktop theme.",
   },
   {
     title: "matugen",
@@ -142,7 +142,7 @@ export const installSteps: Step[] = [
   {
     num: "02",
     title: "Create your user",
-    description: "Set up your account and password in a couple of fields.",
+    description: "Set up your username and password in a couple of fields.",
   },
   {
     num: "03",
