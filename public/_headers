@@ -1,0 +1,11 @@
+# HTTP headers for the deployed site (honored by GitHub Pages).
+# Long-lived immutable caching for content-hashed static assets. When an asset's
+# content changes, its filename changes too (see public/images), so this safe
+# year-long cache never serves a stale screenshot.
+# Both patterns are included on purpose: project sites are served under the
+# base path (/AestheticOS-Web/), so match it explicitly and without it to cover
+# whichever form GitHub matches against. Header lines are indented with 2 spaces.
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+/AestheticOS-Web/images/*
+  Cache-Control: public, max-age=31536000, immutable
