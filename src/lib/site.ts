@@ -104,7 +104,7 @@ export const software: Software[] = [
   {
     title: "DMS Greeter",
     description:
-      "DMS Greeter — fast, elegant, and beautiful out of the box. Synced with desktop theme.",
+      "A fast login screen that matches the desktop theme.",
   },
   {
     title: "matugen",
@@ -123,7 +123,7 @@ export const software: Software[] = [
   },
   {
     title: "GTK + Qt theming",
-    description: "Matugen-themed out of the box — zero configuration required.",
+    description: "Matugen-themed automatically — no manual theming.",
   },
 ];
 

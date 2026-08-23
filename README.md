@@ -2,12 +2,12 @@
 
 This is the official landing site for [AestheticOS](https://github.com/KornienkoDev/AestheticOS) and the [AestheticOS Installer](https://github.com/KornienkoDev/AestheticOS-Installer), built with [Astro](https://astro.build/).
 
-AestheticOS is a beautiful, **fully offline** Arch Linux distro. Boot the live ISO and the installer launches on its own — answer a few questions and finish with a polished Hyprland + DankMaterialShell desktop. No internet, ever.
+AestheticOS is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer a few questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
 
 ## What's on the site
 
-- **Hero** — the one-line pitch, key stats (~1 min install, 4.7 GB, zero network), and the ISO preview.
-- **Features** — why AestheticOS: fully offline, zero-touch boot, silent boot, auto monitor scaling, fast install, zram.
+- **Hero** — the one-line pitch, key stats (~1 min install, 4.7 GB, no network during install), and the ISO preview.
+- **Features** — why AestheticOS: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, zram.
 - **What you install** — the finished desktop: Hyprland, DMS greeter, matugen, Alacritty, Firefox, PipeWire, Plymouth, GTK/Qt theming.
 - **The installer** — the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages.
@@ -63,7 +63,7 @@ Run `npm run check` (Prettier + `astro check`) before committing.
 
 - Built on **Astro 7** (static site generation). All content is server-rendered for SEO, with a lightweight `IntersectionObserver` script for scroll-reveal animations and a `<noscript>` fallback so nothing is hidden without JavaScript.
 - The palette and glassy cards echo the **Material-You** look of the desktop the installer ships.
-- The site is fully offline — no backend, no API calls, no network dependencies. Fonts are self-hosted woff2 files under `src/styles/fonts/`.
+- The site itself is a static site — no backend, no API calls, no network requests to serve it. Fonts are self-hosted woff2 files under `src/styles/fonts/`.
 
 ## Content
 
