@@ -5,28 +5,32 @@ import { features } from "../lib/site";
 
 <section id="features" class="section section-no-top">
   <div class="container">
-    <div class="reveal section-head">
-      <span class="eyebrow">Why AestheticOS</span>
-      <h2 class="section-title">Live ISO offline installer</h2>
-      <p class="section-sub">
-        No mirror fetches or missing packages during install — everything is
-        baked into the ISO. It's a curated desktop, not a bare Arch you have to
-        theme yourself.
-      </p>
-    </div>
+    <div class="features-grid">
+      <div class="reveal features-text">
+        <span class="eyebrow">Why AestheticOS</span>
+        <h2 class="section-title">Live ISO features</h2>
+        <p class="section-sub">
+          No mirror fetches or missing packages during install — everything is
+          baked into the ISO. It's a curated desktop, not a bare Arch you have
+          to theme yourself.
+        </p>
+      </div>
 
-    <div class="card-grid grid-features">
-      {
-        features.map((feature) => (
-          <Card
-            title={feature.title}
-            icon={feature.icon}
-            description={feature.description}
-            color={feature.color}
-            size="lg"
-          />
-        ))
-      }
+      <div class="reveal features-cards">
+        <div class="card-grid grid-features">
+          {
+            features.map((feature) => (
+              <Card
+                title={feature.title}
+                icon={feature.icon}
+                description={feature.description}
+                color={feature.color}
+                size="lg"
+              />
+            ))
+          }
+        </div>
+      </div>
     </div>
   </div>
 </section>

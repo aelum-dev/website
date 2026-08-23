@@ -83,11 +83,11 @@ export const features: Feature[] = [
       "Because every package is already included, install takes about a minute and the complete OS uses roughly 4.7 GB after install.",
   },
   {
-    color: "#ff7ac6",
-    icon: "f85a", // nerd-fonts: memory
-    title: "ZRAM swap",
+    color: "#63e6a0",
+    icon: "f108", // nerd-fonts: feather
+    title: "Minimal live ISO",
     description:
-      "Compressed RAM swap instead of a swap file — fast, responsive, and no disk space reserved for a swap file.",
+      "The live ISO is intentionally barebones — its only job is to boot and launch the installer. No extra tools, no clutter to clean up.",
   },
 ];
 
@@ -124,6 +124,11 @@ export const software: Software[] = [
   {
     title: "GTK + Qt theming",
     description: "Matugen-themed automatically — no manual theming.",
+  },
+  {
+    title: "ZRAM swap",
+    description:
+      "Compressed RAM swap instead of a swap file — fast, responsive, and no disk space reserved for a swap file.",
   },
 ];
 
