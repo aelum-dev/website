@@ -666,7 +666,7 @@ code {
   isolation: isolate;
   box-sizing: border-box;
   /* 16:9 frame, height capped at 42vh, never wider than the column */
-  width: min(100%, calc(54vh * 16 / 9));
+  width: min(100%, calc(42vh * 16 / 9));
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
@@ -765,7 +765,7 @@ code {
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
-  width: min(100%, calc(54vh * 16 / 9));
+  width: min(100%, calc(42vh * 16 / 9));
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
