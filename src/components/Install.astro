@@ -44,14 +44,14 @@ import { installSteps } from "../lib/site";
             well, such as some Btrfs-incompatible setups.
           </p>
         </div>
-        <div class="flex gap-3">
-          <span class="card selected-fs">
-            <code>btrfs</code>
-            <span>recommended</span>
-          </span>
-          <span class="card">
-            <code>ext4</code>
-          </span>
+        <div class="fs-grid">
+          <div class="fs-option">
+            <span class="card selected-fs"><code>btrfs</code></span>
+            <span class="recommended-badge">recommended</span>
+          </div>
+          <div class="fs-option">
+            <span class="card"><code>ext4</code></span>
+          </div>
         </div>
       </div>
     </div>

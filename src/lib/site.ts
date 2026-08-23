@@ -3,6 +3,7 @@
 export const ghRepo = "https://github.com/KornienkoDev/AestheticOS-Installer";
 export const isoRepo = "https://github.com/KornienkoDev/AestheticOS";
 export const hyprlandUrl = "https://hyprland.org/";
+export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";
 export const ventoyUrl = "https://www.ventoy.io/";
 
@@ -103,8 +104,7 @@ export const software: Software[] = [
   },
   {
     title: "DMS Greeter",
-    description:
-      "A fast login screen that matches the desktop theme.",
+    description: "A fast login screen that matches the desktop theme.",
   },
   {
     title: "matugen",

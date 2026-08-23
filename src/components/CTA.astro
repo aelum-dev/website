@@ -1,5 +1,4 @@
 ---
-import Star from "./Star.astro";
 import { isoRepo, ghRepo, ventoyUrl } from "../lib/site";
 ---
 
@@ -9,7 +8,9 @@ import { isoRepo, ghRepo, ventoyUrl } from "../lib/site";
       <div class="card cta-card">
         <span class="eyebrow center-block">Ready to boot?</span>
         <h2 class="cta-title">
-          Boot the ISO. <span class="text-gradient">The installer does the rest.</span>
+          Boot the ISO. <span class="text-gradient"
+            >The installer does the rest.</span
+          >
         </h2>
         <p class="cta-sub">
           Flash the ISO to a USB (or <a
@@ -23,7 +24,18 @@ import { isoRepo, ghRepo, ventoyUrl } from "../lib/site";
             class="btn btn-primary"
             href={isoRepo}
             target="_blank"
-            rel="noopener"><Star size={16} /> View the ISO repo</a
+            rel="noopener"
+            ><svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              ><path
+                d="M12 1.5c-5.798 0-10.5 4.702-10.5 10.5 0 4.638 3.007 8.574 7.175 9.965.525.098.698-.228.698-.507 0-.252-.01-1.085-.014-1.966-2.61.567-3.257-1.117-3.257-1.117-.44-1.117-1.074-1.414-1.074-1.414-.876-.598.066-.586.066-.586.97.068 1.48 1 1.48 1 .868 1.488 2.282 1.057 2.84.808.088-.628.338-1.056.615-1.297-2.145-.245-4.398-1.073-4.398-4.774 0-1.054.377-1.915.992-2.587-.1-.244-.43-1.223.095-2.554 0 0 .81-.259 2.65.988a9.22 9.22 0 0 1 4.85 0c1.837-1.247 2.646-.988 2.646-.988.526 1.331.196 2.31.096 2.554.618.672.99 1.533.99 2.587 0 3.708-2.258 4.526-4.408 4.767.347.3.658.89.658 1.793 0 1.296-.012 2.339-.012 2.656 0 .282.17.61.7.506C19.496 20.57 22.5 16.638 22.5 12c0-5.798-4.702-10.5-10.5-10.5Z"
+              ></path></svg
+            > Build the ISO</a
           >
           <a class="btn btn-ghost" href={ghRepo} target="_blank" rel="noopener"
             >Build the installer</a
