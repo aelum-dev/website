@@ -106,7 +106,7 @@ export const software: Software[] = [
   {
     title: "DankMaterialShell",
     description:
-      "A complete desktop shell for Wayland compositors. Replaces waybar, swaylock, swayidle, mako, fuzzel, polkit, and everything else you'd normally stitch together.",
+      "A complete desktop shell for Wayland compositors — replaces the usual patchwork of status bar, lock screen, notifications, launcher, and polkit.",
   },
   {
     title: "DMS Greeter",
