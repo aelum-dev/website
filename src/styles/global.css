@@ -525,6 +525,9 @@ code {
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.95);
 }
+[data-theme="dark"] .btn-ghost:hover {
+  background: var(--bg-elevated);
+}
 
 /* Cards */
 .card-title-row {

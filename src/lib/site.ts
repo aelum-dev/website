@@ -103,7 +103,8 @@ export const software: Software[] = [
   },
   {
     title: "DMS Greeter",
-    description: "DMS Greeter — fast, elegant, and beautiful out of the box. Synced with desktop theme.",
+    description:
+      "DMS Greeter — fast, elegant, and beautiful out of the box. Synced with desktop theme.",
   },
   {
     title: "matugen",
@@ -113,7 +114,7 @@ export const software: Software[] = [
   { title: "Alacritty", description: "A fast, GPU-accelerated terminal." },
   {
     title: "Firefox",
-    description: "The browser, pre-configured and themed to match.",
+    description: "Firefox browser, pre-configured and themed to match.",
   },
   { title: "PipeWire", description: "Modern audio handling, ready to go." },
   {
