@@ -489,6 +489,15 @@ code {
   color: transparent;
 }
 
+/* Brand word styling, matching the installer's .brand header.
+   Nunito is already the site-wide font, so only the weight,
+   casing and spacing are set here (gradient kept via .text-gradient). */
+.hero-brand {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
