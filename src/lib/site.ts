@@ -101,7 +101,7 @@ export const software: Software[] = [
   {
     title: "Hyprland",
     description:
-      "Dynamic tiling window manager with DankMaterialShell for a clean, modern look.",
+      "Dynamic tiling window manager.",
   },
   {
     title: "DankMaterialShell",
@@ -114,7 +114,7 @@ export const software: Software[] = [
   {
     title: "Matugen",
     description:
-      "Generates matching color schemes from your wallpaper automatically.",
+      "Generates matching color schemes from your wallpaper.",
   },
   {
     title: "Firefox",
@@ -131,7 +131,7 @@ export const software: Software[] = [
   {
     title: "ZRAM swap",
     description:
-      "Compressed RAM swap instead of a swap file — fast, responsive, and no disk space reserved for a swap file.",
+      "Compressed RAM swap instead of a swap file.",
   },
 ];
 
