@@ -12,7 +12,6 @@ AestheticOS is a beautiful, **fully offline** Arch Linux distro. Boot the live I
 - **The installer** — the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages.
 - **CLI** — headless / scripted install examples.
-- **Call to action** — link out to the ISO repo and the installer.
 
 ## Project Structure
 
@@ -31,7 +30,7 @@ src/
     Install.astro      # installer wizard section
     Languages.astro    # installer languages section
     CLI.astro          # headless install examples
-    Footer.astro       # footer (also hosts the call to action with the ISO link)
+    Footer.astro       # footer
     Card.astro         # reusable card
     Star.astro         # decorative star glyph (brand mark)
   lib/
