@@ -1,5 +1,5 @@
 ---
-import { installerRepo } from "../lib/site";
+import { mainRepo, installerRepo } from "../lib/site";
 ---
 
 <header class="nav">
@@ -65,6 +65,13 @@ import { installerRepo } from "../lib/site";
           >
         </span>
       </button>
+      <a
+        class="btn btn-primary nav-cta"
+        href={mainRepo}
+        target="_blank"
+        rel="noopener"
+        ><span class="nf-icon" aria-hidden="true">&#xf019;</span> Build the ISO</a
+      >
       <a
         class="btn btn-ghost nav-gh"
         href={installerRepo}
