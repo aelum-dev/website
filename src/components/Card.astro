@@ -1,6 +1,5 @@
 ---
 // Reusable glassy card. Optional colored icon slot keeps feature cards DRY.
-import Star from "./Star.astro";
 
 interface Props {
   title?: string;
@@ -34,7 +33,7 @@ const {
               {String.fromCodePoint(parseInt(icon, 16))}
             </span>
           ) : (
-            <Star size={18} />
+            <span aria-hidden="true">●</span>
           )}
         </div>
         <h3>{title}</h3>
