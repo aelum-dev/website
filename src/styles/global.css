@@ -189,6 +189,7 @@ body {
   animation: drift2 22s var(--ease) infinite alternate;
 }
 .bg-field .orb {
+  position: absolute;
   width: 500px;
   height: 500px;
   bottom: -200px;
