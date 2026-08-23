@@ -837,7 +837,7 @@ code {
 
 @media (min-width: 1025px) {
   .install-grid {
-    grid-template-columns: 7fr 3fr;
+    grid-template-columns: 6fr 4fr;
     grid-template-rows: auto;
     gap: var(--space-10);
   }
