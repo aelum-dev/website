@@ -809,15 +809,6 @@ code {
   position: relative;
   overflow: hidden;
 }
-.step-card h3 {
-  margin-top: var(--space-3);
-  font-weight: 700;
-  font-size: 1.15rem;
-}
-.step-card p {
-  margin-top: var(--space-2);
-  color: var(--text-dim);
-}
 /* Install section — heading + demo side by side, steps below */
 .install-grid {
   display: grid;
