@@ -176,7 +176,7 @@ body {
   top: -180px;
   left: -120px;
   background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  animation: drift1 18s var(--ease) infinite alternate;
+  animation: drift1 12s var(--ease) infinite alternate;
 }
 .bg-field::after {
   content: "";
@@ -186,7 +186,7 @@ body {
   right: -160px;
   background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
   opacity: 0.28;
-  animation: drift2 22s var(--ease) infinite alternate;
+  animation: drift2 14s var(--ease) infinite alternate;
 }
 .bg-field .orb {
   position: absolute;
@@ -196,22 +196,22 @@ body {
   left: 30%;
   background: radial-gradient(circle, var(--accent-3) 0%, transparent 70%);
   opacity: 0.22;
-  animation: drift3 26s var(--ease) infinite alternate;
+  animation: drift3 16s var(--ease) infinite alternate;
 }
 
 @keyframes drift1 {
   to {
-    transform: translate(60px, 80px);
+    transform: translate(120px, 100px);
   }
 }
 @keyframes drift2 {
   to {
-    transform: translate(-70px, -50px);
+    transform: translate(-100px, -80px);
   }
 }
 @keyframes drift3 {
   to {
-    transform: translate(40px, -60px);
+    transform: translate(80px, -100px);
   }
 }
 
