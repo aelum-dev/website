@@ -104,6 +104,11 @@ export const software: Software[] = [
       "Dynamic tiling window manager with DankMaterialShell for a clean, modern look.",
   },
   {
+    title: "DankMaterialShell",
+    description:
+      "A sleek Hyprland config with a polished status bar, animations, and Material You theming — all set up out of the box.",
+  },
+  {
     title: "DMS Greeter",
     description: "A fast login screen that matches the desktop theme.",
   },
@@ -116,7 +121,6 @@ export const software: Software[] = [
     title: "Firefox",
     description: "The browser, pre-configured and themed to match.",
   },
-  { title: "PipeWire", description: "Modern audio handling, ready to go." },
   {
     title: "Plymouth BGRT",
     description: "Silent boot splash reading your OEM logo from UEFI.",
