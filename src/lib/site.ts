@@ -108,7 +108,7 @@ export const software: Software[] = [
     description: "A fast login screen that matches the desktop theme.",
   },
   {
-    title: "matugen",
+    title: "Matugen",
     description:
       "Generates matching color schemes from your wallpaper automatically.",
   },
