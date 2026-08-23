@@ -25,7 +25,6 @@
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if (metaTheme) {
     metaTheme.setAttribute("content", theme === "dark" ? "#151114" : "#faf7f6");
-    metaTheme.setAttribute("name", "theme-color");
   }
 
   // Listen for OS-level changes when the user hasn't made an explicit choice.

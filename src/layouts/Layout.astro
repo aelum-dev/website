@@ -23,7 +23,8 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
     <meta name="description" content={description} />
     <!-- Reflect both schemes so form controls/scrollbars match the active theme. -->
     <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#faf7f6" />
+    <!-- theme-color set dynamically by theme.js to match the active scheme -->
+    <meta name="theme-color" content="" />
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
@@ -62,7 +63,7 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
         }
       </style></noscript
     >
-    <script src="scripts/reveal.js" defer></script>
+    <script src="scripts/reveal.js" defer is:inline></script>
     <script src="scripts/theme-toggle.js" is:inline></script>
   </body>
 </html>

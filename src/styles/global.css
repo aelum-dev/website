@@ -312,6 +312,7 @@ body {
 #install,
 #features,
 #languages,
+#cli,
 #cta {
   scroll-margin-top: calc(70px + 1.5rem);
 }
