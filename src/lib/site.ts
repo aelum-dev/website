@@ -106,7 +106,7 @@ export const software: Software[] = [
   {
     title: "DankMaterialShell",
     description:
-      "A sleek Hyprland config with a polished status bar, animations, and Material You theming — all set up out of the box.",
+      "A complete desktop shell for Wayland compositors. Replaces waybar, swaylock, swayidle, mako, fuzzel, polkit, and everything else you'd normally stitch together.",
   },
   {
     title: "DMS Greeter",
