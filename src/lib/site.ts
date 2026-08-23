@@ -111,7 +111,6 @@ export const software: Software[] = [
     description:
       "Generates matching color schemes from your wallpaper automatically.",
   },
-  { title: "Alacritty", description: "A fast, GPU-accelerated terminal." },
   {
     title: "Firefox",
     description: "Firefox browser, pre-configured and themed to match.",

@@ -15,15 +15,17 @@ import { installSteps } from "../lib/site";
         </p>
       </div>
 
-      <div class="reveal install-visual" aria-hidden="true">
+      <div class="reveal install-visual">
         <div class="features-demo-frame">
-          <img
-            src="images/installer-demo.webp"
+          <video
+            src="images/installer-demo.38dd6a0b.mp4"
             width="1280"
             height="720"
-            alt="AestheticOS installer walkthrough — answering questions and completing installation"
-            loading="lazy"
-          />
+            aria-label="AestheticOS installer walkthrough — answering questions and completing installation"
+            autoplay
+            muted
+            loop
+            playsinline></video>
         </div>
       </div>
     </div>
@@ -54,8 +56,8 @@ import { installSteps } from "../lib/site";
             and snapshots are laid out for you. That means automatic CoW
             compression, transparent snapshots, and easy rollbacks, so your
             system stays clean and recoverable out of the box. Pick ext4 only if
-            you need to store snapshots or features that BTRFS doesn't handle
-            well, such as some Btrfs-incompatible setups.
+            you don't need snapshots or have workloads that BTRFS doesn't handle
+            well, such as some database setups.
           </p>
         </div>
         <div class="fs-grid">
