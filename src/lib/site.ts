@@ -105,8 +105,7 @@ export const software: Software[] = [
   },
   {
     title: "DankMaterialShell",
-    description:
-      "A complete desktop shell for Wayland compositors — replaces the usual patchwork of status bar, lock screen, notifications, launcher, and polkit.",
+    description: "A complete desktop shell for Wayland compositors.",
   },
   {
     title: "DMS Greeter",
