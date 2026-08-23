@@ -2,7 +2,7 @@
 
 ---
 
-<section class="section section-no-top">
+<section id="cli" class="section section-no-top">
   <div class="container">
     <div class="reveal section-head">
       <div class="cli-card">
@@ -14,17 +14,16 @@
         </div>
         <pre
           class="cli-code"><code><span style="color:var(--accent-green)"># GUI</span>
-<span style="color:var(--accent-3)">sudo</span> ./build/bin/aestheticos-installer
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aestheticos-installer-cli
 
 <span style="color:var(--accent-green)"># CLI — full install</span>
-<span style="color:var(--accent-3)">sudo</span> ./build/bin/aestheticos-installer-cli <span style="color:var(--accent-2)">--install /dev/vda</span>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aestheticos-installer-cli <span style="color:var(--accent-2)">--install /dev/vda</span>
 
 <span style="color:var(--accent-green)"># CLI — btrfs root instead of ext4</span>
-<span style="color:var(--accent-3)">sudo</span> ./build/bin/aestheticos-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem btrfs</span></code></pre>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aestheticos-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem btrfs</span></code></pre>
       </div>
       <p class="cli-note">
-        Prefer headless or scripted installs? The installer also ships a CLI. It
-        runs entirely from the live ISO — no internet connection required.
+        Prefer headless or scripted installs? The live ISO also ships a CLI.
       </p>
     </div>
   </div>
