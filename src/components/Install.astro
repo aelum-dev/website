@@ -35,7 +35,14 @@ import { installSteps } from "../lib/site";
       <div class="card card-pad-lg flex-row between">
         <div class="stack gap-2" style="align-items:flex-start;">
           <h3>Ext4 or Btrfs?</h3>
-          <p>BTRFS ships with a sensible automatic subvolume layout.</p>
+          <p>
+            BTRFS ships with a sensible automatic subvolume layout — root, home,
+            and snapshots are laid out for you. That means automatic CoW
+            compression, transparent snapshots, and easy rollbacks, so your
+            system stays clean and recoverable out of the box. Pick ext4 only if
+            you need to store snapshots or features that BTRFS doesn't handle
+            well, such as some Btrfs-incompatible setups.
+          </p>
         </div>
         <div class="flex gap-3">
           <span class="card selected-fs">

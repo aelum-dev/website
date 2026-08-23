@@ -779,6 +779,16 @@ code {
   padding: var(--space-4) !important;
   min-height: 5rem;
 }
+.step-cta .card.flex-row {
+  flex-wrap: nowrap;
+}
+.step-cta .stack {
+  flex: 1 1 60%;
+  min-width: 0;
+}
+.step-cta .flex.gap-3 {
+  flex: 0 1 auto;
+}
 .between {
   justify-content: space-between;
 }
