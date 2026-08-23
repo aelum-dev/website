@@ -22,9 +22,8 @@ const {
 ---
 
 <div class={"card card-pad-" + size + (className ? " " + className : "")}>
-  {title && <h3>{title}</h3>}
   {
-    color && (
+    color && title && (
       <div class="card-title-row">
         <div class="dot" style="--c:{color}">
           {icon ? (
@@ -36,9 +35,11 @@ const {
           )}
         </div>
         <slot name="top" />
+        <h3>{title}</h3>
       </div>
     )
   }
+  {title && !color && <h3>{title}</h3>}
   {description && <p>{description}</p>}
   <slot />
 </div>
