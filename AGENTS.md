@@ -44,7 +44,7 @@ npm run check      # prettier --check . && astro check   # run before committing
 ## Deployment
 
 - Deployed as a GitHub Pages **project/site page** via `.github/workflows/pages.yml` (runs on push to `main`).
-- `astro.config.mjs`: `site` = `https://KornienkoDev.github.io/AestheticOS-Web/` and `base = "/AestheticOS-Web/"`. **If the repo name changes, update `base` there too.**
+- `astro.config.mjs`: `site` = `https://aestheticos.gitlab.io/website/` and `base = "/website/"`. **If the repo name changes, update `base` there too.**
 - Sitemap strips trailing `index.html` / slashes for clean URLs.
 
 ## Content Sources
@@ -57,7 +57,7 @@ All copy is derived from the upstream project READMEs:
 ## Assets
 
 - Static images live under `public/` and are served at the site root.
-- **Reference in-page `public/` assets with a relative path** (e.g. `src="logo.png"`), not a leading-slash absolute path. Because `astro.config.mjs` sets `base = "/AestheticOS-Web/"`, an absolute path like `/logo.png` is rejected at build time (the router expects `/AestheticOS-Web/logo.png`). Relative paths resolve correctly under the base — this is how the favicon (`star.svg`) and the nav logo are referenced.
+- **Reference in-page `public/` assets with a relative path** (e.g. `src="logo.png"`), not a leading-slash absolute path. Because `astro.config.mjs` sets `base = "/AestheticOS/"`, an absolute path like `/logo.png` is rejected at build time (the router expects `/AestheticOS/logo.png`). Relative paths resolve correctly under the base — this is how the favicon (`star.svg`) and the nav logo are referenced.
 - For **canonical/absolute URLs** (OG/Twitter images in `Layout.astro`), derive them from Astro's config with `new URL("og-image.png", Astro.url).href` so the base and site URL stay in one place.
 - Do not hardcode the base string; keep it in `astro.config.mjs`.
 - **Favicons:** rounded, optimized PNGs live in `public/` (`favicon-16.png`, `favicon-32.png`) and are referenced in `Layout.astro`. They are derived from the master `public/logo.png` (downscaled with rounded corners). Prefer these small favicons over the large `logo.png` in hot paths like the header.

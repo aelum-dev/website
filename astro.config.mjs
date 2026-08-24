@@ -2,11 +2,11 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// Canonical base for the GitHub Pages project/site page.
-const site = "https://KornienkoDev.github.io/AestheticOS-Web/";
+// Canonical base for the GitLab Pages project/site page.
+const site = "https://aestheticos.gitlab.io/website/";
 
 export default defineConfig({
-  base: "/AestheticOS-Web/",
+  base: "/website/",
   site,
   sitemap: {
     // Omit the trailing `index.html` from URLs for clean links.
