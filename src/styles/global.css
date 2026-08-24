@@ -1153,6 +1153,10 @@ code {
   width: 18px;
   height: 18px;
 }
+.theme-toggle-icon .nf-icon {
+  font-size: 18px;
+  vertical-align: -0.05em;
+}
 [data-theme="dark"] .theme-toggle [data-theme-icon="light"] {
   display: none;
 }
