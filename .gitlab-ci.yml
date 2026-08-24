@@ -19,7 +19,7 @@ pages:
 
   script:
     - npm run build
-    - mv public .public 2>/dev/null || true # preserve committed static assets
+    - mkdir -p public
     - cp -r dist/* public/ # merge build output into public/
 
   artifacts:
