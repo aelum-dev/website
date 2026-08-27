@@ -1,6 +1,6 @@
 # AestheticOS — Website
 
-This is the official landing site for [AestheticOS](https://github.com/KornienkoDev/AestheticOS) and the [AestheticOS Installer](https://github.com/KornienkoDev/AestheticOS-Installer), built with [Astro](https://astro.build/).
+This is the official landing site for [AestheticOS](https://gitlab.com/aestheticos/AestheticOS) and the [AestheticOS Installer](https://gitlab.com/aestheticos/installer), built with [Astro](https://astro.build/).
 
 AestheticOS is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer a few questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
 
@@ -69,8 +69,8 @@ Run `npm run check` (Prettier + `astro check`) before committing.
 
 All copy on the site is sourced from the project READMEs:
 
-- [AestheticOS/README.md](https://github.com/KornienkoDev/AestheticOS)
-- [AestheticOS-Installer/README.md](https://github.com/KornienkoDev/AestheticOS-Installer)
+- [AestheticOS/README.md](https://gitlab.com/aestheticos/AestheticOS)
+- [AestheticOS-Installer/README.md](https://gitlab.com/aestheticos/installer)
 
 ---
 
