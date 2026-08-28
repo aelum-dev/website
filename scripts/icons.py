@@ -15,6 +15,8 @@ This tool does two things:
   2. add    - add one or more glyphs to the website subset and rebuild the
               woff2. It reads whatever glyphs are already in the woff2 and keeps
               them, so running it repeatedly never drops an existing icon.
+  3. remove - drop one or more glyphs from the subset and rebuild the woff2,
+              keeping every other glyph.
 
 The other subcommands are helpers:
 
@@ -140,6 +142,42 @@ def cmd_add(args):
     return 0
 
 
+def cmd_remove(args):
+    font = resolve_font(args)
+    if not WOFF2.exists():
+        print(f"ERROR: {WOFF2} does not exist yet.", file=sys.stderr)
+        sys.exit(1)
+
+    font_cmap = load_cmap(font)
+    existing = load_cmap(WOFF2)
+    target = [parse_cp(t) for t in args.codepoints]
+
+    present = [cp for cp in target if cp in existing]
+    absent = [cp for cp in target if cp not in existing]
+    for cp in present:
+        print(f"  removing {fmt_cp(cp)} ({font_cmap.get(cp, '?')})")
+    for cp in absent:
+        print(f"  {fmt_cp(cp)} not in subset ({font_cmap.get(cp, '?')}) - skipping")
+
+    remaining = sorted(set(existing) - set(present))
+    if not remaining:
+        print("ERROR: removal would leave the subset empty; aborting.", file=sys.stderr)
+        return 1
+    print(f"Rebuilding {WOFF2.name}: {len(existing)} -> {len(remaining)} glyphs (-{len(present)}).")
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        ttf = td / "subset.ttf"
+        woff = td / "subset.woff2"
+        unicodes = ",".join("U+" + format(cp, "x").upper() for cp in remaining)
+        run(["fonttools", "subset", str(font), f"--output-file={ttf}", f"--unicodes={unicodes}"])
+        run(["woff2_compress", str(ttf)])
+        shutil.copy(woff, WOFF2)
+
+    print("Done.")
+    return 0
+
+
 def cmd_list(args):
     font = resolve_font(args)
     font_cmap = load_cmap(font)
@@ -179,6 +217,10 @@ def main():
     p_add = sub.add_parser("add", help="Add glyph(s) to the website subset and rebuild the woff2.")
     p_add.add_argument("codepoints", nargs="+", help="Codepoint(s) to add, hex or U+ prefixed.")
     p_add.set_defaults(func=cmd_add)
+
+    p_remove = sub.add_parser("remove", help="Remove glyph(s) from the subset and rebuild the woff2.")
+    p_remove.add_argument("codepoints", nargs="+", help="Codepoint(s) to remove, hex or U+ prefixed.")
+    p_remove.set_defaults(func=cmd_remove)
 
     p_list = sub.add_parser("list", help="List glyphs currently in the website subset.")
     p_list.set_defaults(func=cmd_list)
