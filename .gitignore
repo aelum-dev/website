@@ -13,6 +13,9 @@ dist-ssr
 .astro
 *.local
 
+# Temp source font for scripts/icons.py (drop into scripts/ when adding icons)
+scripts/SymbolsNerdFont-Regular.ttf
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
