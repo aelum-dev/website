@@ -1,13 +1,13 @@
-# AestheticOS — Website
+# Aelum — Website
 
-This is the official landing site for [AestheticOS](https://gitlab.com/aestheticos/AestheticOS) and the [AestheticOS Installer](https://gitlab.com/aestheticos/installer), built with [Astro](https://astro.build/).
+This is the official landing site for [Aelum](https://gitlab.com/aelum/Aelum) and the [Aelum Installer](https://gitlab.com/aelum/installer), built with [Astro](https://astro.build/).
 
-AestheticOS is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer a few questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
+Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer a few questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
 
 ## What's on the site
 
 - **Hero** — the one-line pitch, key stats (~1 min install, 4.7 GB, no network during install), and the ISO preview.
-- **Features** — why AestheticOS: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, minimal live ISO.
+- **Features** — why Aelum: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, minimal live ISO.
 - **What you install** — the finished desktop: Hyprland, DMS greeter, matugen, Firefox, PipeWire, Plymouth, GTK/Qt theming, ZRAM swap.
 - **The installer** — the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages.
@@ -69,9 +69,9 @@ Run `npm run check` (Prettier + `astro check`) before committing.
 
 All copy on the site is sourced from the project READMEs:
 
-- [AestheticOS/README.md](https://gitlab.com/aestheticos/AestheticOS)
-- [AestheticOS-Installer/README.md](https://gitlab.com/aestheticos/installer)
+- [Aelum/README.md](https://gitlab.com/aelum/Aelum)
+- [Aelum-Installer/README.md](https://gitlab.com/aelum/installer)
 
 ---
 
-GPL-3.0 — AestheticOS.
+GPL-3.0 — Aelum.

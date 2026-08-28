@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
 // Canonical base for the GitLab Pages project/site page.
-const site = "https://aestheticos.gitlab.io/website/";
+const site = "https://aelum.gitlab.io/website/";
 
 export default defineConfig({
   base: "/website/",

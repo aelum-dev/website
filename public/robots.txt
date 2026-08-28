@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://KornienkoDev.github.io/AestheticOS-Web/sitemap-index.xml
+Sitemap: https://KornienkoDev.github.io/Aelum-Web/sitemap-index.xml

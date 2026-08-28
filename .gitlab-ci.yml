@@ -1,5 +1,5 @@
-# GitLab Pages CI/CD pipeline for AestheticOS-Web
-# Deployed to: https://<username>.gitlab.io/AestheticOS-Web/
+# GitLab Pages CI/CD pipeline for Aelum-Web
+# Deployed to: https://<username>.gitlab.io/Aelum-Web/
 
 image: node:22-bookworm
 
@@ -32,4 +32,4 @@ pages:
 
   environment:
     name: gitlab-pages
-    url: https://aestheticos.gitlab.io/website/
+    url: https://aelum.gitlab.io/website/

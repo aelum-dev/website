@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Developer notes for agents working on **AestheticOS-Web** — a single-page Astro landing site for AestheticOS (a fully offline Arch Linux distro) and its installer.
+Developer notes for agents working on **Aelum-Web** — a single-page Astro landing site for Aelum (a fully offline Arch Linux distro) and its installer.
 
 ## Stack
 
@@ -37,22 +37,22 @@ npm run check      # prettier --check . && astro check   # run before committing
 
 ## Design Guidance
 
-- Material-You / glassy aesthetic mirroring the AestheticOS desktop (Hyprland + DankMaterialShell).
+- Material-You / glassy aelum mirroring the Aelum desktop (Hyprland + DankMaterialShell).
 - Fonts are self-hosted woff2 under `src/styles/fonts/` (Nunito + JetBrains Mono + Nerd Fonts symbols) — keep them offline; the site must stay fully offline.
 - Favicon `public/star.svg`; OG images `public/og-image.{svg,png}`.
 
 ## Deployment
 
 - Deployed as a **GitLab Pages** project/site page via `.gitlab-ci.yml` (runs on push to `main`).
-- `astro.config.mjs`: `site` = `https://aestheticos.gitlab.io/website/` and `base = "/website/"`. **If the repo name changes, update `base` there too.**
+- `astro.config.mjs`: `site` = `https://aelum.gitlab.io/website/` and `base = "/website/"`. **If the repo name changes, update `base` there too.**
 - Sitemap strips trailing `index.html` / slashes for clean URLs.
 
 ## Content Sources
 
 All copy is derived from the upstream project READMEs:
 
-- [AestheticOS](https://gitlab.com/aestheticos/AestheticOS)
-- [AestheticOS-Installer](https://gitlab.com/aestheticos/installer)
+- [Aelum](https://gitlab.com/aelum/Aelum)
+- [Aelum-Installer](https://gitlab.com/aelum/installer)
 
 ## Assets
 

@@ -1,7 +1,7 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
-export const mainRepo = "https://gitlab.com/aestheticos/AestheticOS";
-export const installerRepo = "https://gitlab.com/aestheticos/installer";
+export const mainRepo = "https://gitlab.com/aelum/Aelum";
+export const installerRepo = "https://gitlab.com/aelum/installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";

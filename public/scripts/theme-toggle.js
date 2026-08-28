@@ -4,7 +4,7 @@
 // switch for a smooth, satisfying transition.
 
 (function () {
-  const STORAGE_KEY = "aestheticos-theme";
+  const STORAGE_KEY = "aelum-theme";
   const ROOT = document.documentElement;
 
   // Full-screen background color for each scheme (mirrors the --bg tokens and

@@ -1,9 +1,9 @@
 // Theme switcher: applies a persisted (or system-derived) theme with no flash.
-// Stores the choice in localStorage under "aestheticos-theme".
+// Stores the choice in localStorage under "aelum-theme".
 
 (function () {
   const ROOT = document.documentElement;
-  const STORAGE_KEY = "aestheticos-theme";
+  const STORAGE_KEY = "aelum-theme";
 
   // Resolve the theme to apply. Explicit stored choice wins; otherwise follow
   // the OS / browser preference.
