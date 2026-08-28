@@ -26,6 +26,7 @@ The other subcommands are helpers:
 Usage:
     python scripts/icons.py find <keyword>
     python scripts/icons.py add <codepoint> [<codepoint> ...]
+    python scripts/icons.py remove <codepoint> [<codepoint> ...]
     python scripts/icons.py list
     python scripts/icons.py info <codepoint>
 
