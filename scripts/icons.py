@@ -47,9 +47,8 @@ from pathlib import Path
 
 try:
     from fontTools.ttLib import TTFont
-except ImportError:  # pragma: no cover
-    print("fonttools is required:  pip install fonttools")
-    sys.exit(1)
+except ImportError:
+    TTFont = None
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -73,6 +72,28 @@ def parse_cp(token):
 
 def fmt_cp(cp):
     return "U+" + format(cp, "x").upper()
+
+
+def check_deps():
+    """Verify the script's dependencies are available before doing any work,
+    so failures are reported up front with a clear name for what's missing."""
+    problems = []
+
+    if sys.version_info < (3, 8):
+        problems.append(f"Python >= 3.8 is required (found {sys.version.split()[0]})")
+
+    if TTFont is None:
+        problems.append("the 'fonttools' Python package is required")
+
+    for tool in ("fonttools", "woff2_compress"):
+        if shutil.which(tool) is None:
+            problems.append(f"the '{tool}' command-line tool is required")
+
+    if problems:
+        print("ERROR: missing dependencies:", file=sys.stderr)
+        for p in problems:
+            print(f"  - {p}", file=sys.stderr)
+        sys.exit(1)
 
 
 def resolve_font(args):
@@ -230,6 +251,7 @@ def main():
     p_info.add_argument("codepoint")
     p_info.set_defaults(func=cmd_info)
 
+    check_deps()
     args = parser.parse_args()
     sys.exit(args.func(args))
 
