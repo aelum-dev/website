@@ -1,8 +1,7 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
 export const mainRepo = "https://gitlab.com/aestheticos/AestheticOS";
-export const installerRepo =
-  "https://gitlab.com/aestheticos/installer";
+export const installerRepo = "https://gitlab.com/aestheticos/installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";
@@ -64,7 +63,7 @@ export const features: Feature[] = [
   },
   {
     color: "#6fd0ff",
-    icon: "f0026", // nerd-fonts: volume-off
+    icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
     title: "Silent boot",
     description:
       "A clean UEFI splash with the Plymouth BGRT theme shows your OEM logo — no console spam, no boot-time noise.",
@@ -85,7 +84,7 @@ export const features: Feature[] = [
   },
   {
     color: "#63e6a0",
-    icon: "f108", // nerd-fonts: feather
+    icon: "ede9", // nerd-fonts: compact_disc (live ISO media)
     title: "Minimal live ISO",
     description:
       "The live ISO is intentionally barebones — its only job is to boot and launch the installer. No extra tools, no clutter to clean up.",
@@ -93,40 +92,58 @@ export const features: Feature[] = [
 ];
 
 export interface Software {
+  color: string;
+  icon: string;
   title: string;
   description: string;
 }
 
 export const software: Software[] = [
   {
+    color: "#6fd0ff",
+    icon: "f0570", // nerd-fonts: view_grid (tiling)
     title: "Hyprland",
     description: "Dynamic tiling window manager.",
   },
   {
+    color: "#ff7ac6",
+    icon: "f108", // nerd-fonts: desktop
     title: "DankMaterialShell",
     description: "A complete desktop shell for Wayland compositors.",
   },
   {
+    color: "#9b7ff2",
+    icon: "f0342", // nerd-fonts: login
     title: "DMS Greeter",
     description: "A fast login screen that matches the desktop theme.",
   },
   {
-    title: "Matugen",
-    description: "Generates matching color schemes from your wallpaper.",
-  },
-  {
-    title: "Firefox",
-    description: "The browser, pre-configured and themed to match.",
-  },
-  {
-    title: "Plymouth BGRT",
-    description: "Silent boot splash reading your OEM logo from UEFI.",
-  },
-  {
+    color: "#5ad1c4",
+    icon: "ee26", // nerd-fonts: brush
     title: "GTK + Qt theming",
     description: "Matugen-themed automatically — no manual theming.",
   },
   {
+    color: "#ffc153",
+    icon: "f03d8", // nerd-fonts: palette
+    title: "Matugen",
+    description: "Generates matching color schemes from your wallpaper.",
+  },
+  {
+    color: "#ff8a54",
+    icon: "f0239", // nerd-fonts: firefox
+    title: "Firefox",
+    description: "The browser, pre-configured and themed to match.",
+  },
+  {
+    color: "#63e6a0",
+    icon: "f02e9", // nerd-fonts: image (OEM logo splash)
+    title: "Plymouth BGRT",
+    description: "Silent boot splash reading your OEM logo from UEFI.",
+  },
+  {
+    color: "#ff6b89",
+    icon: "f035b", // nerd-fonts: memory
     title: "ZRAM swap",
     description: "Compressed RAM swap instead of a swap file.",
   },
