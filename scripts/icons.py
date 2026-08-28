@@ -51,7 +51,7 @@ except ImportError:  # pragma: no cover
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 WOFF2 = ROOT / "src" / "styles" / "fonts" / "NerdFontsSymbols.woff2"
-DEFAULT_FONT = Path.home() / "Downloads" / "NerdFontsSymbolsOnly" / "SymbolsNerdFont-Regular.ttf"
+DEFAULT_FONT = HERE / "SymbolsNerdFont-Regular.ttf"
 SCRIPT_REL = os.path.relpath(__file__, ROOT)
 
 
