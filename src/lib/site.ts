@@ -1,6 +1,6 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
-export const mainRepo = "https://gitlab.com/aelum/Aelum";
+export const mainRepo = "https://gitlab.com/aelum/live-iso";
 export const installerRepo = "https://gitlab.com/aelum/installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";

@@ -51,7 +51,7 @@ npm run check      # prettier --check . && astro check   # run before committing
 
 All copy is derived from the upstream project READMEs:
 
-- [Aelum](https://gitlab.com/aelum/Aelum)
+- [Aelum](https://gitlab.com/aelum/live-iso)
 - [Aelum-Installer](https://gitlab.com/aelum/installer)
 
 ## Assets
