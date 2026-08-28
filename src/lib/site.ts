@@ -196,3 +196,40 @@ export const installSteps: Step[] = [
     description: "Reboot into a finished Hyprland + DankMaterialShell desktop.",
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Download / release metadata
+//
+// The filename, checksums, and signing key below are real and taken from the
+// build output (docker/output/). The `downloadUrl` values are the GitLab
+// release-asset URLs — fill them in when the release assets are published
+// (or point them at whatever host actually serves the files).
+// ---------------------------------------------------------------------------
+
+export const releaseVersion = "2026.08.28";
+export const releaseArch = "x86_64";
+export const isoFilename = `aelum-${releaseVersion}-${releaseArch}.iso`;
+const releaseBase = "https://gitlab.com/aelum/live-iso/-/releases/download";
+
+export const downloadUrl = {
+  iso: `${releaseBase}/${releaseVersion}/${isoFilename}`,
+  sha256: `${releaseBase}/${releaseVersion}/${isoFilename}.sha256`,
+  sha512: `${releaseBase}/${releaseVersion}/${isoFilename}.sha512`,
+  signature: `${releaseBase}/${releaseVersion}/${isoFilename}.asc`,
+  key: `${releaseBase}/${releaseVersion}/aelum-release-key.asc`,
+} as const;
+
+export const checksums = {
+  sha256: "75253bc1b5fb4833c50516c720ee471d047506a49ca97dd0c2dd44b113dd1fa9",
+  sha512:
+    "c54eadfed5121a7cd89537e95d669873b6bb2d6ac7977eca6f3f63a186b3d410aa0fa00b463f8fe8b599a75bf62167a12d4a06a44682c091427a4a12449afa17",
+} as const;
+
+// The GPG key used to sign the ISO. Publish its fingerprint through a
+// trustworthy channel and tell users to compare against it before trusting
+// the signature.
+export const signingKey = {
+  fingerprint: "A675F61C22C26FCE187262E448CC48FDFD881E0D",
+  uid: "Ivan Kornienko <ik.workmail39@gmail.com>",
+  expires: "2029-08-27",
+} as const;

@@ -1,0 +1,262 @@
+---
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import {
+  releaseVersion,
+  releaseArch,
+  isoFilename,
+  downloadUrl,
+  checksums,
+  signingKey,
+} from "../lib/site";
+
+const title = "Download Aelum — verify the ISO";
+const description =
+  "Download the Aelum live ISO and verify it. Instructions for checking the SHA-256/SHA-512 checksum and the GPG signature so you know the file is genuine and untouched.";
+
+// The ISO is the primary download, shown as the big hero card. The remaining
+// files are the verification trust material, shown as a row of small cards
+// below. Kept as data so the grid and the first verification step stay in sync.
+const isoFile = {
+  icon: "f0ed", // nerd-fonts: cloud_download
+  title: "The ISO",
+  name: isoFilename,
+  href: downloadUrl.iso,
+  desc: "The bootable live ISO. Flash it to a USB drive to install.",
+};
+
+const miniFiles = [
+  {
+    icon: "f292", // nerd-fonts: hashtag (checksum)
+    title: "SHA-256 checksum",
+    name: `${isoFilename}.sha256`,
+    href: downloadUrl.sha256,
+    desc: "Confirm the file wasn't corrupted in transit.",
+  },
+  {
+    icon: "f292", // nerd-fonts: hashtag (checksum)
+    title: "SHA-512 checksum",
+    name: `${isoFilename}.sha512`,
+    href: downloadUrl.sha512,
+    desc: "Stronger integrity check, if you prefer it.",
+  },
+  {
+    icon: "ee3c", // nerd-fonts: file_signature
+    title: "GPG signature",
+    name: `${isoFilename}.asc`,
+    href: downloadUrl.signature,
+    desc: "Proves the ISO was made by Aelum and nothing was altered.",
+  },
+  {
+    icon: "eb11", // nerd-fonts: key
+    title: "Signing key",
+    name: "aelum-release-key.asc",
+    href: downloadUrl.key,
+    desc: "The public key that signed the ISO. Import it before you verify.",
+  },
+];
+
+const nf = (code: string) =>
+  `<span class="nf-icon" aria-hidden="true">${String.fromCodePoint(
+    parseInt(code, 16),
+  )}</span>`;
+---
+
+<Layout title={title} description={description}>
+  <Nav />
+
+  <main>
+    <div class="container">
+      <div class="reveal dl-hero">
+        <div class="dl-hero-grid">
+          <div class="dl-hero-right">
+            <div class="card card-pad-lg dl-iso-card">
+              <div class="card-title-row">
+                <div class="dot" style="--c: #9b7ff2">
+                  <span set:html={nf(isoFile.icon)} />
+                </div>
+                <h3>{isoFile.title}</h3>
+              </div>
+              <span class="dl-iso-name">{isoFile.name}</span>
+              <p class="dl-iso-desc">{isoFile.desc}</p>
+              <a
+                class="btn btn-primary"
+                href={isoFile.href}
+                target="_blank"
+                rel="noopener"
+              >
+                <span set:html={nf("f0ed")} /> Download
+              </a>
+            </div>
+          </div>
+
+          <div class="dl-hero-left">
+            <span class="eyebrow">
+              <span set:html={nf("eb29")} />
+              Aelum {releaseVersion} · {releaseArch}
+            </span>
+            <h2 class="dl-hero-title">Download Aelum, then verify it.</h2>
+            <p class="dl-hero-lead">
+              Grab the ISO plus its checksum and signature. Verifying takes two
+              minutes and makes sure the file you booted is exactly what Aelum
+              shipped — not a tampered or corrupted copy.
+            </p>
+          </div>
+        </div>
+
+        <div class="reveal dl-mini-grid">
+          {
+            miniFiles.map((file) => (
+              <div class="card card-pad-sm dl-mini">
+                <div class="card-title-row">
+                  <div class="dot" style="--c: var(--accent)">
+                    <span set:html={nf(file.icon)} />
+                  </div>
+                  <h3>{file.title}</h3>
+                </div>
+                <span class="dl-iso-name">{file.name}</span>
+                <p class="dl-mini-desc">{file.desc}</p>
+                <a
+                  class="btn btn-ghost"
+                  href={file.href}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Download
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <p class="reveal dl-note">
+        <span set:html={nf("f05aa")} />
+        The live ISO installs fully offline — once you've verified it, no internet
+        connection is needed to install Aelum.
+      </p>
+
+      <div class="container verify-wrap">
+        <div class="reveal section-head">
+          <span class="eyebrow">Verification</span>
+          <h2 class="section-title">How to check the download.</h2>
+          <p class="section-sub">
+            Three things to confirm: the checksum matches, the signature is
+            present, and it was made by the real Aelum key.
+          </p>
+        </div>
+
+        <ol class="verify-steps">
+          <li class="reveal verify-step">
+            <div>
+              <div class="verify-step-head">Download all four files</div>
+              <p>
+                Get the ISO, its checksum file, the GPG signature, and the
+                signing key into the same folder. You need the key to verify the
+                signature.
+              </p>
+            </div>
+          </li>
+
+          <li class="reveal verify-step">
+            <div>
+              <div class="verify-step-head">Check the checksum</div>
+              <p>
+                Verify the ISO against the checksum file we provided. This
+                catches corruption or a tampered download — any mismatch means
+                re-download it. SHA-256 is enough; SHA-512 is stronger if you
+                prefer it.
+              </p>
+              <pre
+                class="verify-code"><code><span set:html={nf("f120")} /> <span class="comment"># Linux — check against the .sha256 file:</span>
+sha256sum -c {isoFilename}.sha256
+# prints: {isoFilename}: OK
+
+<span class="comment"># macOS (shasum is built in):</span>
+shasum -a 256 -c {isoFilename}.sha256
+
+<span class="comment"># Windows PowerShell — then compare to the hash below:</span>
+Get-FileHash -Algorithm SHA256 {isoFilename}
+
+<span class="comment"># Prefer SHA-512 instead:</span>
+sha512sum -c {isoFilename}.sha512</code></pre>
+              <p class="verify-sub">
+                On Linux and macOS the command must report <code>OK</code>. On
+                Windows, the printed <code>Hash</code> must equal
+                <code>{checksums.sha256}</code> exactly.
+              </p>
+            </div>
+          </li>
+
+          <li class="reveal verify-step">
+            <div>
+              <div class="verify-step-head">Import the signing key</div>
+              <p>
+                Load Aelum's public key into your keyring. After importing,
+                compare the fingerprint shown by GnuPG against the one below —
+                only trust the signature if the fingerprints match.
+              </p>
+              <p class="verify-sub">On Windows, install GPG4win first — it ships a command-line <code>gpg</code>.</p>
+              <pre
+                class="verify-code"><code><span set:html={nf("f120")} /> gpg --import aelum-release-key.asc
+
+<span class="comment"># Confirm the fingerprint you just imported:</span>
+gpg --fingerprint</code></pre>
+            </div>
+          </li>
+
+          <li class="reveal verify-step">
+            <div>
+              <div class="verify-step-head">Verify the signature</div>
+              <p>
+                GnuPG checks the signature against the key you imported. A
+                genuine result names the Aelum key and says the signature is
+                good.
+              </p>
+              <pre
+                class="verify-code"><code><span set:html={nf("f120")} /> gpg --verify {isoFilename}.asc {isoFilename}</code></pre>
+              <p class="verify-sub">
+                Look for <code>Good signature</code>. The output names the key
+                by fingerprint
+                (<code>using EDDSA key {signingKey.fingerprint}</code>) and by
+                owner (<code>{signingKey.uid}</code>). A <code>BAD signature</code>,
+                or a <code>No public key</code> error, means <strong>do not </strong>
+                boot the ISO — re-download or report it.
+              </p>
+              <p class="verify-sub">
+                A warning that the key is <em>not certified with a trusted
+                signature</em> is normal for a freshly imported key and does not
+                by itself mean the signature is bad. As long as the fingerprint
+                above matches, <code>Good signature</code> is what you want.
+              </p>
+            </div>
+          </li>
+
+          <li class="reveal verify-step">
+            <div>
+              <div class="verify-step-head">Know the real key</div>
+              <p>
+                The signature is only meaningful if the key is really Aelum's.
+                Check the fingerprint against a second, independent source — the
+                GitLab releases page, a maintainer, or a key server — before you
+                trust it.
+              </p>
+              <dl class="dl-keycard">
+                <dt>Signing key fingerprint</dt>
+                <dd>{signingKey.fingerprint}</dd>
+                <dt>Key owner</dt>
+                <dd>{signingKey.uid}</dd>
+                <dt>Key expiry</dt>
+                <dd>Expires {signingKey.expires}</dd>
+              </dl>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
