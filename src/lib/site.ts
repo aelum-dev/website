@@ -1,8 +1,8 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
-export const mainRepo = "https://github.com/KornienkoDev/AestheticOS";
+export const mainRepo = "https://gitlab.com/aestheticos/AestheticOS";
 export const installerRepo =
-  "https://github.com/KornienkoDev/AestheticOS-Installer";
+  "https://gitlab.com/aestheticos/installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";
@@ -50,35 +50,35 @@ export interface Feature {
 export const features: Feature[] = [
   {
     color: "#9b7ff2",
-    icon: "faa9", // nerd-fonts: wifi-off
+    icon: "f05aa", // nerd-fonts: wifi-off
     title: "Fully offline installer",
     description:
       "Every package is embedded in the ISO and served from an embedded local mirror. Zero network dependency during install.",
   },
   {
     color: "#ff7ac6",
-    icon: "fba7", // nerd-fonts: robot
+    icon: "f06a9", // nerd-fonts: robot
     title: "Zero-touch boot",
     description:
       "Greetd launches a barebones Hyprland that starts the installer automatically on first boot. No manual commands, no thinking about it.",
   },
   {
     color: "#6fd0ff",
-    icon: "fa80", // nerd-fonts: volume-off
+    icon: "f0026", // nerd-fonts: volume-off
     title: "Silent boot",
     description:
       "A clean UEFI splash with the Plymouth BGRT theme shows your OEM logo — no console spam, no boot-time noise.",
   },
   {
     color: "#63e6a0",
-    icon: "f879", // nerd-fonts: monitor-multiple
+    icon: "f037a", // nerd-fonts: monitor-multiple
     title: "Auto monitor scaling",
     description:
       "Live ISO detects the connected monitor and applies the right Hyprland scale automatically, so the installer is crisp on 1080p, 1440p, or 4K.",
   },
   {
     color: "#9b7ff2",
-    icon: "fa1a", // nerd-fonts: timer
+    icon: "f051b", // nerd-fonts: timer
     title: "~1 minute install",
     description:
       "Because every package is already included, install takes about a minute and the complete OS uses roughly 4.7 GB after install.",
@@ -149,19 +149,19 @@ export const installSteps: Step[] = [
   },
   {
     num: "02",
-    icon: "f508", // nerd-fonts: account-circle
+    icon: "eb99", // nerd-fonts: account
     title: "Create your user",
     description: "Set up your username and password in a couple of fields.",
   },
   {
     num: "03",
-    icon: "f7c9", // nerd-fonts: harddisk
+    icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
     description: "Select the target drive and pick between ext4 or btrfs.",
   },
   {
     num: "04",
-    icon: "f046", // nerd-fonts: check
+    icon: "f012c", // nerd-fonts: check
     title: "Confirm",
     description: "Review the summary, then hit install. That's it.",
   },
@@ -174,7 +174,7 @@ export const installSteps: Step[] = [
   },
   {
     num: "06",
-    icon: "f878", // nerd-fonts: monitor
+    icon: "f0379", // nerd-fonts: monitor
     title: "Boot into it",
     description: "Reboot into a finished Hyprland + DankMaterialShell desktop.",
   },

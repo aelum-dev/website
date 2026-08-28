@@ -8,7 +8,7 @@
   /* Relative to this CSS file (src/styles/). Vite resolves these into the
      asset pipeline at build time: the woff2 files are hashed into
      _astro/fonts/ and Astro prepends the configured `base`, so the emitted
-     URLs are correct both on the dev server and the GitHub Pages subpath. */
+     URLs are correct both on the dev server and the GitLab Pages subpath. */
   src: url("./fonts/nunito-v16-latin-regular.woff2") format("woff2");
 }
 @font-face {
@@ -1016,8 +1016,8 @@ code {
   margin-top: var(--space-8);
 }
 
-/* Nav GitHub button */
-.nav-gh {
+/* Nav GitLab button */
+.nav-gl {
   padding: 0.55rem 1.1rem;
   font-size: 0.9rem;
 }
