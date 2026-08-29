@@ -87,19 +87,21 @@ const flashTools = [
 ];
 ---
 
-<div class="container">
-  <div class="dl-hero">
+<section class="section">
+  <div class="container">
     <div class="dl-hero-grid">
       <div class="dl-hero-left">
-        <span class="eyebrow">
-          Aelum {releaseVersion} · {releaseArch}
-        </span>
-        <h2 class="dl-hero-title">Download Aelum.</h2>
-        <p class="dl-hero-lead">
-          Grab the ISO plus its checksum and signature. Verifying takes two
-          minutes and makes sure the file you booted is exactly what Aelum
-          shipped — not a tampered or corrupted copy.
-        </p>
+        <div class="section-head">
+          <span class="eyebrow">
+            Aelum {releaseVersion} · {releaseArch}
+          </span>
+          <h2 class="section-title">Download Aelum.</h2>
+          <p class="dl-hero-lead">
+            Grab the ISO plus its checksum and signature. Verifying takes two
+            minutes and makes sure the file you booted is exactly what Aelum
+            shipped — not a tampered or corrupted copy.
+          </p>
+        </div>
       </div>
 
       <div class="dl-hero-right">
@@ -120,48 +122,52 @@ const flashTools = [
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div>
-      <div class="section-head">
-        <span class="eyebrow">Before you boot</span>
-        <h2 class="section-title">Flash it to a USB drive.</h2>
-        <p class="section-sub">
-          Any of these writes the ISO to a USB stick in a minute. Ventoy keeps
-          the stick usable for other files; BalenaEtcher does a clean,
-          single-image flash; dd is a built-in command line tool.
-        </p>
-      </div>
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Before you boot</span>
+      <h2 class="section-title">Flash it to a USB drive.</h2>
+      <p class="section-sub">
+        Any of these writes the ISO to a USB stick in a minute. Ventoy keeps the
+        stick usable for other files; BalenaEtcher does a clean, single-image
+        flash; dd is a built-in command line tool.
+      </p>
+    </div>
 
-      <div class="card-grid grid-flash">
-        {
-          flashTools.map((tool) => (
-            <div class="card card-pad-md flash-card">
-              <div class="card-title-row">
-                <h3>{tool.title}</h3>
-              </div>
-              <ol class="flash-steps">
-                {tool.steps.map((step) => (
-                  <li set:html={step.replace("{isoFilename}", isoFilename)} />
-                ))}
-              </ol>
-              {tool.cta && (
-                <a
-                  class="btn btn-primary"
-                  href={tool.cta.href}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <span set:html={nf("f08e")} /> {tool.cta.label}
-                </a>
-              )}
+    <div class="card-grid grid-flash">
+      {
+        flashTools.map((tool) => (
+          <div class="card card-pad-md flash-card">
+            <div class="card-title-row">
+              <h3>{tool.title}</h3>
             </div>
-          ))
-        }
-      </div>
+            <ol class="flash-steps">
+              {tool.steps.map((step) => (
+                <li set:html={step.replace("{isoFilename}", isoFilename)} />
+              ))}
+            </ol>
+            {tool.cta && (
+              <a
+                class="btn btn-primary"
+                href={tool.cta.href}
+                target="_blank"
+                rel="noopener"
+              >
+                <span set:html={nf("f08e")} /> {tool.cta.label}
+              </a>
+            )}
+          </div>
+        ))
+      }
     </div>
   </div>
+</section>
 
-  <Fragment>
+<section class="section">
+  <div class="container">
     <div class="section-head">
       <span class="eyebrow">Verification</span>
       <h2 class="section-title">How to check the download.</h2>
@@ -312,5 +318,5 @@ gpg --fingerprint</code></pre>
         </div>
       </li>
     </ol>
-  </Fragment>
-</div>
+  </div>
+</section>
