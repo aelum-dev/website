@@ -1,0 +1,35 @@
+---
+import { dockerRepo, installerRepo } from "../lib/site";
+---
+
+<section id="cta" class="section section-no-top">
+  <div class="container">
+    <div class="reveal">
+      <div class="card cta-card">
+        <span class="eyebrow center-block">Build it yourself</span>
+        <h2 class="cta-title">
+          Build the ISO. <span class="text-gradient">Install in a minute.</span>
+        </h2>
+        <p class="cta-sub">
+          Clone the repo, run the build script, and you've got a bootable ISO —
+          flash it, boot it, and let the installer do the rest.
+        </p>
+        <div class="flex justify-center gap-4 cta-actions">
+          <a
+            class="btn btn-primary"
+            href={dockerRepo}
+            target="_blank"
+            rel="noopener"
+            ><span class="nf-icon" aria-hidden="true">&#xf296;</span> Build the ISO</a
+          >
+          <a
+            class="btn btn-ghost"
+            href={installerRepo}
+            target="_blank"
+            rel="noopener">Build the installer</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
