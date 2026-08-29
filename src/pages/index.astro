@@ -3,24 +3,17 @@ import "../styles/global.css";
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import Desktop from "../components/Desktop.astro";
-import Features from "../components/Features.astro";
 import Install from "../components/Install.astro";
+import Features from "../components/Features.astro";
+import Desktop from "../components/Desktop.astro";
 import Languages from "../components/Languages.astro";
 import CLI from "../components/CLI.astro";
-import CTA from "../components/CTA.astro";
+import DownloadPage from "../components/Download.astro";
 import Footer from "../components/Footer.astro";
 
 const title = "Aelum — an Arch Linux distro with an offline installer";
 const description =
   "Aelum — an Arch Linux distro whose installer works fully offline. Boot it, run the installer, and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; the installed system uses the internet like any other Arch machine.";
-
-// Structured data so search engines understand the project.
-// Rendered inline as a JSON-LD literal so it is present in the static HTML
-// (server-side), which is what search engines expect. Note: `sameAs` is
-// reserved for identity pages (social profiles, etc.), not source repos.
-// The ISO and installer repos are already linked in the visible page
-// (Hero + CTA/Footer), so they remain discoverable.
 ---
 
 <Layout title={title} description={description}>
@@ -46,23 +39,39 @@ const description =
   <Nav />
 
   <main id="top">
-    <Hero>
-      <slot name="actions" slot="actions">
-        <a class="btn btn-primary" href="./download">
-          <span class="nf-icon" aria-hidden="true" style="font-size:1.6rem">
-            {String.fromCodePoint(0xf0ed)}
-          </span>Download
-        </a>
-        <a class="btn btn-ghost" href="#install">Watch it install</a>
-      </slot>
-    </Hero>
+    <!-- Home -->
+    <section id="home" class="page active" aria-label="Home">
+      <Hero>
+        <slot name="actions" slot="actions">
+          <a class="btn btn-primary" href="#download" data-page="download">
+            <span class="nf-icon" aria-hidden="true" style="font-size:1.6rem">
+              {String.fromCodePoint(0xf0ed)}
+            </span>Download
+          </a>
+          <a class="btn btn-ghost" href="#install" data-page="install"
+            >Watch it install</a
+          >
+        </slot>
+      </Hero>
+    </section>
 
-    <Desktop />
-    <Install />
-    <Features />
-    <Languages />
-    <CLI />
-    <CTA />
+    <!-- Download -->
+    <section id="download" class="page" aria-label="Download">
+      <DownloadPage />
+    </section>
+
+    <!-- Install -->
+    <section id="install" class="page" aria-label="Install">
+      <Install />
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="page" aria-label="Features">
+      <Features />
+      <Desktop />
+      <Languages />
+      <CLI />
+    </section>
   </main>
 
   <Footer />

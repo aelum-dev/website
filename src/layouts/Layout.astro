@@ -15,8 +15,14 @@ const canonical = Astro.url.href;
 const imageUrl = new URL("og-image.png", Astro.url).href;
 ---
 
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
+    <!-- Flip no-js -> js before first paint so the router CSS can hide the
+      inactive pages immediately (no flash of every page at once). -->
+    <script>
+      document.documentElement.classList.remove("no-js");
+      document.documentElement.classList.add("js");
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -64,6 +70,8 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
       </style></noscript
     >
     <script src="scripts/reveal.js" defer is:inline></script>
+    <!-- Client router: runs before first paint (defer) to set the active page. -->
+    <script src="scripts/app.js" defer is:inline></script>
     <script src="scripts/theme-toggle.js" is:inline></script>
   </body>
 </html>

@@ -306,6 +306,12 @@ body {
 .section-no-top {
   padding-top: 0;
 }
+/* Standalone pages (Install, Features) start under the sticky nav, so give
+them the same top gap the Download page gets from `.dl-hero { margin-top }`. */
+.page#install .section,
+.page#features .section {
+  margin-top: var(--space-8);
+}
 
 /* Anchor targets settle below the sticky nav, so in-page links don't hide under it */
 #desktop,
@@ -1114,6 +1120,24 @@ code {
 }
 .nav-links a:hover {
   color: var(--text);
+}
+.nav-links a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Pages (client-side hash router in scripts/app.js). Every page ships in the
+HTML so all content loads at start; only the active one shows under JS. */
+.page {
+  display: none;
+}
+/* No-JS fallback: render every page (a scroll view). */
+.no-js .page {
+  display: block;
+}
+/* JS: only the active page is visible. */
+html.js .page.active {
+  display: block;
 }
 
 /* Theme toggle */
