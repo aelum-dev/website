@@ -116,7 +116,6 @@
 .grid-flash {
   --cell-min: 300px;
   --grid-gap: var(--space-5);
-  --grid-top: var(--space-8);
 }
 
 /* Verification steps */

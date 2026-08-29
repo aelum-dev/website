@@ -50,7 +50,10 @@
 .grid-steps {
   --cell-min: 300px;
   --grid-gap: var(--space-4);
-  --grid-top: var(--space-11);
+  /* install-grid holds the heading + demo video side by side, so .section-head's
+     margin-bottom is used up inside it. Give the step cards their own top gap,
+     matching the standard heading→body spacing (--head-margin). */
+  margin-top: var(--head-margin);
 }
 
 .step-card {

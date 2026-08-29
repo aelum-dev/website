@@ -439,7 +439,9 @@ code {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--cell-min, 280px), 1fr));
   gap: var(--grid-gap, var(--space-5));
-  margin-top: var(--grid-top, var(--space-10));
+  /* No top margin: spacing below the section heading is owned by
+     .section-head's margin-bottom. A per-grid margin-top here both duplicates
+     that and varied between grids, causing inconsistent (and doubled) gaps. */
 }
 .card-grid .card {
   height: 100%;

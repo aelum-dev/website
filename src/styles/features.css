@@ -4,11 +4,13 @@
    Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
-/* Features section — text above, cards full width below */
+/* Features section — text above, cards full width below.
+   Spacing to the cards is owned by .section-head's margin-bottom, so keep
+   the column gap at 0 to avoid stacking it on top (matches every other section). */
 .features-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-10);
+  gap: 0;
 }
 
 /* Grid presets: features + software cards */
@@ -18,7 +20,6 @@
 .grid-software {
   --cell-min: 240px;
   --grid-gap: var(--space-4);
-  --grid-top: var(--space-11);
 }
 
 .card-grid h3 + p,
