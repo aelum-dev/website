@@ -1,5 +1,5 @@
 ---
-import { dockerRepo, installerRepo } from "../lib/site";
+import { dockerRepo } from "../lib/site";
 ---
 
 <section id="cta" class="section section-no-top">
@@ -11,22 +11,16 @@ import { dockerRepo, installerRepo } from "../lib/site";
           Build the ISO. <span class="text-gradient">Install in a minute.</span>
         </h2>
         <p class="cta-sub">
-          Clone the repo, run the build script, and you've got a bootable ISO —
-          flash it, boot it, and let the installer do the rest.
+          Run one command — <code>make build</code> — and you've got a bootable ISO.
+          Flash it, boot it, and let the installer do the rest.
         </p>
-        <div class="flex justify-center gap-4 cta-actions">
+        <div class="flex justify-center cta-actions">
           <a
             class="btn btn-primary"
             href={dockerRepo}
             target="_blank"
             rel="noopener"
             ><span class="nf-icon" aria-hidden="true">&#xf296;</span> Build the ISO</a
-          >
-          <a
-            class="btn btn-ghost"
-            href={installerRepo}
-            target="_blank"
-            rel="noopener">Build the installer</a
           >
         </div>
       </div>
