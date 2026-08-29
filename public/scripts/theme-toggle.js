@@ -6,6 +6,7 @@
 (function () {
   const STORAGE_KEY = "aelum-theme";
   const ROOT = document.documentElement;
+  const TOGGLE = document.querySelector("[data-theme-toggle]");
 
   // Full-screen background color for each scheme (mirrors the --bg tokens and
   // the meta theme-color values in theme.js / Layout.astro).
@@ -18,8 +19,22 @@
     return ROOT.getAttribute("data-theme");
   }
 
+  // Reflect the active scheme on the control itself. The icons are aria-hidden
+  // and shown/hidden with CSS only, so assistive tech would otherwise see a
+  // stateless button. aria-pressed names the current scheme; the label names
+  // the action the next click performs.
+  function syncControl(theme) {
+    if (!TOGGLE) return;
+    TOGGLE.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+    TOGGLE.setAttribute(
+      "aria-label",
+      theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
+    );
+  }
+
   function set(theme) {
     ROOT.setAttribute("data-theme", theme);
+    syncControl(theme);
     try {
       window.localStorage.setItem(STORAGE_KEY, theme);
     } catch (_) {}
@@ -67,4 +82,8 @@
     set(next);
     morph(next);
   });
+
+  // Initialise the control's state from the theme applied before paint by
+  // theme.js (data-theme is set by then).
+  syncControl(current());
 })();

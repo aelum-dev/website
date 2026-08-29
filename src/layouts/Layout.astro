@@ -18,8 +18,11 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
 <html lang="en" class="no-js">
   <head>
     <!-- Flip no-js -> js before first paint so the router CSS can hide the
-      inactive pages immediately (no flash of every page at once). -->
-    <script>
+      inactive pages immediately (no flash of every page at once). This stays a
+      classic, non-deferred script on purpose: Astro renders bare inline scripts
+      as modules, which are deferred and would run after first paint and defeat
+      this intent. A synchronous classic script runs during parsing, before paint. -->
+    <script type="text/javascript" is:inline>
       document.documentElement.classList.remove("no-js");
       document.documentElement.classList.add("js");
     </script>
