@@ -3,10 +3,10 @@ import Card from "./Card.astro";
 import { installSteps } from "../lib/site";
 ---
 
-<section class="section section-no-top">
+<section class="section">
   <div class="container">
     <div class="install-grid">
-      <div class="reveal install-head">
+      <div class="reveal section-head install-head">
         <span class="eyebrow">The installer</span>
         <h2 class="section-title">A few questions. That's it.</h2>
         <p class="section-sub">
@@ -47,7 +47,7 @@ import { installSteps } from "../lib/site";
 
     <div class="reveal step-cta">
       <div class="card card-pad-lg flex-row between">
-        <div class="stack gap-2" style="align-items:flex-start;">
+        <div class="stack gap-2">
           <h3>Ext4 or Btrfs?</h3>
           <p>
             BTRFS ships with a sensible automatic subvolume layout — root, home,

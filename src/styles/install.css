@@ -1,0 +1,152 @@
+/* ============================================================
+   Aelum-Web — Install page (install.css)
+   Installer walkthrough + numbered steps + filesystem picker.
+   Imports base.css for tokens, reset and shared UI.
+   ============================================================ */
+
+/* Install section — heading + demo side by side, steps below */
+.install-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-10);
+}
+
+/* Installer demo frame — shared visual shell (16:9 glassy window) */
+.features-demo-frame {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: min(100%, calc(42vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  box-shadow:
+    0 30px 60px -30px var(--accent-shadow-strong),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.features-demo-frame::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  z-index: -1;
+  filter: blur(60px);
+  opacity: 0.45;
+  background: radial-gradient(60% 70% at 50% 20%, var(--accent));
+}
+.features-demo-frame img,
+.features-demo-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+/* Grid preset: install step cards */
+.grid-steps {
+  --cell-min: 300px;
+  --grid-gap: var(--space-4);
+  --grid-top: var(--space-11);
+}
+
+.step-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Filesystem picker callout (ext4 vs btrfs) */
+
+/* Row of items pushed to opposite ends (shared shortcut for
+   `justify-content: space-between`). */
+.between {
+  justify-content: space-between;
+}
+.step-cta {
+  margin-top: var(--space-10);
+}
+.step-cta .card {
+  padding: var(--space-7) !important;
+}
+.step-cta .flex-row.between {
+  flex-wrap: nowrap;
+}
+.step-cta .stack {
+  flex: 1 1 60%;
+  min-width: 0;
+  align-items: flex-start;
+}
+.step-cta .stack h3 {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.step-cta .stack p {
+  margin: 0;
+}
+.fs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-left: 2rem;
+}
+.fs-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.fs-option .card {
+  width: 100%;
+  text-align: center;
+}
+.fs-option .card code {
+  font-size: 1.05rem;
+}
+.selected-fs {
+  border-color: var(--accent);
+}
+.recommended-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 1025px) {
+  .install-grid {
+    grid-template-columns: 6fr 4fr;
+    grid-template-rows: auto;
+    gap: var(--space-10);
+  }
+  .install-head {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .install-visual {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .step-cta .card {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .step-cta .flex {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .fs-grid {
+    margin-left: 0;
+    margin-top: var(--space-6);
+    width: 100%;
+  }
+  .fs-option .card {
+    width: 100%;
+  }
+}

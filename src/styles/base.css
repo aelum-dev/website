@@ -1,0 +1,913 @@
+/* ============================================================
+   Aelum-Web — shared foundation (base.css)
+   Single-sourced design tokens, reset, and cross-cutting UI
+   used by every page. Imported first by each page stylesheet.
+
+   Page-specific styles live in home.css, download.css,
+   install.css and features.css.
+   ============================================================ */
+
+/* Self-hosted fonts (no third-party CDN / build-time network dependency).
+   Mirrors the fonts bundled with the installer. */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  /* Relative to this CSS file (src/styles/). Vite resolves these into the
+     asset pipeline at build time: the woff2 files are hashed into
+     _astro/fonts/ and Astro prepends the configured `base`, so the emitted
+     URLs are correct both on the dev server and the GitLab Pages subpath. */
+  src: url("./fonts/nunito-v16-latin-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/nunito-v16-cyrillic-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./fonts/JetBrainsMono[wght].woff2") format("woff2");
+}
+/* Nerd Fonts (Symbols) — self-hosted icon glyph set used for feature cards. */
+@font-face {
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/NerdFontsSymbols.woff2") format("woff2");
+}
+.nf-icon {
+  font-family: "NerdFontsSymbols Nerd Font";
+  font-size: 26px;
+  line-height: 1;
+  vertical-align: -0.12em;
+}
+
+:root {
+  /* Light palette — DankMaterialShell (DMS) colors */
+
+  /* Surface & Background */
+  --bg: #faf7f6;
+  --bg-elevated: #ffffff;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-border: #e6d4d6;
+
+  /* Text */
+  --text: #3d3234;
+  --text-dim: #756567;
+  --text-faint: #9a8a8c;
+
+  /* Accents (mauve / rose / tan scheme) */
+  --accent: #a67480;
+  --accent-2: #8e7579;
+  --accent-3: #a08864;
+  --accent-green: #63e6a0;
+
+  /* Shadows tinted by the accent */
+  --accent-shadow: rgba(166, 116, 128, 0.3);
+  --accent-shadow-strong: rgba(166, 116, 128, 0.45);
+
+  --radius: 20px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+
+  --maxw: 1120px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Light/dark theme transition timing. */
+  --theme-duration: 650ms;
+  --theme-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Consistent spacing scale (used by flex containers) --- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-11: 2.75rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* --- Standard section vertical padding (uniform across all pages) --- */
+  --section-padding: clamp(4rem, 9vw, 8rem);
+
+  /* Consistent spacing inside a section heading group (eyebrow → title →
+     subtitle) and the gap before the section's body content. */
+  --head-gap: var(--space-4);
+  --head-margin: var(--space-12);
+
+  /* Section heading + subtitle shared scale (unified across every page). */
+  --title-2: clamp(2rem, 5vw, 3rem);
+  --subtitle-size: clamp(1rem, 2vw, 1.15rem);
+
+  /* Terminal title-bar (traffic-light) dots — shared by the CLI window and other UI */
+  --dot-red: #ff5f56;
+  --dot-yellow: #ffbd2e;
+  --dot-green: #27c93f;
+}
+
+/* Dark palette — same mauve/rose/tan accents, inverted dark surfaces */
+[data-theme="dark"] {
+  --bg: #151114;
+  --bg-elevated: #1e1720;
+  --surface: rgba(30, 23, 32, 0.72);
+  --surface-border: #2c2330;
+
+  --text: #ece2e3;
+  --text-dim: #a59496;
+  --text-faint: #7a6a6c;
+
+  --accent: #cfa3ae;
+  --accent-2: #b48ea4;
+  --accent-3: #c3ab82;
+  --accent-green: #6ee6a8;
+
+  --accent-shadow: rgba(207, 163, 174, 0.22);
+  --accent-shadow-strong: rgba(207, 163, 174, 0.38);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Smooth light/dark color morph. Longhands (not the shorthand) are used so this
+   merges with any per-element transitions already defined — hover states,
+   reveal animations, etc. keep their own timing. */
+*,
+*::before,
+*::after {
+  transition-property:
+    background-color, border-color, color, box-shadow, opacity;
+  transition-duration: var(--theme-duration);
+  transition-timing-function: var(--theme-ease);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    "Nunito",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Ambient background glows */
+.bg-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-field::before,
+.bg-field::after {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.35;
+}
+.bg-field::before {
+  content: "";
+  width: 620px;
+  height: 620px;
+  top: -180px;
+  left: -120px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+}
+.bg-field::after {
+  content: "";
+  width: 560px;
+  height: 560px;
+  top: 30vh;
+  right: -160px;
+  background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
+  opacity: 0.28;
+}
+.bg-field .orb {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  bottom: -200px;
+  left: 30%;
+  background: radial-gradient(circle, var(--accent-3) 0%, transparent 70%);
+  opacity: 0.22;
+}
+
+.container {
+  width: min(90vw, var(--maxw));
+  margin-inline: auto;
+}
+
+/* ============================================================
+   Typography — one scale, reused everywhere
+   ============================================================ */
+
+h1,
+h2,
+h3 {
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+/* Section eyebrow pill + heading + subtitle — unified across every page.
+   Margins are owned by `.section-head`'s gap so no child needs its own. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: var(--surface);
+  margin: 0;
+}
+
+.section-title {
+  font-size: var(--title-2);
+  font-weight: 800;
+  margin: 0;
+  max-width: 34ch;
+}
+
+.section-sub {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: var(--subtitle-size);
+  max-width: 60ch;
+}
+
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--accent) 0%,
+    var(--accent-2) 55%,
+    var(--accent-3) 110%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Brand word styling, matching the installer's .brand header.
+   Nunito is already the site-wide font, so only the weight,
+   casing and spacing are set here (gradient kept via .text-gradient). */
+.hero-brand {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   Section scaffolding — uniform vertical padding everywhere
+   ============================================================ */
+
+/* Every page section gets the same top/bottom padding. Standalone sections
+   no longer need `section-no-top` or a parent `margin-top` hack — the uniform
+   padding-block plus in-page scroll margins keeps everything aligned under the
+   sticky nav. */
+.section {
+  padding-block: var(--section-padding);
+  display: flex;
+  flex-direction: column;
+}
+
+/* A section heading group (eyebrow + title + subtitle) with a single,
+   consistent gap between its children and a consistent gap before its body. */
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--head-gap);
+  margin-bottom: var(--head-margin);
+}
+
+/* Anchor targets settle below the sticky nav, so in-page links don't hide under it */
+#desktop,
+#install,
+#features,
+#languages,
+#cli,
+#cta {
+  scroll-margin-top: calc(70px + 1.5rem);
+}
+
+/* ============================================================
+   Flex / grid layout utilities
+   ============================================================ */
+
+/* Layout axis */
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.inline-flex {
+  display: inline-flex;
+}
+
+/* Alignment */
+.items-center {
+  align-items: center;
+}
+.items-start {
+  align-items: flex-start;
+}
+.items-end {
+  align-items: flex-end;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+
+/* Wrapping */
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+/* Gaps — the single source of truth for spacing between items */
+.gap-1 {
+  gap: var(--space-1);
+}
+.gap-2 {
+  gap: var(--space-2);
+}
+.gap-3 {
+  gap: var(--space-3);
+}
+.gap-4 {
+  gap: var(--space-4);
+}
+.gap-5 {
+  gap: var(--space-5);
+}
+.gap-6 {
+  gap: var(--space-6);
+}
+.gap-8 {
+  gap: var(--space-8);
+}
+
+/* Vertical stacks (column) with a consistent gap */
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.stack-gap-1 {
+  gap: var(--space-1);
+}
+.stack-gap-2 {
+  gap: var(--space-2);
+}
+.stack-gap-3 {
+  gap: var(--space-3);
+}
+.stack-gap-4 {
+  gap: var(--space-4);
+}
+.stack-gap-5 {
+  gap: var(--space-5);
+}
+.stack-gap-6 {
+  gap: var(--space-6);
+}
+
+/* Centered content block */
+.center-block {
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* Responsive card grids — auto-fitting, uniform height */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--cell-min, 280px), 1fr));
+  gap: var(--grid-gap, var(--space-5));
+  margin-top: var(--grid-top, var(--space-10));
+}
+.card-grid .card {
+  height: 100%;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    background 0.3s;
+  white-space: nowrap;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-primary {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  color: #ffffff;
+  box-shadow: 0 10px 30px -8px var(--accent-shadow);
+}
+.btn-primary:hover {
+  box-shadow: 0 16px 40px -8px var(--accent-shadow-strong);
+}
+.btn-ghost {
+  background: var(--surface);
+  border-color: var(--surface-border);
+  color: var(--text);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+[data-theme="dark"] .btn-ghost:hover {
+  background: var(--bg-elevated);
+}
+
+/* ============================================================
+   Cards
+   ============================================================ */
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.card-badge {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--c, var(--accent));
+  flex: 0 0 auto;
+  opacity: 0.7;
+}
+
+/* Uniform card heading scale — size follows the card's padding tier. */
+.card-title-row h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+.card-pad-md .card-title-row h3,
+.card-pad-sm .card-title-row h3 {
+  font-size: 1.1rem;
+}
+
+.dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--c) 18%, transparent);
+  color: var(--c);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  transition:
+    transform 0.4s var(--ease),
+    border-color 0.4s,
+    background 0.4s;
+}
+
+/* Uniform card padding tiers. */
+.card-pad-lg {
+  padding: var(--space-7);
+}
+.card-pad-md {
+  padding: var(--space-6);
+}
+.card-pad-sm {
+  padding: var(--space-5);
+}
+
+/* Number badge for install steps */
+.step-num {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: var(--space-4);
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   Skip link
+   ============================================================ */
+
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--surface-border);
+  color: var(--accent);
+  font-weight: 600;
+  transition: top 0.2s var(--ease);
+}
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* ============================================================
+   Nav
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border-bottom: 1px solid var(--surface-border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+.brand .glyph {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  box-shadow: 0 6px 18px -4px var(--accent-shadow);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+.nav-links a {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover {
+  color: var(--text);
+}
+.nav-links a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+.nav-gl {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  border-top: 1px solid var(--surface-border);
+  padding-block: 3rem;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+.footer a {
+  color: var(--text-dim);
+}
+.footer a:hover {
+  color: var(--accent);
+}
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-brand {
+  font-weight: 700;
+  color: var(--text);
+}
+.footer-links {
+  margin-left: auto;
+}
+.footer-glyph {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid;
+  place-items: center;
+  color: #12091c;
+}
+
+/* ============================================================
+   Client-side page router
+   Every page ships in the HTML so all content loads at start;
+   only the active one shows under JS.
+   ============================================================ */
+
+.page {
+  display: none;
+}
+/* No-JS fallback: render every page (a scroll view). */
+.no-js .page {
+  display: block;
+}
+/* JS: only the active page is visible. */
+html.js .page.active {
+  display: block;
+}
+
+/* ============================================================
+   Theme toggle + ink-morph transition
+   ============================================================ */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    transform 0.3s var(--ease),
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  background: var(--bg-elevated);
+  color: var(--text);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.theme-toggle-icon {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+.theme-toggle-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.theme-toggle-icon .nf-icon {
+  font-size: 18px;
+  vertical-align: -0.05em;
+}
+[data-theme="dark"] .theme-toggle [data-theme-icon="light"] {
+  display: none;
+}
+[data-theme="light"] .theme-toggle [data-theme-icon="dark"] {
+  display: none;
+}
+
+/* Theme transition — radial "ink" morph anchored to the toggle */
+.theme-morph {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* The blob is centered on the top-left corner (translate -50%/-50%) and scaled
+   about its own center, so it grows outward from that corner. Its diameter is
+   far larger than the viewport diagonal, so at full scale it covers the whole
+   screen (clipped by the container's overflow: hidden). */
+.theme-morph .blob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300vmax;
+  height: 300vmax;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%) scale(0);
+}
+/* Destination-origin modifier: the light theme morphs in from the bottom-right
+   corner instead of the top-left. */
+.theme-morph .blob--br {
+  top: auto;
+  left: auto;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%) scale(0);
+}
+.theme-morph.active .blob {
+  animation: theme-morph-tl var(--theme-duration) var(--theme-ease) forwards;
+}
+.theme-morph.active .blob--br {
+  animation: theme-morph-br var(--theme-duration) var(--theme-ease) forwards;
+}
+@keyframes theme-morph-tl {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.9;
+  }
+  35% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+@keyframes theme-morph-br {
+  0% {
+    transform: translate(50%, 50%) scale(0);
+    opacity: 0.9;
+  }
+  35% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(50%, 50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   Scroll reveal (+ no-JS fallback handled in Layout)
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease),
+    transition-delay var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  .nav-links .hide-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-row {
+    justify-content: center;
+    text-align: center;
+  }
+  .footer-brand,
+  .footer-links {
+    margin-inline: auto;
+  }
+}
+
+/* ============================================================
+   404 fallback page
+   ============================================================ */
+
+.not-found {
+  min-height: 80vh;
+  display: grid;
+  place-items: center;
+  padding-block: var(--section-padding);
+}
+.not-found-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  max-width: 34ch;
+}
+.not-found-card > h1 {
+  font-size: var(--title-2);
+  font-weight: 800;
+}
+.not-found-card .glyph {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #ffffff;
+  box-shadow: 0 12px 30px -10px var(--accent-shadow);
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+  .theme-morph {
+    display: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

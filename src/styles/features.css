@@ -1,0 +1,112 @@
+/* ============================================================
+   Aelum-Web — Features page (features.css)
+   Features, pre-installed software, language chips, CLI.
+   Imports base.css for tokens, reset and shared UI.
+   ============================================================ */
+
+/* Features section — text above, cards full width below */
+.features-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+/* Grid presets: features + software cards */
+.grid-features {
+  --cell-min: 300px;
+}
+.grid-software {
+  --cell-min: 240px;
+  --grid-gap: var(--space-4);
+  --grid-top: var(--space-11);
+}
+
+.card-grid h3 + p,
+.card-grid p {
+  margin-top: var(--space-2);
+  color: var(--text-dim);
+}
+
+/* Language chips */
+.lang-head {
+  margin-bottom: var(--space-6);
+}
+.lang-head p {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.lang-chips {
+  max-width: 820px;
+  margin-inline: auto;
+  gap: var(--space-2);
+}
+.lang-chip {
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  /* Chips are small and numerous (28); skipping backdrop-blur keeps scrolling smooth.
+     Uses an opaque surface instead of a frosted one to avoid 28 live blur layers. */
+  background: var(--bg-elevated);
+  backdrop-filter: none;
+}
+
+@media (max-width: 440px) {
+  .lang-chips {
+    justify-content: center;
+  }
+}
+
+/* CLI terminal */
+.cli-card {
+  overflow: hidden;
+  background: var(--bg-elevated);
+  border-color: var(--surface-border);
+  margin-inline: auto;
+  max-width: 760px;
+}
+.cli-titlebar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--surface-border);
+}
+.cli-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+.cli-dot-r {
+  background: var(--dot-red);
+}
+.cli-dot-y {
+  background: var(--dot-yellow);
+}
+.cli-dot-g {
+  background: var(--dot-green);
+}
+.cli-title {
+  margin-left: var(--space-3);
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  font-family: "JetBrains Mono", monospace;
+}
+.cli-code {
+  margin: 0;
+  padding: 1.4rem 1.3rem;
+  overflow-x: auto;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--text-dim);
+}
+.cli-note {
+  margin-top: var(--space-5);
+  color: var(--text-dim);
+  max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
+}
