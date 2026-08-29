@@ -6,10 +6,11 @@ import {
   downloadUrl,
   checksums,
   signingKey,
+  ventoyUrl,
+  balenaEtcherUrl,
 } from "../lib/site";
 
 const isoFile = {
-  icon: "f0ed", // nerd-fonts: cloud_download
   title: "The ISO",
   name: isoFilename,
   href: downloadUrl.iso,
@@ -51,17 +52,59 @@ const nf = (code: string) =>
   `<span class="nf-icon" aria-hidden="true">${String.fromCodePoint(
     parseInt(code, 16),
   )}</span>`;
+
+const flashTools = [
+  {
+    title: "Ventoy",
+    cta: { href: ventoyUrl, label: "Get Ventoy" },
+    steps: [
+      `Download and open Ventoy on your computer.`,
+      `Select your USB drive, then click <code>Install</code>.`,
+      `Copy <code>{isoFilename}</code> onto the USB drive.`,
+      `Boot your computer from that USB drive.`,
+    ],
+  },
+  {
+    title: "BalenaEtcher",
+    cta: { href: balenaEtcherUrl, label: "Get BalenaEtcher" },
+    steps: [
+      `Download and open BalenaEtcher on your computer.`,
+      `Choose <code>{isoFilename}</code> as the image to flash.`,
+      `Select your USB drive, then click <code>Flash!</code>.`,
+      `Boot your computer from that USB drive.`,
+    ],
+  },
+  {
+    title: "dd (Linux / macOS)",
+    // dd ships with the OS, so there is nothing to download.
+    cta: null,
+    steps: [
+      `Plug in your USB drive and find its device name with <code>lsblk</code>.`,
+      `Run <code>dd if={isoFilename} of=DEVICE bs=4M status=progress</code>, replacing <code>DEVICE</code> with your drive (for example <code>/dev/sdb</code>).`,
+      `Boot your computer from that USB drive.`,
+    ],
+  },
+];
 ---
 
 <div class="container">
   <div class="reveal dl-hero">
     <div class="dl-hero-grid">
+      <div class="dl-hero-left">
+        <span class="eyebrow">
+          Aelum {releaseVersion} · {releaseArch}
+        </span>
+        <h2 class="dl-hero-title">Download Aelum.</h2>
+        <p class="dl-hero-lead">
+          Grab the ISO plus its checksum and signature. Verifying takes two
+          minutes and makes sure the file you booted is exactly what Aelum
+          shipped — not a tampered or corrupted copy.
+        </p>
+      </div>
+
       <div class="dl-hero-right">
         <div class="card card-pad-lg dl-iso-card">
           <div class="card-title-row">
-            <div class="dot" style="--c: #9b7ff2">
-              <span set:html={nf(isoFile.icon)} />
-            </div>
             <h3>{isoFile.title}</h3>
           </div>
           <span class="dl-iso-name">{isoFile.name}</span>
@@ -76,18 +119,44 @@ const nf = (code: string) =>
           </a>
         </div>
       </div>
+    </div>
 
-      <div class="dl-hero-left">
-        <span class="eyebrow">
-          <span set:html={nf("eb29")} />
-          Aelum {releaseVersion} · {releaseArch}
-        </span>
-        <h2 class="dl-hero-title">Download Aelum, then verify it.</h2>
-        <p class="dl-hero-lead">
-          Grab the ISO plus its checksum and signature. Verifying takes two
-          minutes and makes sure the file you booted is exactly what Aelum
-          shipped — not a tampered or corrupted copy.
+    <div class="reveal flash-wrap">
+      <div class="section-head">
+        <span class="eyebrow">Before you boot</span>
+        <h2 class="section-title">Flash it to a USB drive.</h2>
+        <p class="section-sub">
+          Any of these writes the ISO to a USB stick in a minute. Ventoy keeps
+          the stick usable for other files; BalenaEtcher does a clean,
+          single-image flash; dd is a built-in command line tool.
         </p>
+      </div>
+
+      <div class="card-grid grid-flash">
+        {
+          flashTools.map((tool) => (
+            <div class="card card-pad-md flash-card">
+              <div class="card-title-row">
+                <h3>{tool.title}</h3>
+              </div>
+              <ol class="flash-steps">
+                {tool.steps.map((step) => (
+                  <li set:html={step.replace("{isoFilename}", isoFilename)} />
+                ))}
+              </ol>
+              {tool.cta && (
+                <a
+                  class="btn btn-primary"
+                  href={tool.cta.href}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span set:html={nf("f08e")} /> {tool.cta.label}
+                </a>
+              )}
+            </div>
+          ))
+        }
       </div>
     </div>
 

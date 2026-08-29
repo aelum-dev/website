@@ -388,6 +388,7 @@ them the same top gap the Download page gets from `.dl-hero { margin-top }`. */
   --grid-top: var(--space-8);
 }
 .flash-wrap {
+  margin-top: var(--space-11);
   margin-bottom: var(--space-11);
 }
 .flash-card {
@@ -1364,7 +1365,7 @@ html.js .page.active {
   background: var(--surface);
 }
 .dl-hero h2 {
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
   margin-top: 0.5rem;
   max-width: 42ch;
@@ -1422,6 +1423,13 @@ html.js .page.active {
   margin-top: 0.5rem;
   align-self: flex-start;
 }
+/* Keep every card heading on the Download page the same size */
+.dl-iso-card .card-title-row h3,
+.dl-mini .card-title-row h3,
+.flash-card .card-title-row h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
 
 /* Row of small verification cards below the hero — all four fit in one row */
 .dl-mini-grid {
@@ -1434,9 +1442,6 @@ html.js .page.active {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-}
-.dl-mini .card-title-row h3 {
-  font-size: 1rem;
 }
 .dl-mini .dot {
   width: 34px;
