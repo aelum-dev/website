@@ -1,10 +1,85 @@
 ---
 import Card from "./Card.astro";
-import { installSteps } from "../lib/site";
+import {
+  installSteps,
+  isoFilename,
+  ventoyUrl,
+  balenaEtcherUrl,
+} from "../lib/site";
+
+const nf = (code: string) =>
+  `<span class="nf-icon" aria-hidden="true">${String.fromCodePoint(
+    parseInt(code, 16),
+  )}</span>`;
+
+const flashTools = [
+  {
+    icon: "f287", // nerd-fonts: usb
+    title: "Ventoy",
+    href: ventoyUrl,
+    steps: [
+      `Download and open Ventoy on your computer.`,
+      `Select your USB drive, then click <code>Install</code>.`,
+      `Copy <code>{isoFilename}</code> onto the USB drive.`,
+      `Boot your computer from that USB drive.`,
+    ],
+  },
+  {
+    icon: "f287", // nerd-fonts: usb
+    title: "BalenaEtcher",
+    href: balenaEtcherUrl,
+    steps: [
+      `Download and open BalenaEtcher on your computer.`,
+      `Choose <code>{isoFilename}</code> as the image to flash.`,
+      `Select your USB drive, then click <code>Flash!</code>.`,
+      `Boot your computer from that USB drive.`,
+    ],
+  },
+];
 ---
 
 <section class="section section-no-top">
   <div class="container">
+    <div class="reveal flash-wrap">
+      <div class="section-head">
+        <span class="eyebrow">Before you boot</span>
+        <h2 class="section-title">Flash it to a USB drive.</h2>
+        <p class="section-sub">
+          Either tool writes the ISO to a USB stick in a minute. Ventoy keeps
+          the stick usable for other files; BalenaEtcher does a clean,
+          single-image flash.
+        </p>
+      </div>
+
+      <div class="card-grid grid-flash">
+        {
+          flashTools.map((tool) => (
+            <div class="card card-pad-md flash-card">
+              <div class="card-title-row">
+                <div class="dot" style="--c: #9b7ff2">
+                  <span set:html={nf(tool.icon)} />
+                </div>
+                <h3>{tool.title}</h3>
+              </div>
+              <ol class="flash-steps">
+                {tool.steps.map((step) => (
+                  <li set:html={step.replace("{isoFilename}", isoFilename)} />
+                ))}
+              </ol>
+              <a
+                class="btn btn-primary"
+                href={tool.href}
+                target="_blank"
+                rel="noopener"
+              >
+                <span set:html={nf("f0ed")} /> Download {tool.title}
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
     <div class="install-grid">
       <div class="reveal install-head">
         <span class="eyebrow">The installer</span>

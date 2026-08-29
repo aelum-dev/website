@@ -26,3 +26,27 @@ function initReveals() {
 
 window.initReveals = initReveals;
 initReveals();
+
+// Restart the installer-demo video from the top every time the Install
+// section scrolls into view (e.g. clicking "Install" in the nav).
+function initRestartableVideo() {
+  const video = document.querySelector(".install-visual video");
+  if (!video || !("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        }
+      });
+    },
+    { threshold: 0.12 },
+  );
+
+  const section = document.querySelector("#install");
+  observer.observe(section || video);
+}
+
+initRestartableVideo();

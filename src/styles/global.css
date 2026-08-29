@@ -382,6 +382,33 @@ them the same top gap the Download page gets from `.dl-hero { margin-top }`. */
   --grid-gap: var(--space-4);
   --grid-top: var(--space-11);
 }
+.grid-flash {
+  --cell-min: 300px;
+  --grid-gap: var(--space-5);
+  --grid-top: var(--space-8);
+}
+.flash-wrap {
+  margin-bottom: var(--space-11);
+}
+.flash-card {
+  display: flex;
+  flex-direction: column;
+}
+.flash-card .card-title-row {
+  margin-bottom: var(--space-3);
+}
+.flash-steps {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-5);
+  flex: 1;
+}
+.flash-steps li {
+  margin-bottom: var(--space-2);
+}
+.flash-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
 .card-grid .card {
   height: 100%;
 }
