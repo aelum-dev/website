@@ -159,6 +159,17 @@ const flashTools = [
         }
       </div>
     </div>
+  </div>
+
+  <div class="verify-wrap">
+    <div class="reveal section-head">
+      <span class="eyebrow">Verification</span>
+      <h2 class="section-title">How to check the download.</h2>
+      <p class="section-sub">
+        Three things to confirm: the checksum matches, the signature is present,
+        and it was made by the real Aelum key.
+      </p>
+    </div>
 
     <div class="reveal dl-mini-grid">
       {
@@ -184,23 +195,12 @@ const flashTools = [
         ))
       }
     </div>
-  </div>
 
-  <p class="reveal dl-note">
-    <span set:html={nf("f05aa")} />
-    The live ISO installs fully offline — once you've verified it, no internet connection
-    is needed to install Aelum.
-  </p>
-
-  <div class="verify-wrap">
-    <div class="reveal section-head">
-      <span class="eyebrow">Verification</span>
-      <h2 class="section-title">How to check the download.</h2>
-      <p class="section-sub">
-        Three things to confirm: the checksum matches, the signature is present,
-        and it was made by the real Aelum key.
-      </p>
-    </div>
+    <p class="reveal dl-note">
+      <span set:html={nf("f05aa")} />
+      The live ISO installs fully offline — once you've verified it, no internet connection
+      is needed to install Aelum.
+    </p>
 
     <ol class="verify-steps">
       <li class="reveal verify-step">

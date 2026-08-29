@@ -1436,7 +1436,6 @@ html.js .page.active {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--space-4);
-  margin-top: var(--space-5);
 }
 .dl-mini {
   display: flex;
