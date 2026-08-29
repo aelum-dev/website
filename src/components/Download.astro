@@ -88,7 +88,7 @@ const flashTools = [
 ---
 
 <div class="container">
-  <div class="reveal dl-hero">
+  <div class="dl-hero">
     <div class="dl-hero-grid">
       <div class="dl-hero-left">
         <span class="eyebrow">
@@ -121,7 +121,7 @@ const flashTools = [
       </div>
     </div>
 
-    <div class="reveal flash-wrap">
+    <div>
       <div class="section-head">
         <span class="eyebrow">Before you boot</span>
         <h2 class="section-title">Flash it to a USB drive.</h2>
@@ -162,7 +162,7 @@ const flashTools = [
   </div>
 
   <Fragment>
-    <div class="reveal section-head">
+    <div class="section-head">
       <span class="eyebrow">Verification</span>
       <h2 class="section-title">How to check the download.</h2>
       <p class="section-sub">
@@ -171,7 +171,7 @@ const flashTools = [
       </p>
     </div>
 
-    <div class="reveal dl-mini-grid">
+    <div class="dl-mini-grid">
       {
         miniFiles.map((file) => (
           <div class="card card-pad-sm dl-mini">
@@ -196,14 +196,14 @@ const flashTools = [
       }
     </div>
 
-    <p class="reveal dl-note">
+    <p class="dl-note">
       <span set:html={nf("f05aa")} />
       The live ISO installs fully offline — once you've verified it, no internet connection
       is needed to install Aelum.
     </p>
 
     <ol class="verify-steps">
-      <li class="reveal verify-step">
+      <li class="verify-step">
         <div>
           <div class="verify-step-head">Download all four files</div>
           <p>
@@ -213,7 +213,7 @@ const flashTools = [
         </div>
       </li>
 
-      <li class="reveal verify-step">
+      <li class="verify-step">
         <div>
           <div class="verify-step-head">Check the checksum</div>
           <p>
@@ -242,7 +242,7 @@ sha512sum -c {isoFilename}.sha512</code></pre>
         </div>
       </li>
 
-      <li class="reveal verify-step">
+      <li class="verify-step">
         <div>
           <div class="verify-step-head">Import the signing key</div>
           <p>
@@ -263,7 +263,7 @@ gpg --fingerprint</code></pre>
         </div>
       </li>
 
-      <li class="reveal verify-step">
+      <li class="verify-step">
         <div>
           <div class="verify-step-head">Verify the signature</div>
           <p>
@@ -293,7 +293,7 @@ gpg --fingerprint</code></pre>
         </div>
       </li>
 
-      <li class="reveal verify-step">
+      <li class="verify-step">
         <div>
           <div class="verify-step-head">Know the real key</div>
           <p>

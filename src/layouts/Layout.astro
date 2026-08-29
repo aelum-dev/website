@@ -60,16 +60,6 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
   <body>
     <slot />
 
-    <noscript
-      ><style>
-        .reveal {
-          opacity: 1 !important;
-          transform: none !important;
-          transition: none !important;
-        }
-      </style></noscript
-    >
-    <script src="scripts/reveal.js" defer is:inline></script>
     <!-- Client router: runs before first paint (defer) to set the active page. -->
     <script src="scripts/app.js" defer is:inline></script>
     <script src="scripts/theme-toggle.js" is:inline></script>

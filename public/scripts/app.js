@@ -3,8 +3,7 @@
 // The site is a single HTML shell that ships every page server-side (so all
 // content is present on first load). This script switches between them by
 // hash without a page reload: it toggles the `.active` page, highlights the
-// matching nav link, updates the document title, scrolls to the top, and
-// re-runs the scroll-reveal so animations fire on the newly shown page.
+// matching nav link, updates the document title, and scrolls to the top.
 //
 // Progressive enhancement: with no JS, every page renders (falling back to a
 // scroll view). With JS, only the active page shows. Deep links and the
@@ -35,11 +34,9 @@ function go(id, push = true) {
     el.classList.toggle("active", el.id === next);
   });
 
-  document
-    .querySelectorAll(".nav-links a[data-page]")
-    .forEach((el) => {
-      el.classList.toggle("active", el.dataset.page === next);
-    });
+  document.querySelectorAll(".nav-links a[data-page]").forEach((el) => {
+    el.classList.toggle("active", el.dataset.page === next);
+  });
 
   const page = PAGES.find((p) => p.id === next);
   if (page) document.title = page.title;
@@ -49,9 +46,6 @@ function go(id, push = true) {
   }
 
   window.scrollTo({ top: 0 });
-
-  // Re-run scroll-reveal for the now-visible page. reveal.js exposes this.
-  if (typeof window.initReveals === "function") window.initReveals();
 }
 
 // Nav clicks (both the top nav links and the brand logo) switch pages.

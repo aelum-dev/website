@@ -104,10 +104,6 @@
 }
 
 /* Flash-to-USB tool cards */
-.flash-wrap {
-  margin-top: var(--space-11);
-  margin-bottom: var(--space-11);
-}
 .flash-card {
   display: flex;
   flex-direction: column;
