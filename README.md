@@ -12,6 +12,8 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 - **The installer** — the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages.
 - **CLI** — headless / scripted install examples.
+- **Download** — the ISO, its SHA-256 / SHA-512 checksums, GPG signature, signing key, and flashing tools (Ventoy, BalenaEtcher, dd).
+- **Call to action** — "build it yourself": the Docker recipe that assembles the ISO.
 
 ## Project Structure
 
@@ -30,20 +32,31 @@ src/
     Install.astro      # installer wizard section
     Languages.astro    # installer languages section
     CLI.astro          # headless install examples
+    CTA.astro          # call-to-action / "build it yourself" section
+    Download.astro     # ISO download + verification section
     Footer.astro       # footer
     Card.astro         # reusable card
-    Star.astro         # decorative star glyph (brand mark)
   lib/
     site.ts            # all site copy (languages, links, feature text)
   styles/
-    global.css         # design system (colors, layout, ambient background, reveal)
+    base.css           # design system (colors, layout, ambient background, glassy cards)
+    home.css           # hero / home section
+    download.css       # download page
+    features.css       # features section
+    install.css        # installer section
     fonts/             # self-hosted Nunito + JetBrains Mono + Nerd Fonts symbols
 public/
-  star.svg             # favicon
+  logo.png             # brand mark / large logo
+  favicon-16.png       # small favicon (16×16)
+  favicon-32.png       # small favicon (32×32)
+  og-image.svg         # social share image (vector source)
+  og-image.png         # social share image (raster export)
+  images/              # hero shots + installer demo video
+  robots.txt           # points at the deployed sitemap
   scripts/
+    app.js             # hash-based single-shell page router
     theme.js           # light/dark theme logic (persisted in localStorage)
     theme-toggle.js    # theme toggle button
-    reveal.js          # IntersectionObserver scroll-reveal (+ noscript fallback)
 ```
 
 ## Commands
@@ -61,7 +74,7 @@ Run `npm run check` (Biome + `astro check`) before committing.
 
 ## Tech notes
 
-- Built on **Astro 7** (static site generation). All content is server-rendered for SEO, with a lightweight `IntersectionObserver` script for scroll-reveal animations and a `<noscript>` fallback so nothing is hidden without JavaScript.
+- Built on **Astro 7** (static site generation). The whole site is one server-rendered HTML shell, so every page is present without JavaScript; `public/scripts/app.js` then switches between pages by hash (progressive enhancement — with JS it shows a single active shell, without JS it falls back to a scrollable view). There is no scroll-reveal script.
 - The palette and glassy cards echo the **Material-You** look of the desktop the installer ships.
 - The site itself is a static site — no backend, no API calls, no network requests to serve it. Fonts are self-hosted woff2 files under `src/styles/fonts/`.
 

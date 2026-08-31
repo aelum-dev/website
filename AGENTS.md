@@ -28,10 +28,10 @@ npm run check      # biome format . && astro check   # run before committing
 - **Single page.** `src/pages/index.astro` is the only real page; `src/pages/404.astro` is the fallback.
 - **Content lives in `src/lib/site.ts`.** Keep all copy (languages, links, feature text) as exported data here and consume it from components — don't hardcode strings in templates. This makes reviews and edits easy.
 - **Sections are components** under `src/components/`, composed in order in `index.astro`:
-  `Nav` → `Hero` → `Features` → `Desktop` → `Install` → `Languages` → `CLI` → `CTA` → `Footer`.
+  `Nav` → `Hero` → `CTA` → `Download` → `Install` → `Features` → `Desktop` → `Languages` → `CLI` → `Footer`.
   Each section is a small `.astro` component (typically 20–70 lines). Add new sections as new components and insert them in the page.
 - **Layout & chrome** in `src/layouts/Layout.astro` (head, fonts, theme script, meta).
-- **Styling** is centralized in `src/styles/global.css` (~1150 lines): design system tokens (colors, layout, glassy cards, ambient background, reveal styles). Add tokens/classes here rather than inline styles.
+- **Styling** is split across `src/styles/`: `base.css` holds the design system tokens (colors, layout, glassy cards, ambient background); per-section files (`home.css`, `download.css`, `features.css`, `install.css`) hold the rest. Add tokens/classes here rather than inline styles.
 - **Interactivity** is plain JS in `public/scripts/`:
   - `theme.js` / `theme-toggle.js` — light/dark theme + toggle (persisted in `localStorage`).
   - `app.js` — hash-based single-shell router: toggles the `.active` page, highlights the matching nav link, updates the title, and scrolls to top (deep links + back/forward via the history API).
@@ -41,7 +41,7 @@ npm run check      # biome format . && astro check   # run before committing
 
 - Material-You / glassy aelum mirroring the Aelum desktop (Hyprland + DankMaterialShell).
 - Fonts are self-hosted woff2 under `src/styles/fonts/` (Nunito + JetBrains Mono + Nerd Fonts symbols) — keep them offline; the site must stay fully offline.
-- Favicon `public/star.svg`; OG images `public/og-image.{svg,png}`.
+- Favicons are rounded PNGs in `public/` (`favicon-16.png`, `favicon-32.png`, derived from the master `public/logo.png`); OG share image is `public/og-image.svg` (vector source, re-exported to `og-image.png`).
 
 ## Deployment
 
