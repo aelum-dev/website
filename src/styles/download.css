@@ -84,6 +84,7 @@
 
 .dl-note {
   margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
   color: var(--text-dim);
   font-size: 0.9rem;
   display: flex;
