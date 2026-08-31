@@ -183,34 +183,40 @@
 
 /* Key fingerprint callout */
 .dl-keycard {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
   padding: var(--space-5);
   margin-top: var(--space-5);
   background: var(--bg-elevated);
   border: 1px solid var(--surface-border);
   border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
+  align-items: stretch;
 }
-.dl-keycard .nf-icon {
-  font-size: 1.3rem;
-  color: var(--accent);
-  flex: 0 0 auto;
-  margin-top: 0.1rem;
+.kc-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  align-self: center;
 }
-.dl-keycard dt {
+.kc-col dt {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-dim);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.35rem;
 }
-.dl-keycard dd {
-  margin: 0 0 0.7rem;
+.kc-col dd {
+  margin: 0;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.9rem;
   font-weight: 600;
+}
+.kc-col .fp-top,
+.kc-col .fp-bot {
+  display: block;
+  white-space: nowrap;
 }
 
 @media (min-width: 900px) {

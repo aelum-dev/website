@@ -307,14 +307,23 @@ gpg --fingerprint</code></pre>
             the fingerprint against a second, independent source — the GitLab
             releases page, a maintainer, or a key server — before you trust it.
           </p>
-          <dl class="dl-keycard">
-            <dt>Signing key fingerprint</dt>
-            <dd>{signingKey.fingerprint}</dd>
-            <dt>Key owner</dt>
-            <dd>{signingKey.uid}</dd>
-            <dt>Key expiry</dt>
-            <dd>Expires {signingKey.expires}</dd>
-          </dl>
+          <div class="dl-keycard">
+            <div class="kc-col">
+              <dt>Signing key fingerprint</dt>
+              <dd>
+                <span class="fp-top">{signingKey.fingerprintTop}</span>
+                <span class="fp-bot">{signingKey.fingerprintBot}</span>
+              </dd>
+            </div>
+            <div class="kc-col">
+              <dt>Key owner</dt>
+              <dd>{signingKey.uid}</dd>
+            </div>
+            <div class="kc-col">
+              <dt>Key expiry</dt>
+              <dd>Expires {signingKey.expires}</dd>
+            </div>
+          </div>
         </div>
       </li>
     </ol>

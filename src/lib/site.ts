@@ -233,6 +233,8 @@ export const checksums = {
 // the signature.
 export const signingKey = {
   fingerprint: "A675F61C22C26FCE187262E448CC48FDFD881E0D",
+  fingerprintTop: "A675 F61C 22C2 6FCE 1872",
+  fingerprintBot: "62E4 48CC 48FD FD88 1E0D",
   uid: "Ivan Kornienko <ik.workmail39@gmail.com>",
   expires: "2029-08-27",
 } as const;

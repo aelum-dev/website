@@ -107,6 +107,12 @@ def resolve_font(args):
     return font
 
 
+def resolve_woff2(args):
+    """Return the subset woff2 to manage: --woff2 if given, else the website's."""
+    path = Path(args.woff2) if getattr(args, "woff2", None) else None
+    return path if path is not None else WOFF2
+
+
 def cmd_find(args):
     font = resolve_font(args)
     cmap = load_cmap(font)
@@ -124,12 +130,13 @@ def cmd_find(args):
 
 def cmd_add(args):
     font = resolve_font(args)
-    if not WOFF2.exists():
-        print(f"ERROR: {WOFF2} does not exist yet.", file=sys.stderr)
+    woff2 = resolve_woff2(args)
+    if not woff2.exists():
+        print(f"ERROR: {woff2} does not exist yet.", file=sys.stderr)
         sys.exit(1)
 
     font_cmap = load_cmap(font)
-    existing = load_cmap(WOFF2)
+    existing = load_cmap(woff2)
     new_cps = [parse_cp(t) for t in args.codepoints]
 
     for cp in new_cps:
@@ -147,7 +154,7 @@ def cmd_add(args):
         return 1
 
     all_cps = sorted(set(existing) | set(new_cps))
-    print(f"Rebuilding {WOFF2.name}: {len(existing)} -> {len(all_cps)} glyphs (+{len(to_add)}).")
+    print(f"Rebuilding {woff2.name}: {len(existing)} -> {len(all_cps)} glyphs (+{len(to_add)}).")
 
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
@@ -158,7 +165,7 @@ def cmd_add(args):
         run(["fonttools", "subset", str(font), f"--output-file={ttf}", f"--unicodes={unicodes}"])
         # Compress to woff2 (woff2_compress writes <input>.woff2 next to the input).
         run(["woff2_compress", str(ttf)])
-        shutil.copy(woff, WOFF2)
+        shutil.copy(woff, woff2)
 
     print("Done.")
     return 0
@@ -166,12 +173,13 @@ def cmd_add(args):
 
 def cmd_remove(args):
     font = resolve_font(args)
-    if not WOFF2.exists():
-        print(f"ERROR: {WOFF2} does not exist yet.", file=sys.stderr)
+    woff2 = resolve_woff2(args)
+    if not woff2.exists():
+        print(f"ERROR: {woff2} does not exist yet.", file=sys.stderr)
         sys.exit(1)
 
     font_cmap = load_cmap(font)
-    existing = load_cmap(WOFF2)
+    existing = load_cmap(woff2)
     target = [parse_cp(t) for t in args.codepoints]
 
     present = [cp for cp in target if cp in existing]
@@ -185,7 +193,7 @@ def cmd_remove(args):
     if not remaining:
         print("ERROR: removal would leave the subset empty; aborting.", file=sys.stderr)
         return 1
-    print(f"Rebuilding {WOFF2.name}: {len(existing)} -> {len(remaining)} glyphs (-{len(present)}).")
+    print(f"Rebuilding {woff2.name}: {len(existing)} -> {len(remaining)} glyphs (-{len(present)}).")
 
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
@@ -194,7 +202,7 @@ def cmd_remove(args):
         unicodes = ",".join("U+" + format(cp, "x").upper() for cp in remaining)
         run(["fonttools", "subset", str(font), f"--output-file={ttf}", f"--unicodes={unicodes}"])
         run(["woff2_compress", str(ttf)])
-        shutil.copy(woff, WOFF2)
+        shutil.copy(woff, woff2)
 
     print("Done.")
     return 0
@@ -202,9 +210,10 @@ def cmd_remove(args):
 
 def cmd_list(args):
     font = resolve_font(args)
+    woff2 = resolve_woff2(args)
     font_cmap = load_cmap(font)
-    cmap = load_cmap(WOFF2)
-    print(f"{len(cmap)} glyphs in {WOFF2.name} (names from {font.name}):")
+    cmap = load_cmap(woff2)
+    print(f"{len(cmap)} glyphs in {woff2.name} (names from {font.name}):")
     for cp in sorted(cmap):
         print(f"  {fmt_cp(cp):>8}  {font_cmap.get(cp, cmap.get(cp, '?'))}")
     return 0
@@ -212,15 +221,16 @@ def cmd_list(args):
 
 def cmd_info(args):
     font = resolve_font(args)
+    woff2 = resolve_woff2(args)
     font_cmap = load_cmap(font)
     cp = parse_cp(args.codepoint)
     print(f"{fmt_cp(cp)}:")
     print(f"  source font {font.name}: {font_cmap.get(cp, 'NOT PRESENT')}")
-    if WOFF2.exists():
-        w = load_cmap(WOFF2)
-        print(f"  website woff2 : {'present' if cp in w else 'not in subset'}")
+    if woff2.exists():
+        w = load_cmap(woff2)
+        print(f"  {woff2.name} : {'present' if cp in w else 'not in subset'}")
     else:
-        print("  website woff2 : (missing)")
+        print(f"  {woff2.name} : (missing)")
     return 0
 
 
@@ -229,6 +239,10 @@ def main():
     parser.add_argument(
         "--font",
         help=f"Path to the full source Nerd Font (default: {DEFAULT_FONT}).",
+    )
+    parser.add_argument(
+        "--woff2",
+        help="Path to the subset woff2 to manage (default: the website's).",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
