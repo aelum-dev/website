@@ -3,6 +3,18 @@
    Hero + CTA. Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
+/* Hero is dead centered on screen: full viewport height, content centered
+   on both axes. The sticky nav overlays the top, so 100vh keeps the block
+   centered within the whole viewport. */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 /* Hero layout (narrow): screenshot on top, then heading, then the rest */
 .hero-grid {
   display: grid;
