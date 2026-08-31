@@ -9,9 +9,10 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "check": "prettier --check . && astro check"
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "check": "biome format . && astro check"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.4",
@@ -19,7 +20,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^0.14.1"
+    "@biomejs/biome": "^2.5.11"
   }
 }

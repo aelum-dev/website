@@ -26,10 +26,7 @@
   function syncControl(theme) {
     if (!TOGGLE) return;
     TOGGLE.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
-    TOGGLE.setAttribute(
-      "aria-label",
-      theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
-    );
+    TOGGLE.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
   }
 
   function set(theme) {
@@ -39,8 +36,7 @@
       window.localStorage.setItem(STORAGE_KEY, theme);
     } catch (_) {}
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta)
-      meta.setAttribute("content", theme === "dark" ? "#151114" : "#faf7f6");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#151114" : "#faf7f6");
   }
 
   // Radial ink wipe tinted with the destination theme color. Dark morphs in
@@ -65,10 +61,7 @@
     void blob.offsetWidth;
     requestAnimationFrame(() => overlay.classList.add("active"));
 
-    const stated = parseInt(
-      getComputedStyle(ROOT).getPropertyValue("--theme-duration"),
-      10,
-    );
+    const stated = parseInt(getComputedStyle(ROOT).getPropertyValue("--theme-duration"), 10);
     const duration = Number.isFinite(stated) ? stated : 650;
     setTimeout(() => overlay.remove(), duration + 80);
   }

@@ -148,8 +148,7 @@
 *,
 *::before,
 *::after {
-  transition-property:
-    background-color, border-color, color, box-shadow, opacity;
+  transition-property: background-color, border-color, color, box-shadow, opacity;
   transition-duration: var(--theme-duration);
   transition-timing-function: var(--theme-ease);
 }
@@ -163,12 +162,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family:
-    "Nunito",
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    sans-serif;
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -280,12 +274,7 @@ code {
 }
 
 .text-gradient {
-  background: linear-gradient(
-    100deg,
-    var(--accent) 0%,
-    var(--accent-2) 55%,
-    var(--accent-3) 110%
-  );
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 110%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

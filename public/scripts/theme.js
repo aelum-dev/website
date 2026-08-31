@@ -12,9 +12,7 @@
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored === "light" || stored === "dark") return stored;
     } catch (_) {}
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
 
   const theme = resolve();
@@ -33,12 +31,10 @@
     try {
       if (!window.localStorage.getItem(STORAGE_KEY)) {
         ROOT.setAttribute("data-theme", e.matches ? "dark" : "light");
-        if (metaTheme)
-          metaTheme.setAttribute("content", e.matches ? "#151114" : "#faf7f6");
+        if (metaTheme) metaTheme.setAttribute("content", e.matches ? "#151114" : "#faf7f6");
       }
     } catch (_) {}
   };
-  if (mediaQuery.addEventListener)
-    mediaQuery.addEventListener("change", onSystemChange);
+  if (mediaQuery.addEventListener) mediaQuery.addEventListener("change", onSystemChange);
   else if (mediaQuery.addListener) mediaQuery.addListener(onSystemChange); // Safari < 14
 })();

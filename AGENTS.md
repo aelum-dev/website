@@ -6,7 +6,7 @@ Developer notes for agents working on **Aelum-Web** — a single-page Astro land
 
 - **Astro 7** (static site generation) with `@astrojs/sitemap`
 - TypeScript (strict, via `astro/tsconfigs/strict`)
-- Prettier + `prettier-plugin-astro` for formatting
+- Biome for formatting (replaces Prettier); a `lint` script is also available (`npm run lint`)
 - Vanilla JS for interactivity (no framework components / no build-time JS bundling beyond Astro)
 
 ## Commands
@@ -17,9 +17,10 @@ npm run dev        # dev server at localhost:4321
 npm run build      # production build -> ./dist
 npm run preview    # preview the production build
 npm run typecheck  # astro check (type checking)
-npm run format     # prettier --write .
+npm run format     # biome format --write .
 npm run format:check
-npm run check      # prettier --check . && astro check   # run before committing
+npm run lint       # biome lint . (optional; Prettier never linted)
+npm run check      # biome format . && astro check   # run before committing
 ```
 
 ## Layout & Conventions

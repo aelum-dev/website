@@ -57,7 +57,7 @@ All commands are run from the root of the project, from a terminal:
 | `npm run build`   | Build your production site to `./dist/`      |
 | `npm run preview` | Preview your build locally, before deploying |
 
-Run `npm run check` (Prettier + `astro check`) before committing.
+Run `npm run check` (Biome + `astro check`) before committing.
 
 ## Tech notes
 

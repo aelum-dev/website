@@ -164,8 +164,7 @@ export const installSteps: Step[] = [
     num: "01",
     icon: "f0ac", // nerd-fonts: globe
     title: "Pick a language",
-    description:
-      "Choose from 28 languages. This sets the installer UI, your system locale, and the mirror country.",
+    description: "Choose from 28 languages. This sets the installer UI, your system locale, and the mirror country.",
   },
   {
     num: "02",
@@ -189,8 +188,7 @@ export const installSteps: Step[] = [
     num: "05",
     icon: "f120", // nerd-fonts: terminal
     title: "Watch it go",
-    description:
-      "The installer runs entirely from the live ISO — no internet needed.",
+    description: "The installer runs entirely from the live ISO — no internet needed.",
   },
   {
     num: "06",

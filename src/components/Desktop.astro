@@ -16,17 +16,15 @@ import { software } from "../lib/site";
     </div>
 
     <div class="card-grid grid-software">
-      {
-        software.map((app) => (
-          <Card
-            color={app.color}
-            icon={app.icon}
-            title={app.title}
-            description={app.description}
-            size="md"
-          />
-        ))
-      }
+      {software.map((app) => (
+        <Card
+          color={app.color}
+          icon={app.icon}
+          title={app.title}
+          description={app.description}
+          size="md"
+        />
+      ))}
     </div>
   </div>
 </section>

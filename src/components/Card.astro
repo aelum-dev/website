@@ -23,23 +23,21 @@ const {
 ---
 
 <div class={"card card-pad-" + size + (className ? " " + className : "")}>
-  {
-    color && title && (
-      <div class="card-title-row">
-        {badge && <span class="card-badge">{badge}</span>}
-        <div class="dot" style="--c:{color}">
-          {icon ? (
-            <span class="nf-icon" aria-hidden="true">
-              {String.fromCodePoint(parseInt(icon, 16))}
-            </span>
-          ) : (
-            <span aria-hidden="true">●</span>
-          )}
-        </div>
-        <h3>{title}</h3>
+  {color && title && (
+    <div class="card-title-row">
+      {badge && <span class="card-badge">{badge}</span>}
+      <div class="dot" style="--c:{color}">
+        {icon ? (
+          <span class="nf-icon" aria-hidden="true">
+            {String.fromCodePoint(parseInt(icon, 16))}
+          </span>
+        ) : (
+          <span aria-hidden="true">●</span>
+        )}
       </div>
-    )
-  }
+      <h3>{title}</h3>
+    </div>
+  )}
   {title && !color && <h3>{title}</h3>}
   {description && <p>{description}</p>}
   <slot />

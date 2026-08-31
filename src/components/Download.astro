@@ -49,9 +49,7 @@ const miniFiles = [
 ];
 
 const nf = (code: string) =>
-  `<span class="nf-icon" aria-hidden="true">${String.fromCodePoint(
-    parseInt(code, 16),
-  )}</span>`;
+  `<span class="nf-icon" aria-hidden="true">${String.fromCodePoint(parseInt(code, 16))}</span>`;
 
 const flashTools = [
   {
@@ -138,30 +136,28 @@ const flashTools = [
     </div>
 
     <div class="card-grid grid-flash">
-      {
-        flashTools.map((tool) => (
-          <div class="card card-pad-md flash-card">
-            <div class="card-title-row">
-              <h3>{tool.title}</h3>
-            </div>
-            <ol class="flash-steps">
-              {tool.steps.map((step) => (
-                <li set:html={step.replace("{isoFilename}", isoFilename)} />
-              ))}
-            </ol>
-            {tool.cta && (
-              <a
-                class="btn btn-primary"
-                href={tool.cta.href}
-                target="_blank"
-                rel="noopener"
-              >
-                <span set:html={nf("f08e")} /> {tool.cta.label}
-              </a>
-            )}
+      {flashTools.map((tool) => (
+        <div class="card card-pad-md flash-card">
+          <div class="card-title-row">
+            <h3>{tool.title}</h3>
           </div>
-        ))
-      }
+          <ol class="flash-steps">
+            {tool.steps.map((step) => (
+              <li set:html={step.replace("{isoFilename}", isoFilename)} />
+            ))}
+          </ol>
+          {tool.cta && (
+            <a
+              class="btn btn-primary"
+              href={tool.cta.href}
+              target="_blank"
+              rel="noopener"
+            >
+              <span set:html={nf("f08e")} /> {tool.cta.label}
+            </a>
+          )}
+        </div>
+      ))}
     </div>
   </div>
 </section>
@@ -178,28 +174,26 @@ const flashTools = [
     </div>
 
     <div class="dl-mini-grid">
-      {
-        miniFiles.map((file) => (
-          <div class="card card-pad-sm dl-mini">
-            <div class="card-title-row">
-              <div class="dot" style="--c: var(--accent)">
-                <span set:html={nf(file.icon)} />
-              </div>
-              <h3>{file.title}</h3>
+      {miniFiles.map((file) => (
+        <div class="card card-pad-sm dl-mini">
+          <div class="card-title-row">
+            <div class="dot" style="--c: var(--accent)">
+              <span set:html={nf(file.icon)} />
             </div>
-            <span class="dl-iso-name">{file.name}</span>
-            <p class="dl-mini-desc">{file.desc}</p>
-            <a
-              class="btn btn-ghost"
-              href={file.href}
-              target="_blank"
-              rel="noopener"
-            >
-              Download
-            </a>
+            <h3>{file.title}</h3>
           </div>
-        ))
-      }
+          <span class="dl-iso-name">{file.name}</span>
+          <p class="dl-mini-desc">{file.desc}</p>
+          <a
+            class="btn btn-ghost"
+            href={file.href}
+            target="_blank"
+            rel="noopener"
+          >
+            Download
+          </a>
+        </div>
+      ))}
     </div>
 
     <p class="dl-note">

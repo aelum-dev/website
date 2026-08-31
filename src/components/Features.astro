@@ -18,17 +18,15 @@ import { features } from "../lib/site";
 
       <div>
         <div class="card-grid grid-features">
-          {
-            features.map((feature) => (
-              <Card
-                title={feature.title}
-                icon={feature.icon}
-                description={feature.description}
-                color={feature.color}
-                size="lg"
-              />
-            ))
-          }
+          {features.map((feature) => (
+            <Card
+              title={feature.title}
+              icon={feature.icon}
+              description={feature.description}
+              color={feature.color}
+              size="lg"
+            />
+          ))}
         </div>
       </div>
     </div>

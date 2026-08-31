@@ -42,18 +42,16 @@ import { installSteps } from "../lib/site";
     </div>
 
     <div class="card-grid grid-steps">
-      {
-        installSteps.map((step) => (
-          <Card
-            title={step.title}
-            icon={step.icon}
-            description={step.description}
-            color="#9b7ff2"
-            size="lg"
-            className="step-card"
-          />
-        ))
-      }
+      {installSteps.map((step) => (
+        <Card
+          title={step.title}
+          icon={step.icon}
+          description={step.description}
+          color="#9b7ff2"
+          size="lg"
+          className="step-card"
+        />
+      ))}
     </div>
 
     <div class="step-cta">
