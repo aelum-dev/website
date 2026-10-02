@@ -604,14 +604,8 @@ code {
 .brand .glyph {
   width: 34px;
   height: 34px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   display: grid;
   place-items: center;
-  color: #ffffff;
-  font-weight: 900;
-  box-shadow: 0 6px 18px -4px var(--accent-shadow);
 }
 .nav-links {
   display: flex;
