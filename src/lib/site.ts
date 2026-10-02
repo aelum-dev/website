@@ -90,7 +90,7 @@ export const features: Feature[] = [
     icon: "ede9", // nerd-fonts: compact_disc (live ISO media)
     title: "Minimal live ISO",
     description:
-      "The live ISO is intentionally barebones — its only job is to boot and launch the installer. No extra tools, no clutter to clean up.",
+      "The live ISO is intentionally barebones — its only job is to boot and launch the installer.",
   },
 ];
 
