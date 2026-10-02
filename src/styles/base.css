@@ -665,10 +665,8 @@ code {
   height: 28px;
   border-radius: 8px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   display: grid;
   place-items: center;
-  color: #12091c;
 }
 
 /* ============================================================
