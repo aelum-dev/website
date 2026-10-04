@@ -8,7 +8,7 @@ export const release: ReleaseMetadata = {
   version: "2026.10.04",
   arch: "x86_64",
   filename: "aelum-2026.10.04-x86_64.iso",
-  publishedAt: "2026-10-04T14:05:45Z",
+  publishedAt: "2026-10-04T17:30:23Z",
   sizeBytes: 3615522816,
   sha256: "fc6e0a5759650e3d68d9c9d7bde557839b7cf78e64cc73334c67ba7a00ff803b",
   sha512: "454d27aa3c5c0f878eca91c81cc93670f60a7a11ed6debdcb9633326200ae65f0ab9281fd3e24fd3b3aba8a9c603f718deef087f8adb8012f97774bd1458db4b",
