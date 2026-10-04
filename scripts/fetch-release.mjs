@@ -1,5 +1,5 @@
 // fetch-release.mjs — regenerate src/lib/release.ts from the live release
-// metadata served by the Cloudflare Worker (the same data published to R2).
+// metadata served publicly from the R2 bucket (the same data published to R2).
 //
 // Run in CI right before the site build so the download links always reflect
 // the latest published release:
