@@ -32,4 +32,4 @@ pages:
 
   environment:
     name: gitlab-pages
-    url: https://aelum.gitlab.io/website/
+    url: https://aelum.dev/

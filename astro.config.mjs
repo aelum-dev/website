@@ -2,11 +2,11 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// Canonical base for the GitLab Pages project/site page.
-const site = "https://aelum.gitlab.io/website/";
+// Canonical base for the custom domain served at the site root.
+const site = "https://aelum.dev/";
 
 export default defineConfig({
-  base: "/website/",
+  base: "/",
   site,
   sitemap: {
     // Omit the trailing `index.html` from URLs for clean links.

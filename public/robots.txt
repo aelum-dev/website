@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aelum.gitlab.io/website/sitemap-index.xml
+Sitemap: https://aelum.dev/sitemap-index.xml
