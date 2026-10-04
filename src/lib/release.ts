@@ -8,16 +8,16 @@ export const release: ReleaseMetadata = {
   version: "2026.10.04",
   arch: "x86_64",
   filename: "aelum-2026.10.04-x86_64.iso",
-  publishedAt: "2026-10-04T12:54:31Z",
+  publishedAt: "2026-10-04T14:05:45Z",
   sizeBytes: 3615522816,
   sha256: "fc6e0a5759650e3d68d9c9d7bde557839b7cf78e64cc73334c67ba7a00ff803b",
   sha512: "454d27aa3c5c0f878eca91c81cc93670f60a7a11ed6debdcb9633326200ae65f0ab9281fd3e24fd3b3aba8a9c603f718deef087f8adb8012f97774bd1458db4b",
   urls: {
-    iso: "https://b9584530a8a29f819e97476eb96de57f.r2.cloudflarestorage.com/aelum/v2026.10.04/aelum-2026.10.04-x86_64.iso",
-    sha256: "https://b9584530a8a29f819e97476eb96de57f.r2.cloudflarestorage.com/aelum/v2026.10.04/aelum-2026.10.04-x86_64.iso.sha256",
-    sha512: "https://b9584530a8a29f819e97476eb96de57f.r2.cloudflarestorage.com/aelum/v2026.10.04/aelum-2026.10.04-x86_64.iso.sha512",
-    signature: "https://b9584530a8a29f819e97476eb96de57f.r2.cloudflarestorage.com/aelum/v2026.10.04/aelum-2026.10.04-x86_64.iso.asc",
-    key: "https://b9584530a8a29f819e97476eb96de57f.r2.cloudflarestorage.com/aelum/v2026.10.04/aelum-release-key.asc"
+    iso: "https://cdn.aelum.dev/v2026.10.04/aelum-2026.10.04-x86_64.iso",
+    sha256: "https://cdn.aelum.dev/v2026.10.04/aelum-2026.10.04-x86_64.iso.sha256",
+    sha512: "https://cdn.aelum.dev/v2026.10.04/aelum-2026.10.04-x86_64.iso.sha512",
+    signature: "https://cdn.aelum.dev/v2026.10.04/aelum-2026.10.04-x86_64.iso.asc",
+    key: "https://cdn.aelum.dev/v2026.10.04/aelum-release-key.asc"
   },
   signingKey: {
     uid: "Ivan Kornienko <ik.workmail39@gmail.com>",
