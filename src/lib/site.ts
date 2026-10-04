@@ -201,38 +201,41 @@ export const installSteps: Step[] = [
 // ---------------------------------------------------------------------------
 // Download / release metadata
 //
-// The filename, checksums, and signing key below are real and taken from the
-// build output (docker/output/). The `downloadUrl` values are the GitLab
-// release-asset URLs — fill them in when the release assets are published
-// (or point them at whatever host actually serves the files).
+// All of the values below are derived from src/lib/release.ts, which is
+// AUTO-GENERATED on every release by docker/scripts/build-release-metadata.sh
+// (and committed to this repo, or overwritten in CI by scripts/fetch-release.mjs).
+// This keeps the website's download links, checksums and signing key in lockstep
+// with the files actually published to Cloudflare R2 — no manual editing.
+//
+// The committed release.ts doubles as an offline baseline, so the site builds
+// fine without network access (the deployed site itself makes no network calls).
 // ---------------------------------------------------------------------------
+import { release } from "./release";
 
-export const releaseVersion = "2026.08.28";
-export const releaseArch = "x86_64";
-export const isoFilename = `aelum-${releaseVersion}-${releaseArch}.iso`;
-const releaseBase = "https://gitlab.com/aelum/live-iso/-/releases/download";
+export const releaseVersion = release.version;
+export const releaseArch = release.arch;
+export const isoFilename = release.filename;
 
 export const downloadUrl = {
-  iso: `${releaseBase}/${releaseVersion}/${isoFilename}`,
-  sha256: `${releaseBase}/${releaseVersion}/${isoFilename}.sha256`,
-  sha512: `${releaseBase}/${releaseVersion}/${isoFilename}.sha512`,
-  signature: `${releaseBase}/${releaseVersion}/${isoFilename}.asc`,
-  key: `${releaseBase}/${releaseVersion}/aelum-release-key.asc`,
+  iso: release.urls.iso,
+  sha256: release.urls.sha256,
+  sha512: release.urls.sha512,
+  signature: release.urls.signature,
+  key: release.urls.key,
 } as const;
 
 export const checksums = {
-  sha256: "75253bc1b5fb4833c50516c720ee471d047506a49ca97dd0c2dd44b113dd1fa9",
-  sha512:
-    "c54eadfed5121a7cd89537e95d669873b6bb2d6ac7977eca6f3f63a186b3d410aa0fa00b463f8fe8b599a75bf62167a12d4a06a44682c091427a4a12449afa17",
+  sha256: release.sha256,
+  sha512: release.sha512,
 } as const;
 
 // The GPG key used to sign the ISO. Publish its fingerprint through a
 // trustworthy channel and tell users to compare against it before trusting
 // the signature.
 export const signingKey = {
-  fingerprint: "A675F61C22C26FCE187262E448CC48FDFD881E0D",
-  fingerprintTop: "A675 F61C 22C2 6FCE 1872",
-  fingerprintBot: "62E4 48CC 48FD FD88 1E0D",
-  uid: "Ivan Kornienko <ik.workmail39@gmail.com>",
-  expires: "2029-08-27",
+  fingerprint: release.signingKey.fingerprint,
+  fingerprintTop: release.signingKey.fingerprintTop,
+  fingerprintBot: release.signingKey.fingerprintBot,
+  uid: release.signingKey.uid,
+  expires: release.signingKey.expires,
 } as const;

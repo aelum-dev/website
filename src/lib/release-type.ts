@@ -1,0 +1,38 @@
+// Type for the auto-generated release metadata.
+// The value is provided by src/lib/release.ts (generated on each release).
+// This file is hand-written and committed.
+
+export interface ReleaseMetadata {
+  /** Release tag, e.g. "v2026.08.28". */
+  tag: string;
+  /** Calendar version, e.g. "2026.08.28". */
+  version: string;
+  /** Architecture, e.g. "x86_64". */
+  arch: string;
+  /** ISO filename, e.g. "aelum-2026.08.28-x86_64.iso". */
+  filename: string;
+  /** ISO 8601 UTC publish timestamp. */
+  publishedAt: string;
+  /** Size of the ISO in bytes. */
+  sizeBytes: number;
+  /** SHA-256 of the ISO. */
+  sha256: string;
+  /** SHA-512 of the ISO. */
+  sha512: string;
+  /** Public download URLs for the ISO and its sidecar files. */
+  urls: {
+    iso: string;
+    sha256: string;
+    sha512: string;
+    signature: string;
+    key: string;
+  };
+  /** GPG signing key metadata, shown in the verification section. */
+  signingKey: {
+    uid: string;
+    fingerprint: string;
+    fingerprintTop: string;
+    fingerprintBot: string;
+    expires: string;
+  };
+}

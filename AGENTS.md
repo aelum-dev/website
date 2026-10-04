@@ -58,6 +58,26 @@ All copy is derived from the upstream project READMEs:
 - [Aelum](https://gitlab.com/aelum/live-iso)
 - [Aelum-Installer](https://gitlab.com/aelum/installer)
 
+## Release / Download Metadata (auto-generated)
+
+The download links, checksums, and signing key in the Download section come from
+`src/lib/release.ts`, which is **generated on every release** — never edit it by
+hand:
+
+- `docker/scripts/build-release-metadata.sh` produces it from a signed ISO (and
+  the same data as `latest.json`, uploaded to Cloudflare R2).
+- `docker/scripts/publish-iso.sh` runs it during a release and writes `release.ts`.
+- `docker/scripts/publish-website.sh` commits it to this repo's `main`, which
+  triggers GitLab Pages to redeploy with the new links.
+- `scripts/fetch-release.mjs` can also regenerate it in CI by fetching `latest.json`
+  from the Cloudflare Worker (`RELEASE_METADATA_URL`). If the URL is unset or the
+  fetch fails it keeps the committed file, so the site always builds offline.
+
+`src/lib/release.ts` is committed as an **offline baseline** (a normal pattern for
+generated files) and overwritten on each release. `src/lib/release-type.ts`
+(hand-written) types it. `src/lib/site.ts` re-exports the values the Download
+component consumes (`releaseVersion`, `downloadUrl`, `checksums`, `signingKey`).
+
 ## Assets
 
 - Static images live under `public/` and are served at the site root.
