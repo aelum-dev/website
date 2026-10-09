@@ -204,7 +204,7 @@ export const installSteps: Step[] = [
 // All of the values below are derived from src/lib/release.ts, which is
 // AUTO-GENERATED on every release by docker/scripts/build-release-metadata.sh
 // (and committed to this repo, or overwritten in CI by scripts/fetch-release.mjs).
-// This keeps the website's download links, checksums and signing key in lockstep
+// This keeps the website's download links in lockstep
 // with the files actually published to Cloudflare R2 — no manual editing.
 //
 // The committed release.ts doubles as an offline baseline, so the site builds
@@ -218,24 +218,5 @@ export const isoFilename = release.filename;
 
 export const downloadUrl = {
   iso: release.urls.iso,
-  sha256: release.urls.sha256,
-  sha512: release.urls.sha512,
-  signature: release.urls.signature,
-  key: release.urls.key,
 } as const;
 
-export const checksums = {
-  sha256: release.sha256,
-  sha512: release.sha512,
-} as const;
-
-// The GPG key used to sign the ISO. Publish its fingerprint through a
-// trustworthy channel and tell users to compare against it before trusting
-// the signature.
-export const signingKey = {
-  fingerprint: release.signingKey.fingerprint,
-  fingerprintTop: release.signingKey.fingerprintTop,
-  fingerprintBot: release.signingKey.fingerprintBot,
-  uid: release.signingKey.uid,
-  expires: release.signingKey.expires,
-} as const;
