@@ -17,16 +17,108 @@ import { installSteps } from "../lib/site";
 
       <div class="install-visual">
         <div class="features-demo-frame">
-          <img
-            src="images/installer-screenshot.09bb735a.png"
-            width="1125"
-            height="750"
-            alt="Aelum installer — answering questions and completing installation"
-            loading="eager"
-            fetchpriority="high"
-          />
+          <div class="slideshow" role="group" aria-label="Aelum installer walkthrough">
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-1.4a849105.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — language selection"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </div>
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-2.b1633e57.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — creating the user account"
+              />
+            </div>
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-3.3a383a9e.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — selecting a disk"
+              />
+            </div>
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-4.6f2851c6.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — partitioning the disk"
+              />
+            </div>
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-5.8038bcb4.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — confirming installation"
+              />
+            </div>
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-6.28042c65.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — installing the system"
+              />
+            </div>
+            <div class="slideshow-slide">
+              <img
+                src="images/installer-step-7.59c835f5.png"
+                width="1200"
+                height="800"
+                alt="Aelum installer — installation complete"
+              />
+            </div>
+          </div>
         </div>
       </div>
+
+      <script type="text/javascript" is:inline>
+        // Auto-advancing installer walkthrough. Runs after parse (inline scripts
+        // are modules/deferred); guard anyway so it's safe if markup moves.
+        (function () {
+          var slides = document.querySelectorAll(".slideshow-slide");
+          if (!slides.length) return;
+          var order = Array.prototype.slice.call(slides);
+          var index = 0;
+          var timer = null;
+          var PAUSE = 3500;
+
+          function show(i) {
+            index = (i + order.length) % order.length;
+            order.forEach(function (s, n) {
+              s.classList.toggle("is-active", n === index);
+            });
+          }
+
+          function tick() {
+            show(index + 1);
+          }
+
+          function start() {
+            stop();
+            timer = setInterval(tick, PAUSE);
+          }
+
+          function stop() {
+            if (timer) clearInterval(timer);
+          }
+
+          var group = order[0].parentElement;
+          group.addEventListener("mouseenter", stop);
+          group.addEventListener("mouseleave", start);
+
+          show(0);
+          start();
+        })();
+      </script>
     </div>
 
     <div class="card-grid grid-steps">
