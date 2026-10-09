@@ -61,62 +61,10 @@
   overflow: hidden;
 }
 
-/* Filesystem picker callout (ext4 vs btrfs) */
-
 /* Row of items pushed to opposite ends (shared shortcut for
    `justify-content: space-between`). */
 .between {
   justify-content: space-between;
-}
-.step-cta {
-  margin-top: var(--space-10);
-}
-.step-cta .card {
-  padding: var(--space-7) !important;
-}
-.step-cta .flex-row.between {
-  flex-wrap: nowrap;
-}
-.step-cta .stack {
-  flex: 1 1 60%;
-  min-width: 0;
-  align-items: flex-start;
-}
-.step-cta .stack h3 {
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-.step-cta .stack p {
-  margin: 0;
-}
-.fs-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-left: 2rem;
-}
-.fs-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-.fs-option .card {
-  width: 100%;
-  text-align: center;
-}
-.fs-option .card code {
-  font-size: 1.05rem;
-}
-.selected-fs {
-  border-color: var(--accent);
-}
-.recommended-badge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 @media (min-width: 1025px) {
@@ -132,24 +80,5 @@
   .install-visual {
     grid-column: 1;
     grid-row: 1;
-  }
-}
-
-@media (max-width: 640px) {
-  .step-cta .card {
-    flex-direction: column;
-    align-items: flex-start !important;
-  }
-  .step-cta .flex {
-    width: 100%;
-    justify-content: flex-start;
-  }
-  .fs-grid {
-    margin-left: 0;
-    margin-top: var(--space-6);
-    width: 100%;
-  }
-  .fs-option .card {
-    width: 100%;
   }
 }
