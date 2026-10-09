@@ -624,6 +624,11 @@ code {
   color: var(--accent);
   font-weight: 600;
 }
+/* Underline marks the active menu entry. Scoped to the text links (they carry
+   `hide-mobile`), so the brand logo keeps its own active styling. */
+.nav-links a.hide-mobile.active {
+  border-bottom: 2px solid var(--accent);
+}
 .nav-gl {
   padding: 0.55rem 1.1rem;
   font-size: 0.9rem;
