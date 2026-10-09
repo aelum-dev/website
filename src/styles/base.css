@@ -318,8 +318,7 @@ code {
 #install,
 #features,
 #languages,
-#cli,
-#cta {
+#cli {
   scroll-margin-top: calc(70px + 1.5rem);
 }
 

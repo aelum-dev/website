@@ -1,6 +1,6 @@
 /* ============================================================
    Aelum-Web — Home page (home.css)
-   Hero + CTA. Imports base.css for tokens, reset and shared UI.
+   Hero. Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
 /* Hero is dead centered on screen: full viewport height, content centered
@@ -182,33 +182,3 @@
   }
 }
 
-/* ============================================================
-   CTA
-   ============================================================ */
-
-.cta-card {
-  padding: clamp(2.5rem, 6vw, 4.5rem);
-  text-align: center;
-  background: radial-gradient(
-    120% 120% at 50% 0%,
-    color-mix(in srgb, var(--accent) 22%, transparent) 0%,
-    transparent 60%
-  );
-  border-color: var(--surface-border);
-}
-.cta-title {
-  margin-top: 0;
-  font-size: var(--title-2);
-  font-weight: 800;
-  max-width: 20ch;
-  margin-inline: auto;
-}
-.cta-sub {
-  margin-top: var(--space-5);
-  color: var(--text-dim);
-  max-width: 50ch;
-  margin-inline: auto;
-}
-.cta-actions {
-  margin-top: var(--space-8);
-}

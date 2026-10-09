@@ -9,10 +9,10 @@ import {
 } from "../lib/site";
 
 const isoFile = {
-  title: "Live ISO",
+  title: "Installation ISO",
   name: isoFilename,
   href: downloadUrl.iso,
-  desc: "The bootable live ISO. Flash it to a USB drive, boot from it on any computer, and run the installer — it sets up Aelum fully offline, no internet needed.",
+  desc: "Grab the bootable ISO, flash it to a USB drive, and boot it on UEFI-supported computer.",
 };
 
 const nf = (code: string) =>
@@ -62,8 +62,9 @@ const flashTools = [
           </span>
           <h2 class="section-title">Download Aelum.</h2>
           <p class="dl-hero-lead">
-            Grab the bootable ISO, flash it to a USB drive, and boot it on any
-            computer. Aelum installs fully offline — no internet needed.
+            The bootable installer ISO. Flash it to a USB drive, boot from it,
+            installer will start automatically — it sets up Aelum fully offline,
+            no internet needed.
           </p>
         </div>
       </div>
