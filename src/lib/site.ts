@@ -82,7 +82,7 @@ export const features: Feature[] = [
     icon: "f051b", // nerd-fonts: timer
     title: "~1 minute install",
     description:
-      "Because every package is already included, install takes about a minute and the complete OS uses roughly 3.8 GB after install on btrfs (~5 GB on ext4).",
+      "Because every package is already included, install takes about a minute and the complete OS uses roughly 3.2GB after install on btrfs (~5 GB on ext4).",
   },
   {
     color: "#63e6a0",
