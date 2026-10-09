@@ -7,8 +7,8 @@ export const installerRepo = "https://gitlab.com/aelum/installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";
-export const ventoyUrl = "https://www.ventoy.io/";
-export const balenaEtcherUrl = "https://www.balena.io/etcher/";
+export const ventoyUrl = "https://www.ventoy.net/en/download.html";
+export const balenaEtcherUrl = "https://etcher.balena.io/#download-etcher";
 
 // The 28 languages the installer UI supports.
 export const languages = [
