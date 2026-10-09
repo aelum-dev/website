@@ -1,7 +1,7 @@
 // Theme switcher: applies a persisted (or system-derived) theme with no flash.
 // Stores the choice in localStorage under "aelum-theme".
 
-(function () {
+(() => {
   const ROOT = document.documentElement;
   const STORAGE_KEY = "aelum-theme";
 

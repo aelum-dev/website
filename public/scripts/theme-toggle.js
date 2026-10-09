@@ -3,7 +3,7 @@
 // persists the choice to localStorage. A radial "ink" morph overlays the
 // switch for a smooth, satisfying transition.
 
-(function () {
+(() => {
   const STORAGE_KEY = "aelum-theme";
   const ROOT = document.documentElement;
   const TOGGLE = document.querySelector("[data-theme-toggle]");

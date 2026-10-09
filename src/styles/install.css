@@ -11,13 +11,15 @@
   gap: var(--space-10);
 }
 
-/* Installer demo frame — shared visual shell (3:2 glassy window) */
+/* Installer demo frame — shared visual shell (3:2 glassy window).
+   Identical shell to the home-page hero-visual (home.css), only the aspect
+   ratio differs: 3:2 here vs 16:9 on the hero. */
 .features-demo-frame {
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
-  width: min(90%, calc(38vh * 3 / 2));
-  aspect-ratio: 3 / 2;
+  width: min(100%, calc(42vh * 3 / 2.05));
+  aspect-ratio: 3 / 2.05;
   display: grid;
   place-items: center;
   padding: 1.25rem;
@@ -37,12 +39,9 @@
   opacity: 0.45;
   background: radial-gradient(60% 70% at 50% 20%, var(--accent));
 }
-.features-demo-frame {
-  position: relative;
-}
 
 /* Auto-advancing walkthrough: slides stack and cross-fade inside the frame's
-   content box (the frame keeps its padding + 16:9 shape). */
+   content box, matching the hero screenshot styling (14px corners). */
 .slideshow {
   position: relative;
   width: 100%;
@@ -57,7 +56,7 @@
   /* radius on the wrapper, not the img — mirrors the hero, which rounds
      cleanly. translateZ(0) is intentionally omitted: forcing a composited
      layer on the downscaled raster makes Chromium render the corners sharp. */
-  border-radius: 20px;
+  border-radius: 14px;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
@@ -66,19 +65,10 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 20px;
+  border-radius: 14px;
 }
 .slideshow-slide.is-active {
   opacity: 1;
-}
-
-.features-demo-frame img,
-.features-demo-frame video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 20px;
 }
 
 /* Grid preset: install step cards */
@@ -96,10 +86,10 @@
   overflow: hidden;
 }
 
-/* Row of items pushed to opposite ends (shared shortcut for
-   `justify-content: space-between`). */
-.between {
-  justify-content: space-between;
+@media (max-width: 1024px) {
+  .features-demo-frame {
+    padding: 0.75rem;
+  }
 }
 
 @media (min-width: 1025px) {

@@ -1,7 +1,6 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
 export const mainRepo = "https://gitlab.com/aelum/live-iso";
-export const dockerRepo = "https://gitlab.com/aelum/docker";
 export const gitlabUrl = "https://gitlab.com/users/aelum/projects";
 export const installerRepo = "https://gitlab.com/aelum/installer";
 export const hyprlandUrl = "https://hyprland.org/";
@@ -89,8 +88,7 @@ export const features: Feature[] = [
     color: "#63e6a0",
     icon: "ede9", // nerd-fonts: compact_disc (live ISO media)
     title: "Minimal live ISO",
-    description:
-      "The live ISO is intentionally barebones — its only job is to boot and launch the installer.",
+    description: "The live ISO is intentionally barebones — its only job is to boot and launch the installer.",
   },
 ];
 
@@ -219,4 +217,3 @@ export const isoFilename = release.filename;
 export const downloadUrl = {
   iso: release.urls.iso,
 } as const;
-

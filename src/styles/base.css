@@ -43,7 +43,7 @@
   src: url("./fonts/NerdFontsSymbols.woff2") format("woff2");
 }
 .nf-icon {
-  font-family: "NerdFontsSymbols Nerd Font";
+  font-family: "NerdFontsSymbols Nerd Font", sans-serif;
   font-size: 26px;
   line-height: 1;
   vertical-align: -0.12em;
@@ -326,93 +326,25 @@ code {
    Flex / grid layout utilities
    ============================================================ */
 
-/* Layout axis */
+/* Layout utilities — the only ones actually applied in the markup. */
 .flex {
   display: flex;
 }
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-.flex-row {
-  display: flex;
+.flex-wrap {
   flex-wrap: wrap;
-  align-items: center;
 }
-.inline-flex {
-  display: inline-flex;
-}
-
-/* Alignment */
 .items-center {
   align-items: center;
-}
-.items-start {
-  align-items: flex-start;
-}
-.items-end {
-  align-items: flex-end;
-}
-.justify-between {
-  justify-content: space-between;
 }
 .justify-center {
   justify-content: center;
 }
-.justify-start {
-  justify-content: flex-start;
-}
-
-/* Wrapping */
-.flex-wrap {
-  flex-wrap: wrap;
-}
 
 /* Gaps — the single source of truth for spacing between items */
-.gap-1 {
-  gap: var(--space-1);
-}
-.gap-2 {
-  gap: var(--space-2);
-}
-.gap-3 {
-  gap: var(--space-3);
-}
 .gap-4 {
   gap: var(--space-4);
 }
-.gap-5 {
-  gap: var(--space-5);
-}
 .gap-6 {
-  gap: var(--space-6);
-}
-.gap-8 {
-  gap: var(--space-8);
-}
-
-/* Vertical stacks (column) with a consistent gap */
-.stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.stack-gap-1 {
-  gap: var(--space-1);
-}
-.stack-gap-2 {
-  gap: var(--space-2);
-}
-.stack-gap-3 {
-  gap: var(--space-3);
-}
-.stack-gap-4 {
-  gap: var(--space-4);
-}
-.stack-gap-5 {
-  gap: var(--space-5);
-}
-.stack-gap-6 {
   gap: var(--space-6);
 }
 
@@ -503,8 +435,7 @@ code {
   font-weight: 700;
   margin: 0;
 }
-.card-pad-md .card-title-row h3,
-.card-pad-sm .card-title-row h3 {
+.card-pad-md .card-title-row h3 {
   font-size: 1.1rem;
 }
 
@@ -519,6 +450,7 @@ code {
   color: var(--c);
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: the [data-theme] button rule above sets a higher specificity ceiling that every component rule below legitimately sits under */
 .card {
   background: var(--surface);
   border: 1px solid var(--surface-border);
@@ -536,21 +468,6 @@ code {
 }
 .card-pad-md {
   padding: var(--space-6);
-}
-.card-pad-sm {
-  padding: var(--space-5);
-}
-
-/* Number badge for install steps */
-.step-num {
-  font-size: 2.6rem;
-  font-weight: 900;
-  line-height: 1;
-  margin-bottom: var(--space-4);
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* ============================================================
@@ -657,20 +574,8 @@ code {
   justify-content: space-between;
   align-items: center;
 }
-.footer-brand {
-  font-weight: 700;
-  color: var(--text);
-}
 .footer-links {
   margin-left: auto;
-}
-.footer-glyph {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
 }
 
 /* ============================================================
@@ -817,7 +722,6 @@ html.js .page.active {
     justify-content: center;
     text-align: center;
   }
-  .footer-brand,
   .footer-links {
     margin-inline: auto;
   }
@@ -866,6 +770,7 @@ html.js .page.active {
   *,
   *::before,
   *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: the global * transition rule targets the same universal selectors, so !important is required to override at equal specificity */
     transition: none !important;
   }
   .theme-morph {

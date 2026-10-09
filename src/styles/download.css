@@ -40,19 +40,6 @@
 .dl-hero-right .card {
   height: 100%;
 }
-.dl-version {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--accent);
-  padding: 0.45rem 0.9rem;
-  border: 1px solid var(--surface-border);
-  border-radius: 999px;
-  background: var(--surface);
-}
 
 /* Flash-to-USB tool cards */
 .flash-card {
@@ -94,4 +81,3 @@
     order: -1;
   }
 }
-

@@ -18,7 +18,9 @@ const METADATA_URL = process.env.RELEASE_METADATA_URL;
 const TS_PATH = process.env.RELEASE_TS_PATH ?? "src/lib/release.ts";
 
 function esc(s) {
-  return String(s ?? "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  return String(s ?? "")
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"');
 }
 
 function writeRelease(release) {
@@ -48,8 +50,24 @@ function writeRelease(release) {
   lines.push("  signingKey: {");
   lines.push(`    uid: "${esc(release.signingKey.uid)}",`);
   lines.push(`    fingerprint: "${esc(fp)}",`);
-  lines.push(`    fingerprintTop: "${esc(release.signingKey.fingerprintTop ?? fp.replace(/.{5}$/g, "").replace(/(.{4})/g, "$1 ").trim())}",`);
-  lines.push(`    fingerprintBot: "${esc(release.signingKey.fingerprintBot ?? fp.replace(/^.{5}/g, "").replace(/(.{4})/g, "$1 ").trim())}",`);
+  lines.push(
+    `    fingerprintTop: "${esc(
+      release.signingKey.fingerprintTop ??
+        fp
+          .replace(/.{5}$/g, "")
+          .replace(/(.{4})/g, "$1 ")
+          .trim(),
+    )}",`,
+  );
+  lines.push(
+    `    fingerprintBot: "${esc(
+      release.signingKey.fingerprintBot ??
+        fp
+          .replace(/^.{5}/g, "")
+          .replace(/(.{4})/g, "$1 ")
+          .trim(),
+    )}",`,
+  );
   lines.push(`    expires: "${esc(release.signingKey.expires)}"`);
   lines.push("  }");
   lines.push("};");

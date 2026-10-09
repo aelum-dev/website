@@ -1,6 +1,7 @@
 // Configure your settings at https://astro.dev/config
-import { defineConfig } from "astro/config";
+
 import sitemap from "@astrojs/sitemap";
+import { defineConfig } from "astro/config";
 
 // Canonical base for the custom domain served at the site root.
 const site = "https://aelum.dev/";
