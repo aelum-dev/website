@@ -60,12 +60,26 @@
   opacity: 0;
   transition: opacity 0.6s ease;
 }
-.slideshow-slide img {
+/* Specificity note: kept as `img.shot` (0,1,1), not prefixed with
+   `.slideshow-slide`. The theme-gating rules below are (0,2,0) and must win
+   over this base `display: block`, otherwise both shots stay visible. */
+img.shot {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
   border-radius: 14px;
+}
+/* Each slide holds a dark and a light shot; show only the one matching the
+   active site theme. Gating on [data-theme] means the slideshow flips live
+   when the user toggles theme, with no JS. */
+[data-theme="dark"] .shot--light {
+  display: none;
+}
+[data-theme="light"] .shot--dark {
+  display: none;
 }
 .slideshow-slide.is-active {
   opacity: 1;
