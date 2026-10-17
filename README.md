@@ -6,14 +6,14 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 
 ## What's on the site
 
-- **Hero** — the one-line pitch, key stats (~1 min install, 4.7 GB, no network during install), and the ISO preview.
+- **Hero** — the one-line pitch, key stats (~1 min install, 3.2 GB installed, 28 languages), inline value props, and the desktop preview with floating chips.
 - **Features** — why Aelum: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, minimal live ISO.
 - **What you install** — the finished desktop: Hyprland, DMS greeter, matugen, Firefox, PipeWire, Plymouth, GTK/Qt theming, ZRAM swap.
-- **The installer** — the 6-step wizard, plus the ext4 vs btrfs choice.
-- **Languages** — all 28 installer languages.
-- **CLI** — headless / scripted install examples.
-- **Download** — the ISO, its SHA-256 / SHA-512 checksums, GPG signature, signing key, and flashing tools (Ventoy, BalenaEtcher, dd).
-- **Call to action** — "build it yourself": the Docker recipe that assembles the ISO.
+- **The installer** — the 7-shot auto-advancing walkthrough, the 6-step wizard, plus the ext4 vs btrfs choice.
+- **Languages** — all 28 installer languages in a full-bleed marquee.
+- **CLI** — headless / scripted install examples (with a copy button).
+- **Download** — the ISO, its SHA-256 / SHA-512 checksums, GPG signing key, and flashing tools (Ventoy, BalenaEtcher, dd).
+- **Call to action** — a closing band that points to the download and the source.
 
 ## Project Structure
 
@@ -25,17 +25,18 @@ src/
   layouts/
     Layout.astro       # head, fonts, theme script, meta
   components/
-    Nav.astro          # navigation / header
+    Nav.astro          # navigation / floating glass header
     Hero.astro         # hero section
     Features.astro     # features section
     Desktop.astro      # finished desktop section
     Install.astro      # installer wizard section
-    Languages.astro    # installer languages section
+    Languages.astro    # installer languages marquee
     CLI.astro          # headless install examples
-    CTA.astro          # call-to-action / "build it yourself" section
+    CTA.astro          # closing call-to-action band
     Download.astro     # ISO download + verification section
     Footer.astro       # footer
-    Card.astro         # reusable card
+    Card.astro         # reusable glassy card
+    CopyButton.astro   # copy-to-clipboard control
   lib/
     site.ts            # all site copy (languages, links, feature text)
   styles/
@@ -74,7 +75,7 @@ Run `npm run check` (Biome + `astro check`) before committing.
 
 ## Tech notes
 
-- Built on **Astro 7** (static site generation). The whole site is one server-rendered HTML shell, so every page is present without JavaScript; `public/scripts/app.js` then switches between pages by hash (progressive enhancement — with JS it shows a single active shell, without JS it falls back to a scrollable view). There is no scroll-reveal script.
+- Built on **Astro 7** (static site generation). The whole site is one server-rendered HTML shell, so every page is present without JavaScript; `public/scripts/app.js` then switches between pages by hash (progressive enhancement — with JS it shows a single active shell, without JS it falls back to a scrollable view). `app.js` also drives the mobile nav, scroll reveal, copy buttons, and the card glow — all enhancement-only.
 - The palette and glassy cards echo the **Material-You** look of the desktop the installer ships.
 - The site itself is a static site — no backend, no API calls, no network requests to serve it. Fonts are self-hosted woff2 files under `src/styles/fonts/`.
 

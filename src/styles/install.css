@@ -4,44 +4,46 @@
    Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
-/* Install section — heading + demo side by side, steps below */
+/* Install section — demo on the left, heading on the right. */
 .install-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-10);
+  gap: clamp(2rem, 4vw, 3rem);
+  align-items: center;
 }
 
 /* Installer demo frame — shared visual shell (3:2 glassy window).
-   Identical shell to the home-page hero-visual (home.css), only the aspect
-   ratio differs: 3:2 here vs 16:9 on the hero. */
+   Same shell as the home-page hero-visual (home.css), different aspect. */
 .features-demo-frame {
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
-  width: min(100%, calc(42vh * 3 / 2.05));
+  width: min(100%, calc(46vh * 3 / 2.05));
   aspect-ratio: 3 / 2.05;
   display: grid;
   place-items: center;
-  padding: 1.25rem;
-  border-radius: var(--radius);
+  /* Extra bottom padding reserves a gutter for the slideshow dots, so they
+     sit on the frame surface instead of straddling the screenshot's edge. */
+  padding: 0.75rem 0.75rem 2rem;
+  border-radius: var(--radius-xl);
   background: var(--surface);
   border: 1px solid var(--surface-border);
+  backdrop-filter: blur(14px);
   box-shadow:
-    0 30px 60px -30px var(--accent-shadow-strong),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    var(--shadow-lg),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 .features-demo-frame::before {
   content: "";
   position: absolute;
-  inset: 8%;
+  inset: 6%;
   z-index: -1;
-  filter: blur(60px);
-  opacity: 0.45;
-  background: radial-gradient(60% 70% at 50% 20%, var(--accent));
+  filter: blur(70px);
+  opacity: 0.5;
+  background: radial-gradient(60% 70% at 50% 20%, var(--accent), transparent 70%);
 }
 
-/* Auto-advancing walkthrough: slides stack and cross-fade inside the frame's
-   content box, matching the hero screenshot styling (14px corners). */
+/* Auto-advancing walkthrough: slides stack and cross-fade inside the frame. */
 .slideshow {
   position: relative;
   width: 100%;
@@ -53,10 +55,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  /* radius on the wrapper, not the img — mirrors the hero, which rounds
-     cleanly. translateZ(0) is intentionally omitted: forcing a composited
-     layer on the downscaled raster makes Chromium render the corners sharp. */
-  border-radius: 14px;
+  border-radius: 18px;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
@@ -70,7 +69,7 @@ img.shot {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 18px;
 }
 /* Each slide holds a dark and a light shot; show only the one matching the
    active site theme. Gating on [data-theme] means the slideshow flips live
@@ -85,39 +84,73 @@ img.shot {
   opacity: 1;
 }
 
-/* Grid preset: install step cards */
+/* Progress dots in the frame's bottom gutter. */
+.slideshow-dots {
+  position: absolute;
+  bottom: 0.65rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
+}
+.slideshow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  border: none;
+  padding: 0;
+  background: var(--surface-border);
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    width 0.3s var(--ease);
+}
+.slideshow-dot.is-active {
+  background: var(--accent);
+  width: 20px;
+}
+
+/* Step timeline — a numbered grid with a connecting line. */
 .grid-steps {
   --cell-min: 300px;
   --grid-gap: var(--space-4);
-  /* install-grid holds the heading + demo video side by side, so .section-head's
-     margin-bottom is used up inside it. Give the step cards their own top gap,
-     matching the standard heading→body spacing (--head-margin). */
   margin-top: var(--head-margin);
 }
-
 .step-card {
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-8);
+}
+.step-num {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-6);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent) 24%, transparent);
+  letter-spacing: -0.04em;
 }
 
 @media (max-width: 1024px) {
   .features-demo-frame {
-    padding: 0.75rem;
+    padding: 0.6rem;
   }
 }
 
 @media (min-width: 1025px) {
   .install-grid {
     grid-template-columns: 6fr 4fr;
-    grid-template-rows: auto;
-    gap: var(--space-10);
-  }
-  .install-head {
-    grid-column: 2;
-    grid-row: 1;
   }
   .install-visual {
     grid-column: 1;
+    grid-row: 1;
+  }
+  .install-head {
+    grid-column: 2;
     grid-row: 1;
   }
 }

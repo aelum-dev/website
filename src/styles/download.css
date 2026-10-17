@@ -1,44 +1,163 @@
 /* ============================================================
    Aelum-Web — Download page (download.css)
-   ISO hero and flash-to-USB tools.
+   ISO hero, verification, and flash-to-USB tools.
    Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
-/* Big ISO hero card */
-.dl-iso-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.dl-iso-name {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 0.85rem;
-  word-break: break-all;
-  color: var(--text-dim);
-}
-.dl-iso-desc {
-  font-size: 1rem;
-  color: var(--text-dim);
-}
-.dl-iso-card .btn {
-  margin-top: 0.5rem;
-  align-self: flex-start;
-}
-
-/* Download hero — 2 columns: title left, big ISO card right */
+/* Download hero — copy left, big ISO card right. */
 .dl-hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
-  align-items: start;
+  gap: clamp(2rem, 4vw, 3rem);
+  align-items: center;
 }
 .dl-hero-lead {
   color: var(--text-dim);
   font-size: var(--subtitle-size);
   max-width: 46ch;
 }
-.dl-hero-right .card {
-  height: 100%;
+/* The hero copy is a grid item, so it needs no extra bottom margin. */
+.dl-hero-left {
+  margin-bottom: 0;
+}
+
+/* Big ISO card */
+.dl-iso-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  background: linear-gradient(160deg, var(--accent-soft), transparent 55%), var(--surface);
+}
+.dl-iso-card .card-head {
+  margin-bottom: var(--space-1);
+}
+.dl-iso-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.dl-iso-name {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.82rem;
+  word-break: break-all;
+  color: var(--text-dim);
+}
+.dl-iso-desc {
+  font-size: 0.98rem;
+  color: var(--text-dim);
+}
+.dl-iso-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* Copy-to-clipboard chip (filename + checksums). */
+.copy-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.55rem 0.55rem 0.55rem 0.9rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
+}
+.copy-field-label {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.copy-field code {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.copy-btn {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.2s var(--ease-spring);
+}
+.copy-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--surface-solid);
+  transform: translateY(-1px);
+}
+.copy-btn.is-copied {
+  color: var(--accent-green);
+  border-color: color-mix(in srgb, var(--accent-green) 45%, transparent);
+}
+.copy-glyph {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+.copy-glyph--done {
+  display: none;
+}
+.copy-btn.is-copied .copy-glyph--copy {
+  display: none;
+}
+.copy-btn.is-copied .copy-glyph--done {
+  display: grid;
+}
+
+/* Verification card */
+.dl-verify {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.dl-verify-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.dl-key {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--surface-border);
+  background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+}
+.dl-key-uid {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.92rem;
+}
+.dl-key-fp {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.dl-key-exp {
+  font-size: 0.78rem;
+  color: var(--text-faint);
 }
 
 /* Flash-to-USB tool cards */
@@ -46,20 +165,24 @@
   display: flex;
   flex-direction: column;
 }
-.flash-card .card-title-row {
-  margin-bottom: var(--space-3);
+.flash-card .card-head {
+  margin-bottom: var(--space-4);
 }
 .flash-steps {
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-5);
   padding-left: var(--space-5);
   flex: 1;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
-.flash-steps li {
-  margin-bottom: var(--space-2);
+.flash-steps li::marker {
+  color: var(--accent);
+  font-weight: 700;
 }
 .flash-card .btn {
   align-self: flex-start;
-  margin-top: auto;
 }
 
 /* Grid preset: flash tool cards */
@@ -67,17 +190,16 @@
   --cell-min: 300px;
   --grid-gap: var(--space-5);
 }
+.grid-verify {
+  --cell-min: 320px;
+  --grid-gap: var(--space-5);
+}
+.grid-verify .card {
+  height: 100%;
+}
 
 @media (min-width: 900px) {
   .dl-hero-grid {
     grid-template-columns: 1fr 1fr;
-    align-items: stretch;
-  }
-}
-
-@media (max-width: 899px) {
-  /* Stack title above the card on narrow screens */
-  .dl-hero-left {
-    order: -1;
   }
 }

@@ -1,19 +1,27 @@
 ---
-import { balenaEtcherUrl, downloadUrl, isoFilename, releaseArch, releaseVersion, ventoyUrl } from "../lib/site";
+import {
+  balenaEtcherUrl,
+  checksums,
+  downloadUrl,
+  isoFilename,
+  releaseArch,
+  releasePublishedAt,
+  releaseSizeBytes,
+  releaseVersion,
+  signingKey,
+  ventoyUrl,
+} from "../lib/site";
+import CopyButton from "./CopyButton.astro";
 
-const isoFile = {
-  title: "Installation ISO",
-  name: isoFilename,
-  href: downloadUrl.iso,
-  desc: "Grab the bootable ISO, flash it to a USB drive, and boot it on UEFI-supported computer.",
-};
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
-const nf = (code: string) =>
-  `<span class="nf-icon" aria-hidden="true">${String.fromCodePoint(parseInt(code, 16))}</span>`;
+const isoSize = `${(releaseSizeBytes / 1e9).toFixed(2)} GB`;
+const isoDate = releasePublishedAt.slice(0, 10);
 
 const flashTools = [
   {
     title: "Ventoy",
+    icon: "ede9",
     cta: { href: ventoyUrl, label: "Get Ventoy" },
     steps: [
       `Download and open Ventoy on your computer.`,
@@ -24,6 +32,7 @@ const flashTools = [
   },
   {
     title: "BalenaEtcher",
+    icon: "f02e9",
     cta: { href: balenaEtcherUrl, label: "Get BalenaEtcher" },
     steps: [
       `Download and open BalenaEtcher on your computer.`,
@@ -34,6 +43,7 @@ const flashTools = [
   },
   {
     title: "dd (Linux / macOS)",
+    icon: "f120",
     // dd ships with the OS, so there is nothing to download.
     cta: null,
     steps: [
@@ -48,35 +58,57 @@ const flashTools = [
 <section class="section">
   <div class="container">
     <div class="dl-hero-grid">
-      <div class="dl-hero-left">
-        <div class="section-head">
-          <span class="eyebrow">
-            Aelum {releaseVersion} · {releaseArch}
+      <div class="dl-hero-left section-head reveal">
+        <span class="eyebrow">
+          <span class="eyebrow-chip" aria-hidden="true">
+            <span class="nf-icon">&#xf0ed;</span>
           </span>
-          <h2 class="section-title">Download Aelum.</h2>
-          <p class="dl-hero-lead">
-            The bootable installer ISO. Flash it to a USB drive, boot from it,
-            installer will start automatically — it sets up Aelum fully offline,
-            no internet needed.
-          </p>
-        </div>
+          Aelum {releaseVersion} · {releaseArch}
+        </span>
+        <h2 class="section-title">Download Aelum.</h2>
+        <p class="dl-hero-lead">
+          The bootable installer ISO. Flash it to a USB drive and boot from it —
+          the installer starts automatically and sets up Aelum fully offline, no
+          internet needed.
+        </p>
       </div>
 
-      <div class="dl-hero-right">
+      <div class="dl-hero-right reveal">
         <div class="card card-pad-lg dl-iso-card">
-          <div class="card-title-row">
-            <h3>{isoFile.title}</h3>
+          <div class="card-head">
+            <span class="icon-tile" aria-hidden="true">
+              <span class="nf-icon">{glyph("ede9")}</span>
+            </span>
+            <div class="card-head-text">
+              <span class="card-badge">
+                {isoSize} · {isoDate}
+              </span>
+              <h3>Installation ISO</h3>
+            </div>
           </div>
-          <span class="dl-iso-name">{isoFile.name}</span>
-          <p class="dl-iso-desc">{isoFile.desc}</p>
-          <a
-            class="btn btn-primary"
-            href={isoFile.href}
-            target="_blank"
-            rel="noopener"
-          >
-            <span set:html={nf("f0ed")} /> Download
-          </a>
+
+          <div class="copy-field">
+            <span class="copy-field-label">File</span>
+            <code>{isoFilename}</code>
+            <CopyButton value={isoFilename} label="Copy filename" />
+          </div>
+
+          <div class="dl-iso-actions">
+            <a
+              class="btn btn-primary btn-lg"
+              href={downloadUrl.iso}
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="nf-icon" aria-hidden="true">
+                {glyph("f0ed")}
+              </span>
+              Download ISO
+            </a>
+            <a class="btn btn-ghost btn-lg" href="#install-tools">
+              How to flash it
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -85,8 +117,69 @@ const flashTools = [
 
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">Before you boot</span>
+    <div class="section-head reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xee3c;</span>
+        </span>
+        Verify
+      </span>
+      <h2 class="section-title">Check your download.</h2>
+      <p class="section-sub">
+        Every release is signed. Compare the checksum, then verify the signature
+        against the signing key below.
+      </p>
+    </div>
+
+    <div class="card-grid grid-verify">
+      <div class="card card-pad-lg dl-verify">
+        <div class="card-head">
+          <span class="icon-tile" aria-hidden="true">
+            <span class="nf-icon">{glyph("f012c")}</span>
+          </span>
+          <h3>Checksums</h3>
+        </div>
+        <div class="dl-verify-rows">
+          <div class="copy-field">
+            <span class="copy-field-label">SHA-256</span>
+            <code>{checksums.sha256}</code>
+            <CopyButton value={checksums.sha256} label="Copy SHA-256" />
+          </div>
+          <div class="copy-field">
+            <span class="copy-field-label">SHA-512</span>
+            <code>{checksums.sha512}</code>
+            <CopyButton value={checksums.sha512} label="Copy SHA-512" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-pad-lg dl-verify">
+        <div class="card-head">
+          <span class="icon-tile" aria-hidden="true">
+            <span class="nf-icon">{glyph("eb11")}</span>
+          </span>
+          <h3>Signing key</h3>
+        </div>
+        <div class="dl-key">
+          <span class="dl-key-uid">{signingKey.uid}</span>
+          <span class="dl-key-fp">{signingKey.fingerprintTop}</span>
+          <span class="dl-key-fp">{signingKey.fingerprintBot}</span>
+          <span class="dl-key-exp">Expires {signingKey.expires}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="install-tools">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf02ca;</span>
+        </span>
+        Before you boot
+      </span>
       <h2 class="section-title">Flash it to a USB drive.</h2>
       <p class="section-sub">
         Any of these writes the ISO to a USB stick in a minute. Ventoy keeps the
@@ -96,28 +189,36 @@ const flashTools = [
     </div>
 
     <div class="card-grid grid-flash">
-      {flashTools.map((tool) => (
-        <div class="card card-pad-md flash-card">
-          <div class="card-title-row">
-            <h3>{tool.title}</h3>
+      {
+        flashTools.map((tool) => (
+          <div class="card card-pad-md flash-card">
+            <div class="card-head">
+              <span class="icon-tile" aria-hidden="true">
+                <span class="nf-icon">{glyph(tool.icon)}</span>
+              </span>
+              <h3>{tool.title}</h3>
+            </div>
+            <ol class="flash-steps">
+              {tool.steps.map((step) => (
+                <li set:html={step.replace("{isoFilename}", isoFilename)} />
+              ))}
+            </ol>
+            {tool.cta && (
+              <a
+                class="btn btn-primary"
+                href={tool.cta.href}
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="nf-icon" aria-hidden="true">
+                  {glyph("f08e")}
+                </span>
+                {tool.cta.label}
+              </a>
+            )}
           </div>
-          <ol class="flash-steps">
-            {tool.steps.map((step) => (
-              <li set:html={step.replace("{isoFilename}", isoFilename)} />
-            ))}
-          </ol>
-          {tool.cta && (
-            <a
-              class="btn btn-primary"
-              href={tool.cta.href}
-              target="_blank"
-              rel="noopener"
-            >
-              <span set:html={nf("f08e")} /> {tool.cta.label}
-            </a>
-          )}
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </section>

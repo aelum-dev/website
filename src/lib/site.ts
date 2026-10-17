@@ -42,7 +42,6 @@ export const languages = [
 ];
 
 export interface Feature {
-  color: string;
   icon: string;
   title: string;
   description: string;
@@ -50,50 +49,58 @@ export interface Feature {
 
 export const features: Feature[] = [
   {
-    color: "#9b7ff2",
     icon: "f05aa", // nerd-fonts: wifi-off
-    title: "Fully offline installer",
+    title: "Fully offline install",
     description:
-      "Every package is embedded in the ISO and served from an embedded local mirror. Zero network dependency during install.",
+      "Every package is baked into the ISO and served from an embedded local mirror. The install never touches the network.",
   },
   {
-    color: "#ff7ac6",
     icon: "f06a9", // nerd-fonts: robot
-    title: "Zero-touch boot",
-    description:
-      "Greetd launches a barebones Hyprland that starts the installer automatically on first boot. No manual commands, no thinking about it.",
+    title: "Zero-touch installer",
+    description: "greetd starts a barebones Hyprland that opens the installer on its own. No terminal, no commands.",
   },
   {
-    color: "#6fd0ff",
+    icon: "eb11", // nerd-fonts: key
+    title: "Optional LUKS2 encryption",
+    description: "Encrypt the root partition with LUKS2 and unlock it with a passphrase at boot.",
+  },
+  {
+    icon: "f02ca", // nerd-fonts: harddisk
+    title: "Dual-boot safe",
+    description:
+      "Manual mode only touches the Boot and Root partitions you pick — mark the rest Preserve to keep another OS and your files.",
+  },
+  {
+    icon: "f0570", // nerd-fonts: view_grid
+    title: "ext4, btrfs, or LVM",
+    description:
+      "Pick ext4 or btrfs — btrfs gets an automatic subvolume layout — optionally on top of LVM logical volumes.",
+  },
+  {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
     title: "Silent boot",
     description:
-      "A clean UEFI splash with the Plymouth BGRT theme shows your OEM logo — no console spam, no boot-time noise.",
+      "A branded Aelum Plymouth splash — with passphrase unlock on encrypted installs — instead of console spam.",
   },
   {
-    color: "#63e6a0",
     icon: "f037a", // nerd-fonts: monitor-multiple
     title: "Auto monitor scaling",
-    description:
-      "Live ISO detects the connected monitor and applies the right Hyprland scale automatically, so the installer is crisp on 1080p, 1440p, or 4K.",
+    description: "Each connected monitor gets the right Hyprland scale automatically — crisp at 1080p, 1440p, and 4K.",
   },
   {
-    color: "#9b7ff2",
     icon: "f051b", // nerd-fonts: timer
     title: "~1 minute install",
     description:
-      "Because every package is already included, install takes about a minute and the complete OS uses roughly 3.2GB after install on btrfs (~5 GB on ext4).",
+      "Nothing is downloaded during install, so a full system lands on disk in about a minute — roughly 3.2 GB on btrfs (compression) or 4.7 GB on ext4.",
   },
   {
-    color: "#63e6a0",
-    icon: "ede9", // nerd-fonts: compact_disc (live ISO media)
-    title: "Minimal live ISO",
-    description: "The live ISO is intentionally barebones — its only job is to boot and launch the installer.",
+    icon: "f120", // nerd-fonts: terminal
+    title: "GUI or CLI",
+    description: "Use the graphical wizard, or script a headless install with the aelum-installer-cli binary.",
   },
 ];
 
 export interface Software {
-  color: string;
   icon: string;
   title: string;
   description: string;
@@ -101,49 +108,46 @@ export interface Software {
 
 export const software: Software[] = [
   {
-    color: "#6fd0ff",
     icon: "f0570", // nerd-fonts: view_grid (tiling)
     title: "Hyprland",
-    description: "Dynamic tiling window manager.",
+    description: "Dynamic tiling Wayland compositor.",
   },
   {
-    color: "#ff7ac6",
     icon: "f108", // nerd-fonts: desktop
     title: "DankMaterialShell",
-    description: "A complete desktop shell for Wayland compositors.",
+    description: "A complete Quickshell-based desktop shell.",
   },
   {
-    color: "#9b7ff2",
     icon: "f0342", // nerd-fonts: login
     title: "DMS Greeter",
     description: "A fast login screen that matches the desktop theme.",
   },
   {
-    color: "#5ad1c4",
-    icon: "ee26", // nerd-fonts: brush
-    title: "GTK + Qt theming",
-    description: "Matugen-themed automatically — no manual theming.",
-  },
-  {
-    color: "#ffc153",
     icon: "f03d8", // nerd-fonts: palette
     title: "Matugen",
-    description: "Generates matching color schemes from your wallpaper.",
+    description: "Generates matching GTK, Qt, and shell colors from your wallpaper.",
   },
   {
-    color: "#ff8a54",
+    icon: "ee26", // nerd-fonts: brush
+    title: "GTK + Qt theming",
+    description: "Apps are re-themed automatically — no manual theming.",
+  },
+  {
+    icon: "f120", // nerd-fonts: terminal
+    title: "Kitty",
+    description: "A fast, GPU-accelerated terminal.",
+  },
+  {
     icon: "f0239", // nerd-fonts: firefox
     title: "Firefox",
-    description: "The browser, pre-configured and themed to match.",
+    description: "Themed to match, and shipped with uBlock Origin.",
   },
   {
-    color: "#63e6a0",
-    icon: "f02e9", // nerd-fonts: image (OEM logo splash)
-    title: "Plymouth BGRT",
-    description: "Silent boot splash reading your OEM logo from UEFI.",
+    icon: "f02e9", // nerd-fonts: image (branded boot splash)
+    title: "Aelum splash",
+    description: "Branded Plymouth boot screen with LUKS passphrase unlock.",
   },
   {
-    color: "#ff6b89",
     icon: "f035b", // nerd-fonts: memory
     title: "ZRAM swap",
     description: "Compressed RAM swap instead of a swap file.",
@@ -174,7 +178,8 @@ export const installSteps: Step[] = [
     num: "03",
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
-    description: "Select the target drive and pick between ext4 or btrfs.",
+    description:
+      "Pick the drive, ext4 or btrfs, and optionally LUKS2 encryption or LVM — or partition manually for dual-boot.",
   },
   {
     num: "04",
@@ -213,7 +218,18 @@ import { release } from "./release";
 export const releaseVersion = release.version;
 export const releaseArch = release.arch;
 export const isoFilename = release.filename;
+export const releaseSizeBytes = release.sizeBytes;
+export const releasePublishedAt = release.publishedAt;
 
 export const downloadUrl = {
   iso: release.urls.iso,
 } as const;
+
+// Verification data, shown in the Download section. Kept in one place so the
+// component never reaches into the generated release.ts directly.
+export const checksums = {
+  sha256: release.sha256,
+  sha512: release.sha512,
+} as const;
+
+export const signingKey = release.signingKey;

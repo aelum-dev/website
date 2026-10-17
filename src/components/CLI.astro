@@ -1,30 +1,45 @@
 ---
-
+import CopyButton from "./CopyButton.astro";
 ---
 
 <section id="cli" class="section">
   <div class="container">
-    <div class="section-head">
-      <div class="cli-card">
-        <div class="cli-titlebar">
-          <span class="cli-dot cli-dot-r"></span>
-          <span class="cli-dot cli-dot-y"></span>
-          <span class="cli-dot cli-dot-g"></span>
-          <span class="cli-title">aelum-installer-cli</span>
-        </div>
-        <pre
-          class="cli-code"><code><span style="color:var(--accent-green)"># GUI</span>
-<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf120;</span>
+        </span>
+        Headless installs
+      </span>
+      <h2 class="section-title">Drive it from the terminal</h2>
+      <p class="section-sub">
+        Prefer scripted, headless installs? The live ISO also ships a CLI. The
+        GUI and the CLI share the exact same install engine, so results match.
+      </p>
+    </div>
+
+    <div class="cli-card card reveal">
+      <div class="cli-titlebar">
+        <span class="cli-dot cli-dot-r"></span>
+        <span class="cli-dot cli-dot-y"></span>
+        <span class="cli-dot cli-dot-g"></span>
+        <span class="cli-title">aelum-installer-cli</span>
+        <CopyButton
+          target="#cli-code"
+          label="Copy commands"
+          className="cli-copy"
+        />
+      </div>
+      <pre
+        class="cli-code"
+        id="cli-code"><code><span style="color:var(--accent-green)"># GUI</span>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer
 
 <span style="color:var(--accent-green)"># CLI — full install</span>
 <span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda</span>
 
 <span style="color:var(--accent-green)"># CLI — btrfs root instead of ext4</span>
 <span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem btrfs</span></code></pre>
-      </div>
-      <p class="cli-note">
-        Prefer headless or scripted installs? The live ISO also ships a CLI.
-      </p>
     </div>
   </div>
 </section>

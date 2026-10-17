@@ -3,88 +3,111 @@
    Hero. Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
-/* Hero is dead centered on screen: full viewport height, content centered
-   on both axes. The sticky nav overlays the top, so 100vh keeps the block
-   centered within the whole viewport. */
 .hero-section {
-  min-height: 100vh;
+  min-height: min(100vh, 880px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  padding-block: clamp(1.5rem, 5vh, 4rem);
 }
 
-/* Hero layout (narrow): screenshot on top, then heading, then the rest */
+/* Wide: copy on the left, screenshot on the right. */
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-12);
-}
-.reveal-hero-visual {
-  order: 1;
-}
-.hero-title-wrap,
-.hero-below {
-  order: 2;
-  align-content: center;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
 }
 
-/* Hero heading is the page's primary H1 — one step above the unified
-   section scale, but built on the same weights/spacing. */
-.hero-title {
-  font-size: clamp(2.6rem, 7vw, 4.6rem);
-  font-weight: 900;
-  max-width: none;
-  text-align: left;
-}
-
-.hero-below {
+/* ---- Copy column ---- */
+.hero-copy {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+.hero-title {
+  font-size: clamp(2.4rem, 6vw, 4.1rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  text-wrap: balance;
 }
 .hero-lead {
-  margin-top: var(--space-6);
   color: var(--text-dim);
-  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
-  max-width: 80ch;
+  font-size: clamp(1.02rem, 1.8vw, 1.18rem);
+  max-width: 50ch;
 }
 .hero-actions {
-  margin-top: var(--space-8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
+
+/* Inline value props under the actions. */
+.hero-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+.hero-points li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero-points .nf-icon {
+  font-size: 15px;
+  color: var(--accent);
+}
+
+/* Stat tiles — glassy mini cards. */
 .hero-stats {
   display: grid;
-  grid-template-columns: repeat(2, max-content);
-  gap: var(--space-6);
-  margin-top: var(--space-10);
-  justify-content: center;
-  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  width: 100%;
+  max-width: 520px;
 }
 .stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.15rem;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
 }
 .stat dt {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-faint);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
+  font-weight: 700;
 }
 .stat dd {
   margin: 0;
-  font-size: 1.9rem;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
   font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 .stat dd span {
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--text-dim);
+  margin-left: 0.15rem;
 }
 
-/* Hero visual — theme-aware desktop screenshot showcase */
-.reveal-hero-visual {
+/* ---- Visual column — desktop screenshot in a soft device frame ---- */
+.hero-visual-wrap {
+  position: relative;
   display: grid;
   place-items: center;
 }
@@ -92,42 +115,87 @@
   position: relative;
   isolation: isolate;
   box-sizing: border-box;
-  /* 16:9 frame, height capped at 42vh, never wider than the column */
-  width: min(100%, calc(42vh * 16 / 9));
+  width: min(100%, calc(46vh * 16 / 9));
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
-  padding: 1.25rem;
-  border-radius: var(--radius);
+  padding: 0.75rem;
+  border-radius: var(--radius-xl);
   background: var(--surface);
   border: 1px solid var(--surface-border);
+  backdrop-filter: blur(14px);
   box-shadow:
-    0 30px 60px -30px var(--accent-shadow-strong),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    var(--shadow-lg),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 .hero-visual::before {
   /* Soft accent glow behind the screenshot */
   content: "";
   position: absolute;
-  inset: 8%;
+  inset: 6%;
   z-index: -1;
-  filter: blur(60px);
-  opacity: 0.45;
-  background: radial-gradient(60% 70% at 50% 20%, var(--accent));
+  filter: blur(70px);
+  opacity: 0.5;
+  background: radial-gradient(60% 70% at 50% 20%, var(--accent), transparent 70%);
 }
 .hero-shot {
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: 18px;
   display: none;
+  overflow: hidden;
 }
 .hero-shot img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 18px;
 }
+
+/* Floating feature chips around the frame. */
+.hero-chip {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--surface-border);
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-md);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  animation: hero-chip-float 6s ease-in-out infinite;
+}
+.hero-chip .nf-icon {
+  font-size: 15px;
+  color: var(--c, var(--accent));
+}
+.hero-chip--tl {
+  top: 6%;
+  left: -3%;
+  animation-delay: -1.5s;
+}
+.hero-chip--br {
+  bottom: 9%;
+  right: -3%;
+  animation-delay: -3.5s;
+}
+@keyframes hero-chip-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
 /* Show the matching screenshot for the active theme */
 [data-theme="dark"] .hero-shot--light {
   display: none;
@@ -143,38 +211,49 @@
 }
 
 @media (min-width: 1025px) {
-  /* Wide screens: heading left of screenshot, everything else below */
   .hero-grid {
-    grid-template-columns: 3fr 7fr;
-    grid-template-rows: auto auto;
-    gap: var(--space-10);
-  }
-  .hero-title-wrap {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .reveal-hero-visual {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .hero-below {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    grid-template-columns: 5fr 6fr;
   }
 }
 
 @media (max-width: 1024px) {
+  .hero-grid {
+    justify-items: center;
+  }
+  .hero-copy {
+    align-items: center;
+    text-align: center;
+  }
+  .hero-title,
+  .hero-lead {
+    text-align: center;
+  }
+  .hero-actions,
+  .hero-points {
+    justify-content: center;
+  }
   .hero-stats {
-    grid-template-columns: repeat(2, max-content);
-    gap: var(--space-4);
+    margin-inline: auto;
   }
   .hero-visual {
-    padding: 0.75rem;
+    width: min(100%, calc(42vh * 16 / 9));
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hero-chip {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-visual {
     box-shadow: none;
+  }
+  .hero-chip {
+    animation: none;
   }
 }

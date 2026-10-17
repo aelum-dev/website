@@ -5,26 +5,33 @@ import Card from "./Card.astro";
 
 <section id="desktop" class="section">
   <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">What you install</span>
+    <div class="section-head reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf108;</span>
+        </span>
+        What you install
+      </span>
       <h2 class="section-title">A finished desktop</h2>
       <p class="section-sub">
-        The installer hands you a complete, pre-configured system — ready to use
-        the moment install finishes. GTK and Qt apps get matugen-themed
-        automatically, so there's no manual theming to do.
+        The installer hands you a complete, pre-configured system — ready the
+        moment it finishes. GTK and Qt apps get matugen-themed automatically, so
+        there's no manual theming to do.
       </p>
     </div>
 
     <div class="card-grid grid-software">
-      {software.map((app) => (
-        <Card
-          color={app.color}
-          icon={app.icon}
-          title={app.title}
-          description={app.description}
-          size="md"
-        />
-      ))}
+      {
+        software.map((app) => (
+          <Card
+            icon={app.icon}
+            title={app.title}
+            description={app.description}
+            size="md"
+            className="tile-software"
+          />
+        ))
+      }
     </div>
   </div>
 </section>

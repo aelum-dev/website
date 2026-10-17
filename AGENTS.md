@@ -27,15 +27,18 @@ npm run check      # biome format . && astro check   # run before committing
 
 - **Single page.** `src/pages/index.astro` is the only real page; `src/pages/404.astro` is the fallback.
 - **Content lives in `src/lib/site.ts`.** Keep all copy (languages, links, feature text) as exported data here and consume it from components — don't hardcode strings in templates. This makes reviews and edits easy.
-- **Sections are components** under `src/components/`, composed in order in `index.astro`:
-  `Nav` → `Hero` → `CTA` → `Download` → `Install` → `Features` → `Desktop` → `Languages` → `CLI` → `Footer`.
-  Each section is a small `.astro` component (typically 20–70 lines). Add new sections as new components and insert them in the page.
+- **Sections are components** under `src/components/`, composed in `index.astro`:
+  `Nav` → Home page (`Hero`) → Download page (`Download`) → Install page (`Install`) →
+  Features page (`Desktop` + `Features` + `Languages` + `CLI`) → `CTA` → `Footer`.
+  Each section is a small `.astro` component. Add new sections as new components and insert them in the page.
+  `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard button with
+  copy/check icons) are reusable building blocks.
 - **Layout & chrome** in `src/layouts/Layout.astro` (head, fonts, theme script, meta).
 - **Styling** is split across `src/styles/`: `base.css` holds the design system tokens (colors, layout, glassy cards, ambient background); per-section files (`home.css`, `download.css`, `features.css`, `install.css`) hold the rest. Add tokens/classes here rather than inline styles.
 - **Interactivity** is plain JS in `public/scripts/`:
   - `theme.js` / `theme-toggle.js` — light/dark theme + toggle (persisted in `localStorage`).
-  - `app.js` — hash-based single-shell router: toggles the `.active` page, highlights the matching nav link, updates the title, and scrolls to top (deep links + back/forward via the history API).
-- **No scroll-reveal script.** Every page is server-rendered and visible without JS (a scroll view); with JS the router shows only the active page. There is no `reveal.js` — don't add one expecting a `<noscript>` fallback to exist.
+  - `app.js` — everything else: the hash-based single-shell router (toggles the `.active` page, highlights matching `a[data-page]` links, updates the title, scrolls to top); the floating-nav scroll state + mobile menu; a scroll-reveal `IntersectionObserver`; the copy-to-clipboard handler; and the pointer-tracked card glow.
+- **Scroll reveal** is progressive enhancement: `.reveal` elements are fully visible without JS, and `html.js` hides then reveals them via the observer in `app.js`. Reduced-motion users see everything immediately. Keep this invariant — never hide content in a way that depends on JS running.
 
 ## Design Guidance
 

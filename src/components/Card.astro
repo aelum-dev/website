@@ -1,5 +1,5 @@
 ---
-// Reusable glassy card. Optional colored icon slot keeps feature cards DRY.
+// Reusable glassy card. Optional colored icon + badge keep feature cards DRY.
 
 interface Props {
   title?: string;
@@ -14,31 +14,37 @@ interface Props {
 const {
   title = undefined,
   description = undefined,
-  color = undefined,
+  color = "var(--accent)",
   icon = undefined,
   badge = undefined,
   size = "lg",
   className = "",
 } = Astro.props;
+
+const glyph = icon ? String.fromCodePoint(parseInt(icon, 16)) : null;
+const classes = ["card", `card-pad-${size}`, "card--interactive", className].filter(Boolean).join(" ");
 ---
 
-<div class={"card card-pad-" + size + (className ? " " + className : "")}>
-  {color && title && (
-    <div class="card-title-row">
-      {badge && <span class="card-badge">{badge}</span>}
-      <div class="dot" style="--c:{color}">
-        {icon ? (
-          <span class="nf-icon" aria-hidden="true">
-            {String.fromCodePoint(parseInt(icon, 16))}
+<div class={classes}>
+  {
+    title && (
+      <div class="card-head">
+        {icon && (
+          <span class="icon-tile" style={`--c:${color}`} aria-hidden="true">
+            <span class="nf-icon">{glyph}</span>
           </span>
-        ) : (
-          <span aria-hidden="true">●</span>
         )}
+        <div class="card-head-text">
+          {badge && (
+            <span class="card-badge" style={`--c:${color}`}>
+              {badge}
+            </span>
+          )}
+          <h3>{title}</h3>
+        </div>
       </div>
-      <h3>{title}</h3>
-    </div>
-  )}
-  {title && !color && <h3>{title}</h3>}
+    )
+  }
   {description && <p>{description}</p>}
   <slot />
 </div>

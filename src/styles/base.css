@@ -17,7 +17,7 @@
   /* Relative to this CSS file (src/styles/). Vite resolves these into the
      asset pipeline at build time: the woff2 files are hashed into
      _astro/fonts/ and Astro prepends the configured `base`, so the emitted
-     URLs are correct both on the dev server and the GitLab Pages subpath. */
+     URLs are correct both on the dev server and the deployed domain. */
   src: url("./fonts/nunito-v16-latin-regular.woff2") format("woff2");
 }
 @font-face {
@@ -50,12 +50,18 @@
 }
 
 :root {
-  /* Light palette — DankMaterialShell (DMS) colors */
+  /* ----------------------------------------------------------
+     Palette — DankMaterialShell (DMS) mauve / rose / tan scheme.
+     Kept identical across the overhaul; the two theme blocks
+     below are the single source of truth for every color.
+     ---------------------------------------------------------- */
+  color-scheme: light;
 
   /* Surface & Background */
   --bg: #faf7f6;
   --bg-elevated: #ffffff;
   --surface: rgba(255, 255, 255, 0.72);
+  --surface-solid: #ffffff;
   --surface-border: #e6d4d6;
 
   /* Text */
@@ -63,7 +69,7 @@
   --text-dim: #756567;
   --text-faint: #9a8a8c;
 
-  /* Accents (mauve / rose / tan scheme) */
+  /* Accents (mauve / rose / tan) */
   --accent: #a67480;
   --accent-2: #8e7579;
   --accent-3: #a08864;
@@ -73,12 +79,32 @@
   --accent-shadow: rgba(166, 116, 128, 0.3);
   --accent-shadow-strong: rgba(166, 116, 128, 0.45);
 
-  --radius: 20px;
+  /* Derived (theme-following) helpers */
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 32%, transparent);
+  --hairline: color-mix(in srgb, var(--text) 10%, transparent);
+  --on-accent: #ffffff;
+
+  /* Radii — a soft, rounded scale matching the desktop shell */
+  --radius-xl: 30px;
+  --radius: 22px;
   --radius-md: 16px;
   --radius-sm: 12px;
+  --radius-xs: 9px;
+  --radius-pill: 999px;
 
-  --maxw: 1120px;
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgba(61, 50, 52, 0.06);
+  --shadow-sm: 0 4px 14px -6px rgba(61, 50, 52, 0.16);
+  --shadow-md: 0 18px 40px -22px rgba(61, 50, 52, 0.3);
+  --shadow-lg: 0 40px 80px -40px var(--accent-shadow-strong);
+  --shadow-pop: 0 26px 55px -26px var(--accent-shadow-strong);
+
+  /* Layout */
+  --maxw: 1160px;
+  --nav-h: 66px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Light/dark theme transition timing. */
   --theme-duration: 650ms;
@@ -101,16 +127,16 @@
   --space-20: 5rem;
 
   /* --- Standard section vertical padding (uniform across all pages) --- */
-  --section-padding: clamp(1.25rem, 3vw, 2.5rem);
+  --section-padding: clamp(2.5rem, 5vw, 4.5rem);
 
   /* Consistent spacing inside a section heading group (eyebrow → title →
      subtitle) and the gap before the section's body content. */
   --head-gap: var(--space-4);
-  --head-margin: var(--space-12);
+  --head-margin: clamp(2rem, 4vw, 3rem);
 
   /* Section heading + subtitle shared scale (unified across every page). */
-  --title-2: clamp(2rem, 5vw, 3rem);
-  --subtitle-size: clamp(1rem, 2vw, 1.15rem);
+  --title-2: clamp(1.9rem, 4.2vw, 2.9rem);
+  --subtitle-size: clamp(1rem, 1.6vw, 1.12rem);
 
   /* Terminal title-bar (traffic-light) dots — shared by the CLI window and other UI */
   --dot-red: #ff5f56;
@@ -120,9 +146,12 @@
 
 /* Dark palette — same mauve/rose/tan accents, inverted dark surfaces */
 [data-theme="dark"] {
+  color-scheme: dark;
+
   --bg: #151114;
   --bg-elevated: #1e1720;
   --surface: rgba(30, 23, 32, 0.72);
+  --surface-solid: #1e1720;
   --surface-border: #2c2330;
 
   --text: #ece2e3;
@@ -136,6 +165,8 @@
 
   --accent-shadow: rgba(207, 163, 174, 0.22);
   --accent-shadow-strong: rgba(207, 163, 174, 0.38);
+
+  --on-accent: #2a1a22;
 }
 
 * {
@@ -155,6 +186,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -163,55 +195,133 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* Ambient background glows */
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--text);
+}
+
+/* Subtle, theme-aware scrollbar. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 45%, transparent) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 65%, transparent);
+  background-clip: content-box;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* ============================================================
+   Ambient background — aurora glows over a faded grid
+   ============================================================ */
 .bg-field {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  background: radial-gradient(
+    1100px 560px at 50% -12%,
+    color-mix(in srgb, var(--accent) 12%, transparent),
+    transparent 70%
+  );
 }
-.bg-field::before,
-.bg-field::after {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.35;
-}
+/* Faint technical grid, faded to nothing toward the edges. */
 .bg-field::before {
   content: "";
-  width: 620px;
-  height: 620px;
-  top: -180px;
-  left: -120px;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-size: 66px 66px;
+  -webkit-mask-image: radial-gradient(1100px 720px at 50% 0%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(1100px 720px at 50% 0%, #000 0%, transparent 78%);
+  opacity: 0.55;
 }
-.bg-field::after {
-  content: "";
+/* Soft, slowly drifting color orbs. */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  will-change: transform;
+}
+.orb-1 {
   width: 560px;
   height: 560px;
-  top: 30vh;
-  right: -160px;
-  background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
-  opacity: 0.28;
+  top: -190px;
+  left: -130px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  animation: orb-drift-a 22s ease-in-out infinite alternate;
 }
-.bg-field .orb {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  bottom: -200px;
-  left: 30%;
+.orb-2 {
+  width: 520px;
+  height: 520px;
+  top: 26vh;
+  right: -170px;
+  background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
+  opacity: 0.3;
+  animation: orb-drift-b 26s ease-in-out infinite alternate;
+}
+.orb-3 {
+  width: 480px;
+  height: 480px;
+  bottom: -220px;
+  left: 28%;
   background: radial-gradient(circle, var(--accent-3) 0%, transparent 70%);
-  opacity: 0.22;
+  opacity: 0.24;
+  animation: orb-drift-a 30s ease-in-out infinite alternate-reverse;
+}
+@keyframes orb-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(60px, 40px, 0) scale(1.12);
+  }
+}
+@keyframes orb-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-70px, 50px, 0) scale(0.95);
+  }
 }
 
 .container {
   width: min(90vw, var(--maxw));
   margin-inline: auto;
+}
+
+/* Full-bleed section wrapper that keeps a comfortable rhythm. */
+.section {
+  padding-block: var(--section-padding);
+  display: flex;
+  flex-direction: column;
 }
 
 /* ============================================================
@@ -221,14 +331,15 @@ body {
 h1,
 h2,
 h3 {
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
   margin: 0;
+  font-weight: 800;
 }
 
 p {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 a {
@@ -236,9 +347,18 @@ a {
   text-decoration: none;
 }
 
+strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
 code {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.9em;
+}
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
 }
 
 /* Section eyebrow pill + heading + subtitle — unified across every page.
@@ -246,62 +366,66 @@ code {
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  padding: 0.4rem 0.9rem;
+  padding: 0.42rem 0.95rem 0.42rem 0.5rem;
   border: 1px solid var(--surface-border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface);
+  backdrop-filter: blur(12px);
   margin: 0;
+}
+/* Small numbered/icon chip that leads an eyebrow. */
+.eyebrow-chip {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  color: var(--on-accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.eyebrow-chip .nf-icon {
+  font-size: 13px;
+  color: var(--on-accent);
 }
 
 .section-title {
   font-size: var(--title-2);
   font-weight: 800;
   margin: 0;
-  max-width: 34ch;
+  max-width: 30ch;
+  text-wrap: balance;
 }
 
 .section-sub {
   margin: 0;
   color: var(--text-dim);
   font-size: var(--subtitle-size);
-  max-width: 60ch;
+  max-width: 62ch;
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, var(--accent) 0%, #b69a9e 55%, #a47993 110%);
+  background: linear-gradient(104deg, var(--accent) 0%, var(--accent-2) 48%, var(--accent-3) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Brand word styling, matching the installer's .brand header.
-   Nunito is already the site-wide font, so only the weight,
-   casing and spacing are set here (gradient kept via .text-gradient). */
+/* Brand word styling, matching the installer's .brand header. */
 .hero-brand {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 /* ============================================================
    Section scaffolding — uniform vertical padding everywhere
    ============================================================ */
-
-/* Every page section gets the same top/bottom padding. Standalone sections
-   no longer need `section-no-top` or a parent `margin-top` hack — the uniform
-   padding-block plus in-page scroll margins keeps everything aligned under the
-   sticky nav. */
-.section {
-  padding-block: var(--section-padding);
-  display: flex;
-  flex-direction: column;
-}
 
 /* A section heading group (eyebrow + title + subtitle) with a single,
    consistent gap between its children and a consistent gap before its body. */
@@ -312,21 +436,34 @@ code {
   gap: var(--head-gap);
   margin-bottom: var(--head-margin);
 }
+.section-head--center {
+  align-items: center;
+  text-align: center;
+}
+.section-head--center .section-title,
+.section-head--center .section-sub {
+  margin-inline: auto;
+}
+.section-head--center .section-sub {
+  text-align: center;
+}
 
 /* Anchor targets settle below the sticky nav, so in-page links don't hide under it */
+#home,
 #desktop,
 #install,
 #features,
 #languages,
-#cli {
-  scroll-margin-top: calc(70px + 1.5rem);
+#cli,
+#cta,
+#install-tools {
+  scroll-margin-top: calc(var(--nav-h) + 2rem);
 }
 
 /* ============================================================
    Flex / grid layout utilities
    ============================================================ */
 
-/* Layout utilities — the only ones actually applied in the markup. */
 .flex {
   display: flex;
 }
@@ -340,7 +477,9 @@ code {
   justify-content: center;
 }
 
-/* Gaps — the single source of truth for spacing between items */
+.gap-2 {
+  gap: var(--space-2);
+}
 .gap-4 {
   gap: var(--space-4);
 }
@@ -360,8 +499,7 @@ code {
   grid-template-columns: repeat(auto-fit, minmax(var(--cell-min, 280px), 1fr));
   gap: var(--grid-gap, var(--space-5));
   /* No top margin: spacing below the section heading is owned by
-     .section-head's margin-bottom. A per-grid margin-top here both duplicates
-     that and varied between grids, causing inconsistent (and doubled) gaps. */
+     .section-head's margin-bottom. */
 }
 .card-grid .card {
   height: 100%;
@@ -374,100 +512,178 @@ code {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.9rem 1.5rem;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 1rem;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.78rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.97rem;
   border: 1px solid transparent;
   cursor: pointer;
   transition:
     transform 0.3s var(--ease),
     box-shadow 0.3s var(--ease),
-    background 0.3s;
+    background 0.3s,
+    border-color 0.3s;
   white-space: nowrap;
 }
 .btn:hover {
   transform: translateY(-2px);
 }
+.btn:active {
+  transform: translateY(0);
+}
+.btn .nf-icon {
+  font-size: 1.15rem;
+}
+
 .btn-primary {
-  background: linear-gradient(100deg, var(--accent), var(--accent-2));
-  color: #ffffff;
-  box-shadow: 0 10px 30px -8px var(--accent-shadow);
+  background: linear-gradient(104deg, var(--accent), var(--accent-2));
+  color: var(--on-accent);
+  box-shadow: 0 12px 28px -12px var(--accent-shadow-strong);
 }
 .btn-primary:hover {
-  box-shadow: 0 16px 40px -8px var(--accent-shadow-strong);
+  box-shadow: 0 20px 44px -14px var(--accent-shadow-strong);
 }
+
 .btn-ghost {
   background: var(--surface);
   border-color: var(--surface-border);
   color: var(--text);
+  backdrop-filter: blur(12px);
 }
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.95);
+  border-color: var(--accent-line);
+  background: var(--surface-solid);
 }
-[data-theme="dark"] .btn-ghost:hover {
-  background: var(--bg-elevated);
+
+.btn-lg {
+  padding: 0.95rem 1.7rem;
+  font-size: 1.03rem;
 }
 
 /* ============================================================
    Cards
    ============================================================ */
 
-.card-title-row {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.card-badge {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--c, var(--accent));
-  flex: 0 0 auto;
-  opacity: 0.7;
-}
-
-/* Uniform card heading scale — size follows the card's padding tier. */
-.card-title-row h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-}
-.card-pad-md .card-title-row h3 {
-  font-size: 1.1rem;
-}
-
-.dot {
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  background: color-mix(in srgb, var(--c) 18%, transparent);
-  color: var(--c);
-}
-
-/* biome-ignore lint/style/noDescendingSpecificity: the [data-theme] button rule above sets a higher specificity ceiling that every component rule below legitimately sits under */
+/* biome-ignore lint/style/noDescendingSpecificity: the [data-theme] button rules above set a higher specificity ceiling that every component rule below legitimately sits under */
 .card {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
-  backdrop-filter: blur(12px);
-  transition:
-    transform 0.4s var(--ease),
-    border-color 0.4s,
-    background 0.4s;
+  backdrop-filter: blur(14px);
+  overflow: hidden;
 }
 
-/* Uniform card padding tiers. */
+/* Card padding tiers. */
 .card-pad-lg {
   padding: var(--space-7);
 }
 .card-pad-md {
   padding: var(--space-6);
+}
+
+/* Interactive cards get a lift + a soft accent ring on hover. */
+.card--interactive {
+  transition:
+    transform 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+.card--interactive::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--accent) 14%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+  pointer-events: none;
+}
+.card--interactive:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-pop);
+}
+.card--interactive:hover::after {
+  opacity: 1;
+}
+
+/* Icon + heading row inside a card. */
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.card-head-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.card-head h3 {
+  font-size: 1.16rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.card-pad-md .card-head h3 {
+  font-size: 1.06rem;
+}
+
+/* Step/kicker badge above a card title. */
+.card-badge {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--c, var(--accent));
+  opacity: 0.85;
+}
+
+/* Colored icon tile — the colored glyph sits on a tinted, ringed square. */
+.icon-tile {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--c, var(--accent));
+  background: color-mix(in srgb, var(--c, var(--accent)) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c, var(--accent)) 26%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.card--interactive:hover .icon-tile {
+  transform: translateY(-1px);
+}
+.icon-tile .nf-icon {
+  font-size: 23px;
+}
+
+.card-grid p {
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   Scroll reveal (progressive enhancement)
+   Content is visible by default; JS adds .reveal, and `.in`
+   animates it into view. No-JS and reduced-motion users see
+   everything immediately.
+   ============================================================ */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+html.js .reveal.in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
 }
 
 /* ============================================================
@@ -477,14 +693,14 @@ code {
 .skip-link {
   position: absolute;
   left: 0.5rem;
-  top: -3rem;
+  top: -3.5rem;
   z-index: 100;
   padding: 0.6rem 1rem;
   border-radius: var(--radius-sm);
   background: var(--bg-elevated);
   border: 1px solid var(--surface-border);
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
   transition: top 0.2s var(--ease);
 }
 .skip-link:focus {
@@ -492,63 +708,137 @@ code {
 }
 
 /* ============================================================
-   Nav
+   Nav — floating glass bar
    ============================================================ */
 
 .nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  backdrop-filter: blur(14px);
-  background: color-mix(in srgb, var(--bg) 72%, transparent);
-  border-bottom: 1px solid var(--surface-border);
+  padding-block: 0.7rem;
 }
 .nav-inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  gap: var(--space-4);
+  height: var(--nav-h);
+  padding-inline: 0.7rem 0.7rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--bg) 68%, transparent);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: var(--shadow-sm);
+  transition:
+    background 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    border-color 0.4s var(--ease);
 }
+/* Deepen the bar once the page has scrolled. */
+.nav.is-scrolled .nav-inner {
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--surface-border) 100%, transparent);
+}
+
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.6rem;
   font-weight: 800;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+  padding-left: 0.35rem;
 }
 .brand .glyph {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
 }
+.brand .glyph img {
+  display: block;
+  width: 30px;
+  height: auto;
+  filter: drop-shadow(0 4px 10px var(--accent-shadow));
+}
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 0.3rem;
 }
 .nav-links a {
+  position: relative;
   color: var(--text-dim);
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-size: 0.94rem;
+  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-pill);
+  transition:
+    color 0.2s,
+    background 0.25s;
 }
 .nav-links a:hover {
   color: var(--text);
+  background: color-mix(in srgb, var(--text) 6%, transparent);
 }
 .nav-links a.active {
   color: var(--accent);
-  font-weight: 600;
+  background: var(--accent-soft);
 }
-/* Underline marks the active menu entry. Scoped to the text links (they carry
-   `hide-mobile`), so the brand logo keeps its own active styling. */
-.nav-links a.hide-mobile.active {
-  border-bottom: 2px solid var(--accent);
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
 }
 .nav-gl {
-  padding: 0.55rem 1.1rem;
+  padding: 0.6rem 1.05rem;
   font-size: 0.9rem;
+}
+
+/* Burger — hidden until the compact breakpoint. */
+.nav-burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  cursor: pointer;
+  position: relative;
+}
+.nav-burger .bar {
+  position: absolute;
+  left: 50%;
+  width: 17px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+  transform: translateX(-50%);
+  transition:
+    transform 0.3s var(--ease),
+    opacity 0.2s;
+}
+.nav-burger .bar:nth-child(1) {
+  top: 15px;
+}
+.nav-burger .bar:nth-child(2) {
+  top: 20px;
+}
+.nav-burger .bar:nth-child(3) {
+  top: 25px;
+}
+.nav.is-open .nav-burger .bar:nth-child(1) {
+  transform: translateX(-50%) translateY(5px) rotate(45deg);
+}
+.nav.is-open .nav-burger .bar:nth-child(2) {
+  opacity: 0;
+}
+.nav.is-open .nav-burger .bar:nth-child(3) {
+  transform: translateX(-50%) translateY(-5px) rotate(-45deg);
 }
 
 /* ============================================================
@@ -557,25 +847,62 @@ code {
 
 .footer {
   border-top: 1px solid var(--surface-border);
-  padding-block: 3rem;
+  padding-block: var(--space-16) var(--space-8);
   color: var(--text-faint);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
+  margin-top: var(--space-10);
 }
-.footer a {
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: var(--space-10) var(--space-8);
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 34ch;
+}
+.footer-brand .brand {
+  padding-left: 0;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+.footer-brand p {
   color: var(--text-dim);
 }
-.footer a:hover {
+.footer-col h4 {
+  margin: 0 0 var(--space-4);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.footer-col a {
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+.footer-col a:hover {
   color: var(--accent);
 }
-.footer-row {
+.footer-bottom {
+  margin-top: var(--space-12);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--surface-border);
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--space-4);
   justify-content: space-between;
   align-items: center;
-}
-.footer-links {
-  margin-left: auto;
 }
 
 /* ============================================================
@@ -604,24 +931,25 @@ html.js .page.active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--surface-border);
   background: var(--surface);
   color: var(--text-dim);
   cursor: pointer;
   transition:
-    transform 0.3s var(--ease),
+    transform 0.3s var(--ease-spring),
     background 0.3s,
     color 0.3s,
     border-color 0.3s;
 }
 .theme-toggle:hover {
-  transform: translateY(-2px);
-  background: var(--bg-elevated);
+  transform: translateY(-2px) rotate(-8deg);
+  background: var(--surface-solid);
   color: var(--text);
+  border-color: var(--accent-line);
 }
 .theme-toggle:focus-visible {
   outline: 2px solid var(--accent);
@@ -637,7 +965,7 @@ html.js .page.active {
   height: 18px;
 }
 .theme-toggle-icon .nf-icon {
-  font-size: 18px;
+  font-size: 19px;
   vertical-align: -0.05em;
 }
 [data-theme="dark"] .theme-toggle [data-theme-icon="light"] {
@@ -711,22 +1039,6 @@ html.js .page.active {
   }
 }
 
-@media (max-width: 760px) {
-  .nav-links .hide-mobile {
-    display: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .footer-row {
-    justify-content: center;
-    text-align: center;
-  }
-  .footer-links {
-    margin-inline: auto;
-  }
-}
-
 /* ============================================================
    404 fallback page
    ============================================================ */
@@ -743,23 +1055,89 @@ html.js .page.active {
   align-items: center;
   text-align: center;
   gap: var(--space-4);
-  max-width: 34ch;
+  max-width: 38ch;
 }
 .not-found-card > h1 {
   font-size: var(--title-2);
   font-weight: 800;
 }
 .not-found-card .glyph {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
   overflow: hidden;
   display: grid;
   place-items: center;
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #ffffff;
-  box-shadow: 0 12px 30px -10px var(--accent-shadow);
+  color: var(--on-accent);
+  box-shadow: 0 14px 34px -12px var(--accent-shadow-strong);
+}
+.not-found-card .btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 860px) {
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: var(--space-3);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--bg) 93%, transparent);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+    transform-origin: top center;
+    pointer-events: none;
+    transition:
+      opacity 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .nav-links a {
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-sm);
+  }
+  .nav.is-open .nav-links {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .nav-burger {
+    display: block;
+  }
+  .nav-gl {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ============================================================
@@ -772,11 +1150,19 @@ html.js .page.active {
   *::after {
     /* biome-ignore lint/complexity/noImportantStyles: the global * transition rule targets the same universal selectors, so !important is required to override at equal specificity */
     transition: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: override the global * transition rule for equal-specificity universal selectors */
+    animation-duration: 0.001ms !important;
+    /* biome-ignore lint/complexity/noImportantStyles: override the global * transition rule for equal-specificity universal selectors */
+    animation-iteration-count: 1 !important;
   }
   .theme-morph {
     display: none;
   }
   html {
     scroll-behavior: auto;
+  }
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

@@ -1,147 +1,88 @@
 ---
 import { installSteps } from "../lib/site";
-import Card from "./Card.astro";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
+
+const slides = [
+  { n: 1, alt: "language selection", dark: "34a7ac07", light: "c5ed937e" },
+  { n: 2, alt: "creating the user account", dark: "bc4bc0ad", light: "ce77cab9" },
+  { n: 3, alt: "selecting a disk", dark: "bc5f612e", light: "499e45a6" },
+  { n: 4, alt: "partitioning the disk", dark: "f3644a3e", light: "00beb481" },
+  { n: 5, alt: "confirming installation", dark: "3d1e3e63", light: "45360f27" },
+  { n: 6, alt: "installing the system", dark: "9184b61d", light: "3ffdd65a" },
+  { n: 7, alt: "installation complete", dark: "9146d8e2", light: "bc065e84" },
+];
 ---
 
 <section class="section">
   <div class="container">
     <div class="install-grid">
-      <div class="section-head install-head">
-        <span class="eyebrow">The installer</span>
-        <h2 class="section-title">A few questions. That's it.</h2>
-        <p class="section-sub">
-          Just boot the ISO and answer a few questions in a clean wizard. No
-          terminal to touch, no network needed to install.
-        </p>
-      </div>
-
-      <div class="install-visual">
+      <div class="install-visual reveal">
         <div class="features-demo-frame">
-          <div class="slideshow" role="group" aria-label="Aelum installer walkthrough">
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-1-dark.34a7ac07.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — language selection"
-                loading="eager"
-                fetchpriority="high"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-1-light.c5ed937e.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — language selection"
-              />
-            </div>
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-2-dark.bc4bc0ad.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — creating the user account"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-2-light.ce77cab9.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — creating the user account"
-              />
-            </div>
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-3-dark.bc5f612e.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — selecting a disk"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-3-light.499e45a6.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — selecting a disk"
-              />
-            </div>
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-4-dark.f3644a3e.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — partitioning the disk"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-4-light.00beb481.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — partitioning the disk"
-              />
-            </div>
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-5-dark.3d1e3e63.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — confirming installation"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-5-light.45360f27.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — confirming installation"
-              />
-            </div>
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-6-dark.9184b61d.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — installing the system"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-6-light.3ffdd65a.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — installing the system"
-              />
-            </div>
-            <div class="slideshow-slide">
-              <img
-                class="shot shot--dark"
-                src="images/installer-step-7-dark.9146d8e2.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — installation complete"
-              />
-              <img
-                class="shot shot--light"
-                src="images/installer-step-7-light.bc065e84.png"
-                width="1200"
-                height="800"
-                alt="Aelum installer — installation complete"
-              />
-            </div>
+          <div
+            class="slideshow"
+            role="group"
+            aria-label="Aelum installer walkthrough"
+          >
+            {
+              slides.map((s) => (
+                <div class="slideshow-slide">
+                  <img
+                    class="shot shot--dark"
+                    src={`images/installer-step-${s.n}-dark.${s.dark}.png`}
+                    width="1200"
+                    height="800"
+                    alt={`Aelum installer — ${s.alt}`}
+                    loading={s.n === 1 ? "eager" : "lazy"}
+                    fetchpriority={s.n === 1 ? "high" : "auto"}
+                  />
+                  <img
+                    class="shot shot--light"
+                    src={`images/installer-step-${s.n}-light.${s.light}.png`}
+                    width="1200"
+                    height="800"
+                    alt={`Aelum installer — ${s.alt}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            }
+          </div>
+          <div class="slideshow-dots" data-slideshow-dots>
+            {
+              slides.map((s, i) => (
+                <button
+                  type="button"
+                  class={`slideshow-dot${i === 0 ? " is-active" : ""}`}
+                  data-slide={i}
+                  aria-label={`Show step ${s.n}`}
+                />
+              ))
+            }
           </div>
         </div>
       </div>
 
+      <div class="section-head install-head reveal">
+        <span class="eyebrow">
+          <span class="eyebrow-chip" aria-hidden="true">
+            <span class="nf-icon">&#xf02ca;</span>
+          </span>
+          The installer
+        </span>
+        <h2 class="section-title">A few questions. That's it.</h2>
+        <p class="section-sub">
+          Boot the ISO and answer a few questions in a clean wizard. No terminal
+          to touch, no network needed to install.
+        </p>
+      </div>
+
       <script type="text/javascript" is:inline>
-        // Auto-advancing installer walkthrough. Runs after parse (inline scripts
-        // are modules/deferred); guard anyway so it's safe if markup moves.
+        // Auto-advancing installer walkthrough, with clickable progress dots.
         (function () {
           var slides = document.querySelectorAll(".slideshow-slide");
           if (!slides.length) return;
+          var dots = document.querySelectorAll("[data-slideshow-dots] .slideshow-dot");
           var order = Array.prototype.slice.call(slides);
           var index = 0;
           var timer = null;
@@ -152,24 +93,31 @@ import Card from "./Card.astro";
             order.forEach(function (s, n) {
               s.classList.toggle("is-active", n === index);
             });
-          }
-
-          function tick() {
-            show(index + 1);
+            dots.forEach(function (d, n) {
+              d.classList.toggle("is-active", n === index);
+            });
           }
 
           function start() {
             stop();
-            timer = setInterval(tick, PAUSE);
+            timer = setInterval(function () {
+              show(index + 1);
+            }, PAUSE);
           }
-
           function stop() {
             if (timer) clearInterval(timer);
           }
 
-          var group = order[0].parentElement;
-          group.addEventListener("mouseenter", stop);
-          group.addEventListener("mouseleave", start);
+          dots.forEach(function (d) {
+            d.addEventListener("click", function () {
+              show(parseInt(d.dataset.slide, 10));
+              start();
+            });
+          });
+
+          var frame = document.querySelector(".features-demo-frame");
+          frame.addEventListener("mouseenter", stop);
+          frame.addEventListener("mouseleave", start);
 
           show(0);
           start();
@@ -178,17 +126,20 @@ import Card from "./Card.astro";
     </div>
 
     <div class="card-grid grid-steps">
-      {installSteps.map((step) => (
-        <Card
-          title={step.title}
-          icon={step.icon}
-          description={step.description}
-          color="#9b7ff2"
-          size="lg"
-          className="step-card"
-        />
-      ))}
+      {
+        installSteps.map((step) => (
+          <div class="card card-pad-lg card--interactive step-card">
+            <span class="step-num" aria-hidden="true">
+              {step.num}
+            </span>
+            <span class="icon-tile" aria-hidden="true">
+              <span class="nf-icon">{glyph(step.icon)}</span>
+            </span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+        ))
+      }
     </div>
-
   </div>
 </section>

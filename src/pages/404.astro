@@ -5,21 +5,30 @@ import { mainRepo } from "../lib/site";
 ---
 
 <Layout title="404 — Not found | Aelum" description="Page not found for Aelum.">
-  <div class="bg-field" aria-hidden="true"></div>
+  <div class="bg-field" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
   <main class="not-found">
     <div class="container not-found-card">
-      <span class="glyph">🚀</span>
-      <h1>404</h1>
-      <p>This page drifted off into space.</p>
-      <a class="btn btn-primary" href="index.html">Back to home</a>
-      <a
-        class="btn btn-ghost"
-        href={mainRepo}
-        target="_blank"
-        rel="noopener"
-      >
-        View the ISO repo
-      </a>
+      <span class="glyph" aria-hidden="true">
+        <span class="nf-icon">&#xf0ed;</span>
+      </span>
+      <span class="eyebrow">Error 404</span>
+      <h1>Page not found</h1>
+      <p>This page drifted off into space. Let's get you back on track.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="index.html">Back to home</a>
+        <a
+          class="btn btn-ghost"
+          href={mainRepo}
+          target="_blank"
+          rel="noopener"
+        >
+          View the ISO repo
+        </a>
+      </div>
     </div>
   </main>
 </Layout>

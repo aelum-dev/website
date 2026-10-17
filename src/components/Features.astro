@@ -6,27 +6,33 @@ import Card from "./Card.astro";
 <section class="section">
   <div class="container">
     <div class="features-grid">
-      <div class="section-head">
-        <span class="eyebrow">The Installer ISO</span>
+      <div class="section-head reveal">
+        <span class="eyebrow">
+          <span class="eyebrow-chip" aria-hidden="true">
+            <span class="nf-icon">&#xf05aa;</span>
+          </span>
+          The installer ISO
+        </span>
         <h2 class="section-title">A painless install</h2>
         <p class="section-sub">
-          No mirror fetches or missing packages during install — everything is
-          baked into the ISO. It's a curated desktop, not a bare Arch you have
-          to theme yourself.
+          No mirror fetches, no missing packages, no wandering through a wiki.
+          Everything is baked into the ISO — it's a curated desktop, not a bare
+          Arch you have to theme yourself.
         </p>
       </div>
 
       <div>
         <div class="card-grid grid-features">
-          {features.map((feature) => (
-            <Card
-              title={feature.title}
-              icon={feature.icon}
-              description={feature.description}
-              color={feature.color}
-              size="lg"
-            />
-          ))}
+          {
+            features.map((feature) => (
+              <Card
+                title={feature.title}
+                icon={feature.icon}
+                description={feature.description}
+                size="lg"
+              />
+            ))
+          }
         </div>
       </div>
     </div>

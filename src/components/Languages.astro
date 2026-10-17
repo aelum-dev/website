@@ -1,14 +1,41 @@
 ---
 import { languages } from "../lib/site";
+
+const half = Math.ceil(languages.length / 2);
+const rows = [languages.slice(0, half), languages.slice(half)];
 ---
 
 <section id="languages" class="section">
   <div class="container">
-    <div class="center-block lang-head">
-      <p>The installer speaks {languages.length} languages</p>
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf0ac;</span>
+        </span>
+        {languages.length} languages
+      </span>
+      <h2 class="section-title">Speaks your language</h2>
+      <p class="section-sub">
+        The installer ships with {languages.length} localizations. Pick yours and
+        the installer UI, your system locale, and the mirror country follow.
+      </p>
     </div>
-    <div class="flex flex-wrap justify-center lang-chips">
-      {languages.map((lang) => <span class="card lang-chip">{lang}</span>)}
+
+    <div class="lang-marquee reveal">
+      {
+        rows.map((row, i) => (
+          <div class={`lang-track${i === 1 ? " lang-track--reverse" : ""}`}>
+            {row.map((lang) => (
+              <span class="lang-chip">{lang}</span>
+            ))}
+            {row.map((lang) => (
+              <span class="lang-chip" aria-hidden="true">
+                {lang}
+              </span>
+            ))}
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

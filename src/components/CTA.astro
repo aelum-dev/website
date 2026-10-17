@@ -1,0 +1,42 @@
+---
+import { installerRepo } from "../lib/site";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
+---
+
+<section id="cta" class="section">
+  <div class="container">
+    <div class="cta-panel reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">{glyph("f0ed")}</span>
+        </span>
+        Get started
+      </span>
+      <h2>Ready to meet your new desktop?</h2>
+      <p>
+        Grab the ISO, flash a USB stick, and let the installer do the rest —
+        entirely offline, in about a minute.
+      </p>
+      <div class="cta-actions">
+        <a
+          class="btn btn-primary btn-lg"
+          href="#download"
+          data-page="download"
+        >
+          <span class="nf-icon" aria-hidden="true">{glyph("f0ed")}</span>
+          Download Aelum
+        </a>
+        <a
+          class="btn btn-ghost btn-lg"
+          href={installerRepo}
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="nf-icon" aria-hidden="true">{glyph("f296")}</span>
+          Source on GitLab
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

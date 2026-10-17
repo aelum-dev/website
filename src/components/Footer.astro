@@ -1,16 +1,64 @@
 ---
-import { dmsUrl, hyprlandUrl, installerRepo, mainRepo, wailsUrl } from "../lib/site";
+import { dmsUrl, gitlabUrl, hyprlandUrl, installerRepo, mainRepo, wailsUrl } from "../lib/site";
 ---
 
 <footer class="footer">
-  <div class="container footer-row">
-    <div class="flex flex-wrap items-center gap-6 footer-links">
-      <a href={mainRepo} target="_blank" rel="noopener">Aelum</a>
-      <a href={installerRepo} target="_blank" rel="noopener">Installer</a>
-      <a href={hyprlandUrl} target="_blank" rel="noopener">Hyprland</a>
-      <a href={dmsUrl} target="_blank" rel="noopener">DankMaterialShell</a>
-      <a href={wailsUrl} target="_blank" rel="noopener">Wails v2</a>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#home" data-page="home">
+          <span class="glyph">
+            <img src="logo.svg" alt="Aelum logo" width="32" height="29" />
+          </span>
+          <span class="hero-brand">Aelum</span>
+        </a>
+        <p>
+          An Arch Linux distro with a fully offline installer. Boot it, answer a
+          few questions, and end up with a Hyprland + DankMaterialShell desktop.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="#home" data-page="home">Home</a></li>
+          <li><a href="#download" data-page="download">Download</a></li>
+          <li><a href="#install" data-page="install">Install</a></li>
+          <li><a href="#features" data-page="features">Features</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li>
+            <a href={mainRepo} target="_blank" rel="noopener">Aelum (live-iso)</a>
+          </li>
+          <li>
+            <a href={installerRepo} target="_blank" rel="noopener">Installer</a>
+          </li>
+          <li><a href={gitlabUrl} target="_blank" rel="noopener">GitLab</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Built with</h4>
+        <ul>
+          <li>
+            <a href={hyprlandUrl} target="_blank" rel="noopener">Hyprland</a>
+          </li>
+          <li>
+            <a href={dmsUrl} target="_blank" rel="noopener">
+              DankMaterialShell
+            </a>
+          </li>
+          <li><a href={wailsUrl} target="_blank" rel="noopener">Wails v2</a></li>
+        </ul>
+      </div>
     </div>
-    <div>GPL-3.0</div>
+
+    <div class="footer-bottom">
+      <span>GPL-3.0 · © Aelum</span>
+    </div>
   </div>
 </footer>
