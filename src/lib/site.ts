@@ -147,11 +147,6 @@ export const software: Software[] = [
     title: "Aelum splash",
     description: "Branded Plymouth boot screen with LUKS passphrase unlock.",
   },
-  {
-    icon: "f035b", // nerd-fonts: memory
-    title: "ZRAM swap",
-    description: "Compressed RAM swap instead of a swap file.",
-  },
 ];
 
 export interface Step {

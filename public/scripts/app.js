@@ -29,7 +29,9 @@ const validId = (raw) => {
 
 // Switch to the given page id. `push` records the change in session history
 // so back/forward work; the initial load and popstate handling pass false.
-function go(id, push = true) {
+// `resetScroll` is disabled when landing on an in-page anchor (e.g.
+// #install-tools) so the browser can position on the anchor instead.
+function go(id, push = true, resetScroll = true) {
   const next = validId(id);
 
   document.querySelectorAll(".page").forEach((el) => {
@@ -47,7 +49,7 @@ function go(id, push = true) {
     history.pushState({ page: next }, "", `#${next}`);
   }
 
-  window.scrollTo({ top: 0 });
+  if (resetScroll) window.scrollTo({ top: 0 });
 }
 
 // Nav clicks (both the top nav links and the brand logo) switch pages.
@@ -58,12 +60,55 @@ document.addEventListener("click", (event) => {
   go(link.dataset.page);
 });
 
-// Browser back / forward, and any programmatic hash change.
-window.addEventListener("popstate", () => {
-  go(location.hash, false);
-});
+// Resolve the current URL hash. A page hash (#download) switches pages; an
+// in-page anchor (#install-tools, #top) activates whichever page contains it
+// and lands on the anchor. Crucially an anchor is NOT an unknown page: it must
+// not fall through to the default page, which would bounce the user to home.
+// An empty or unknown hash leaves the active page untouched.
+function syncFromHash({ instant = false } = {}) {
+  const raw = (location.hash || "").replace(/^#/, "");
 
-go(location.hash, false);
+  if (PAGES.some((p) => p.id === raw)) {
+    go(raw, false);
+    return;
+  }
+
+  const anchor = raw ? document.getElementById(raw) : null;
+  const hostPage = anchor?.closest(".page")?.id;
+  if (hostPage) go(hostPage, false, false);
+  if (!anchor) return;
+
+  if (instant) {
+    // Skip the smooth animation for deep links: jump straight to the target.
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    anchor.scrollIntoView();
+    root.style.scrollBehavior = prev;
+  } else {
+    anchor.scrollIntoView();
+  }
+}
+
+// Same-document navigations: fragment links fire `hashchange`, back/forward
+// fire `popstate` (some browsers fire both for a fragment click), so handle
+// both with one idempotent handler.
+window.addEventListener("popstate", () => syncFromHash());
+window.addEventListener("hashchange", () => syncFromHash());
+
+// Initial load: honour a deep link, otherwise land on the home page.
+if (location.hash) {
+  const isAnchor = !PAGES.some((p) => p.id === location.hash.slice(1));
+  syncFromHash({ instant: isAnchor });
+  // Fonts and images finish loading after the first pass and can shift the
+  // anchor's position, so re-apply once the page has fully loaded.
+  if (isAnchor) {
+    window.addEventListener("load", () => syncFromHash({ instant: true }), {
+      once: true,
+    });
+  }
+}
+if (!document.querySelector(".page.active")) go(DEFAULT_PAGE, false);
 
 // ---------------------------------------------------------------------------
 // Floating nav: deepen the bar on scroll, and drive the mobile menu.
