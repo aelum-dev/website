@@ -4,13 +4,13 @@ import { installSteps } from "../lib/site";
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const slides = [
-  { n: 1, alt: "language selection", dark: "34a7ac07", light: "c5ed937e" },
-  { n: 2, alt: "creating the user account", dark: "bc4bc0ad", light: "ce77cab9" },
-  { n: 3, alt: "selecting a disk", dark: "bc5f612e", light: "499e45a6" },
-  { n: 4, alt: "partitioning the disk", dark: "f3644a3e", light: "00beb481" },
-  { n: 5, alt: "confirming installation", dark: "3d1e3e63", light: "45360f27" },
-  { n: 6, alt: "installing the system", dark: "9184b61d", light: "3ffdd65a" },
-  { n: 7, alt: "installation complete", dark: "9146d8e2", light: "bc065e84" },
+  { n: 1, alt: "language selection", dark: "38d5732e", light: "6d1c7201" },
+  { n: 2, alt: "creating the user account", dark: "e6ba2eca", light: "07d02c0c" },
+  { n: 3, alt: "selecting a disk", dark: "27bca97b", light: "0ecfebc7" },
+  { n: 4, alt: "partitioning the disk", dark: "15386dcd", light: "e1ed8651" },
+  { n: 5, alt: "confirming installation", dark: "46ff0530", light: "eb9c208c" },
+  { n: 6, alt: "installing the system", dark: "f3a374ac", light: "2e4ca679" },
+  { n: 7, alt: "installation complete", dark: "ccabadb0", light: "414a3186" },
 ];
 ---
 
@@ -48,18 +48,6 @@ const slides = [
               ))
             }
           </div>
-          <div class="slideshow-dots" data-slideshow-dots>
-            {
-              slides.map((s, i) => (
-                <button
-                  type="button"
-                  class={`slideshow-dot${i === 0 ? " is-active" : ""}`}
-                  data-slide={i}
-                  aria-label={`Show step ${s.n}`}
-                />
-              ))
-            }
-          </div>
         </div>
       </div>
 
@@ -82,7 +70,6 @@ const slides = [
         (function () {
           var slides = document.querySelectorAll(".slideshow-slide");
           if (!slides.length) return;
-          var dots = document.querySelectorAll("[data-slideshow-dots] .slideshow-dot");
           var order = Array.prototype.slice.call(slides);
           var index = 0;
           var timer = null;
@@ -92,9 +79,6 @@ const slides = [
             index = (i + order.length) % order.length;
             order.forEach(function (s, n) {
               s.classList.toggle("is-active", n === index);
-            });
-            dots.forEach(function (d, n) {
-              d.classList.toggle("is-active", n === index);
             });
           }
 
@@ -107,13 +91,6 @@ const slides = [
           function stop() {
             if (timer) clearInterval(timer);
           }
-
-          dots.forEach(function (d) {
-            d.addEventListener("click", function () {
-              show(parseInt(d.dataset.slide, 10));
-              start();
-            });
-          });
 
           var frame = document.querySelector(".features-demo-frame");
           frame.addEventListener("mouseenter", stop);

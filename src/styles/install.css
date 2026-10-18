@@ -22,9 +22,7 @@
   aspect-ratio: 3 / 2.05;
   display: grid;
   place-items: center;
-  /* Extra bottom padding reserves a gutter for the slideshow dots, so they
-     sit on the frame surface instead of straddling the screenshot's edge. */
-  padding: 0.75rem 0.75rem 2rem;
+  padding: 0.75rem;
   border-radius: var(--radius-xl);
   background: var(--surface);
   border: 1px solid var(--surface-border);
@@ -82,33 +80,6 @@ img.shot {
 }
 .slideshow-slide.is-active {
   opacity: 1;
-}
-
-/* Progress dots in the frame's bottom gutter. */
-.slideshow-dots {
-  position: absolute;
-  bottom: 0.65rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.4rem;
-  z-index: 2;
-}
-.slideshow-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-pill);
-  border: none;
-  padding: 0;
-  background: var(--surface-border);
-  cursor: pointer;
-  transition:
-    background 0.3s,
-    width 0.3s var(--ease);
-}
-.slideshow-dot.is-active {
-  background: var(--accent);
-  width: 20px;
 }
 
 /* Step timeline — a numbered grid with a connecting line. */
