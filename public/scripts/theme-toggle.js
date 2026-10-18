@@ -11,8 +11,8 @@
   // Full-screen background color for each scheme (mirrors the --bg tokens and
   // the meta theme-color values in theme.js / Layout.astro).
   const THEME_COLORS = {
-    dark: "#151114",
-    light: "#faf7f6",
+    dark: "#141218",
+    light: "#fff7f9",
   };
 
   function current() {
@@ -36,7 +36,7 @@
       window.localStorage.setItem(STORAGE_KEY, theme);
     } catch (_) {}
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "dark" ? "#151114" : "#faf7f6");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#141218" : "#fff7f9");
   }
 
   // Radial ink wipe tinted with the destination theme color. Dark morphs in

@@ -51,33 +51,33 @@
 
 :root {
   /* ----------------------------------------------------------
-     Palette — DankMaterialShell (DMS) mauve / rose / tan scheme.
-     Kept identical across the overhaul; the two theme blocks
-     below are the single source of truth for every color.
+     Palette — exported DankMaterialShell (DMS) light scheme.
+     Light uses the DMS light export; the dark block below uses
+     the DMS dark export, so the site matches the desktop.
      ---------------------------------------------------------- */
   color-scheme: light;
 
   /* Surface & Background */
-  --bg: #faf7f6;
+  --bg: #fff7f9;
   --bg-elevated: #ffffff;
-  --surface: rgba(255, 255, 255, 0.72);
   --surface-solid: #ffffff;
-  --surface-border: #e6d4d6;
+  --surface: color-mix(in srgb, var(--surface-solid) 72%, transparent);
+  --surface-border: #d2c2ca;
 
   /* Text */
-  --text: #3d3234;
-  --text-dim: #756567;
-  --text-faint: #9a8a8c;
+  --text: #201a1e;
+  --text-dim: #4f444a;
+  --text-faint: #81737b;
 
-  /* Accents (mauve / rose / tan) */
-  --accent: #a67480;
-  --accent-2: #8e7579;
-  --accent-3: #a08864;
-  --accent-green: #63e6a0;
+  /* Accents (primary / secondary / tertiary from the DMS scheme) */
+  --accent: #834c74;
+  --accent-2: #6f5767;
+  --accent-3: #815341;
+  --accent-green: #459c57;
 
   /* Shadows tinted by the accent */
-  --accent-shadow: rgba(166, 116, 128, 0.3);
-  --accent-shadow-strong: rgba(166, 116, 128, 0.45);
+  --accent-shadow: color-mix(in srgb, var(--accent) 30%, transparent);
+  --accent-shadow-strong: color-mix(in srgb, var(--accent) 45%, transparent);
 
   /* Derived (theme-following) helpers */
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
@@ -94,9 +94,9 @@
   --radius-pill: 999px;
 
   /* Elevation */
-  --shadow-xs: 0 1px 2px rgba(61, 50, 52, 0.06);
-  --shadow-sm: 0 4px 14px -6px rgba(61, 50, 52, 0.16);
-  --shadow-md: 0 18px 40px -22px rgba(61, 50, 52, 0.3);
+  --shadow-xs: 0 1px 2px color-mix(in srgb, var(--text) 6%, transparent);
+  --shadow-sm: 0 4px 14px -6px color-mix(in srgb, var(--text) 16%, transparent);
+  --shadow-md: 0 18px 40px -22px color-mix(in srgb, var(--text) 30%, transparent);
   --shadow-lg: 0 40px 80px -40px var(--accent-shadow-strong);
   --shadow-pop: 0 26px 55px -26px var(--accent-shadow-strong);
 
@@ -144,29 +144,30 @@
   --dot-green: #27c93f;
 }
 
-/* Dark palette — same mauve/rose/tan accents, inverted dark surfaces */
+/* Dark palette — exported DMS dark scheme.
+   Near-black surfaces with a lavender primary. */
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #151114;
-  --bg-elevated: #1e1720;
-  --surface: rgba(30, 23, 32, 0.72);
-  --surface-solid: #1e1720;
-  --surface-border: #2c2330;
+  --bg: #141218;
+  --bg-elevated: #1d1b20;
+  --surface-solid: #1d1b20;
+  --surface: color-mix(in srgb, var(--surface-solid) 72%, transparent);
+  --surface-border: #49454e;
 
-  --text: #ece2e3;
-  --text-dim: #a59496;
-  --text-faint: #7a6a6c;
+  --text: #e6e0e9;
+  --text-dim: #cac4cf;
+  --text-faint: #948f99;
 
-  --accent: #cfa3ae;
-  --accent-2: #b48ea4;
-  --accent-3: #c3ab82;
-  --accent-green: #6ee6a8;
+  --accent: #cfbdfe;
+  --accent-2: #cbc2db;
+  --accent-3: #efb8c8;
+  --accent-green: #a5ffb8;
 
-  --accent-shadow: rgba(207, 163, 174, 0.22);
-  --accent-shadow-strong: rgba(207, 163, 174, 0.38);
+  --accent-shadow: color-mix(in srgb, var(--accent) 22%, transparent);
+  --accent-shadow-strong: color-mix(in srgb, var(--accent) 38%, transparent);
 
-  --on-accent: #2a1a22;
+  --on-accent: #36275d;
 }
 
 * {

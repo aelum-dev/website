@@ -22,7 +22,7 @@
   // Keep the meta theme-color in sync with the active theme.
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if (metaTheme) {
-    metaTheme.setAttribute("content", theme === "dark" ? "#151114" : "#faf7f6");
+    metaTheme.setAttribute("content", theme === "dark" ? "#141218" : "#fff7f9");
   }
 
   // Listen for OS-level changes when the user hasn't made an explicit choice.
@@ -31,7 +31,7 @@
     try {
       if (!window.localStorage.getItem(STORAGE_KEY)) {
         ROOT.setAttribute("data-theme", e.matches ? "dark" : "light");
-        if (metaTheme) metaTheme.setAttribute("content", e.matches ? "#151114" : "#faf7f6");
+        if (metaTheme) metaTheme.setAttribute("content", e.matches ? "#141218" : "#fff7f9");
       }
     } catch (_) {}
   };
