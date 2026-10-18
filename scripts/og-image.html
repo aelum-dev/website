@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!--
+  OG share image source of truth (1200x630).
+
+  This HTML file is the ONLY thing you edit when the og-image needs a change
+  (copy, logo, colours, layout). Regenerate the served PNG with:
+
+      npm run og-image      # -> public/og-image.png
+
+  It is rendered headless with Chromium so the self-hosted Nunito woff2 draws
+  (rsvg/cairo cannot). Paths are relative to this file (scripts/), so the
+  wrapper is portable and needs no build step.
+-->
+<style>
+  @font-face {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    src: url("../src/styles/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    src: url("../src/styles/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    position: relative;
+    background: #fff7f9;
+    font-family: "Nunito", system-ui, sans-serif;
+    color: #201a1e;
+  }
+  /* soft blurred accent blobs behind the copy */
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .blob-tl { top: -120px; right: -80px; width: 520px; height: 520px;
+             background: radial-gradient(circle, #834c74, transparent 70%); opacity: 0.5; }
+  .blob-bl { bottom: -160px; left: -120px; width: 560px; height: 560px;
+             background: radial-gradient(circle, #b77aa5, transparent 70%); opacity: 0.35; }
+  .copy { position: absolute; left: 108px; top: 150px; max-width: 560px; }
+  .title { font-size: 76px; font-weight: 700; line-height: 1.02; letter-spacing: -0.02em; }
+  .subtitle {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.05;
+    margin-top: 12px;
+    background: linear-gradient(104deg, #834c74 0%, #6f5767 48%, #815341 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .lead { font-size: 24px; font-weight: 400; color: #81737b; margin-top: 14px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 30px;
+    padding: 15px 28px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #834c74, #6f5767);
+    color: #ffffff;
+    font-size: 23px;
+    font-weight: 700;
+  }
+  .logo { position: absolute; left: 822px; top: 296px; width: 300px; height: 270px; }
+  .logo img { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+  <div class="blob blob-tl"></div>
+  <div class="blob blob-bl"></div>
+  <div class="copy">
+    <div class="title">Aelum</div>
+    <div class="subtitle">Beautifully themed Arch-based distro</div>
+    <div class="lead">Polished Hyprland desktop with DankMaterialShell</div>
+    <div class="chip">Fully offline installer</div>
+  </div>
+  <div class="logo"><img src="../public/logo.svg" alt="Aelum logo"></div>
+</body>
+</html>

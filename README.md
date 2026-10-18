@@ -50,13 +50,14 @@ public/
   logo.png             # brand mark / large logo
   favicon-16.png       # small favicon (16×16)
   favicon-32.png       # small favicon (32×32)
-  og-image.svg         # social share image (vector source)
-  og-image.png         # social share image (raster export)
+  og-image.png         # social share image (raster export; see scripts/og-image.html)
   images/              # hero shots + installer demo video
   robots.txt           # points at the deployed sitemap
   scripts/
     app.js             # hash-based single-shell page router
     theme.js           # light/dark theme logic (persisted in localStorage)
+    og-image.html      # OG share image source (edit, then `npm run og-image`)
+    export-og-image.sh # headless-Chromium export -> public/og-image.png
     theme-toggle.js    # theme toggle button
 ```
 

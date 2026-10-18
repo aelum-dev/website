@@ -16,6 +16,7 @@ npm install        # install dependencies
 npm run dev        # dev server at localhost:4321
 npm run build      # production build -> ./dist
 npm run preview    # preview the production build
+npm run og-image   # re-export public/og-image.png from scripts/og-image.html (Chromium)
 npm run typecheck  # astro check (type checking)
 npm run format     # biome format --write .
 npm run format:check
@@ -44,7 +45,7 @@ npm run check      # biome format . && astro check   # run before committing
 
 - Material-You / glassy aelum mirroring the Aelum desktop (Hyprland + DankMaterialShell).
 - Fonts are self-hosted woff2 under `src/styles/fonts/` (Nunito + JetBrains Mono + Nerd Fonts symbols) — keep them offline; the site must stay fully offline.
-- Favicons are rounded PNGs in `public/` (`favicon-16.png`, `favicon-32.png`, derived from the master `public/logo.png`); OG share image is `public/og-image.svg` (vector source, re-exported to `og-image.png`).
+- Favicons are rounded PNGs in `public/` (`favicon-16.png`, `favicon-32.png`, derived from the master `public/logo.png`); the OG share image is `public/og-image.png`, exported from the editable HTML source `scripts/og-image.html` via `npm run og-image`.
 
 ## Deployment
 
@@ -89,7 +90,7 @@ component consumes (`releaseVersion`, `downloadUrl`, `checksums`, `signingKey`).
 - For **canonical/absolute URLs** (OG/Twitter images in `Layout.astro`), derive them from Astro's config with `new URL("og-image.png", Astro.url).href` so the base and site URL stay in one place.
 - Do not hardcode the base string; keep it in `astro.config.mjs`.
 - **Favicons:** rounded, optimized PNGs live in `public/` (`favicon-16.png`, `favicon-32.png`) and are referenced in `Layout.astro`. They are derived from the master `public/logo.png` (downscaled with rounded corners). Prefer these small favicons over the large `logo.png` in hot paths like the header.
-- **OG share image (`og-image.png`)** is exported from its vector source `public/og-image.svg` — never hand-edit the PNG. It drives social/Telegram link previews, so update both the SVG copy and re-export when the site text or logo changes. Re-export with headless Chromium (it loads the self-hosted Nunito woff2, which `rsvg`/cairo cannot): copy `src/styles/fonts/nunito-v16-latin-regular.woff2` to `public/nunito.woff2` (the SVG references it), inline the SVG into an HTML wrapper sized 1200×630, and screenshot with `chromium --headless=new --window-size=1200,630 --screenshot=public/og-image.png file://…/wrapper.html`.
+- **OG share image (`og-image.png`)** is exported from its editable HTML source `scripts/og-image.html` — never hand-edit the PNG. It drives social/Telegram link previews, so edit the copy/logo/colours/layout in `scripts/og-image.html` and re-export when the site text or logo changes: `npm run og-image` (alias for `bash scripts/export-og-image.sh`). The script renders the 1200×630 wrapper headless with Chromium, which draws the self-hosted Nunito woff2 that `rsvg`/cairo cannot. `scripts/og-image.html` is the single source of truth, so the repo carries no base64-raster bloat (the old `public/og-image.svg` was removed).
 
 ## Gotchas
 
