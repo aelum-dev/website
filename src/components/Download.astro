@@ -10,6 +10,8 @@ import {
   releaseVersion,
   signingKey,
   ventoyUrl,
+  verifyCommands,
+  wkdKeyUrl,
 } from "../lib/site";
 import CopyButton from "./CopyButton.astro";
 
@@ -17,6 +19,61 @@ const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const isoSize = `${(releaseSizeBytes / 1e9).toFixed(2)} GB`;
 const isoDate = releasePublishedAt.slice(0, 10);
+
+// Release assets offered for download, in the order users need them.
+const assets = [
+  {
+    icon: "f02ca",
+    name: "Disk image",
+    sub: isoFilename,
+    href: downloadUrl.iso,
+  },
+  {
+    icon: "f012c",
+    name: "SHA-256 checksum",
+    sub: `${isoFilename}.sha256`,
+    href: downloadUrl.sha256,
+  },
+  ...(checksums.sha512 && downloadUrl.sha512
+    ? [
+        {
+          icon: "f012c",
+          name: "SHA-512 checksum",
+          sub: `${isoFilename}.sha512`,
+          href: downloadUrl.sha512,
+        },
+      ]
+    : []),
+  {
+    icon: "ee3c",
+    name: "GPG signature",
+    sub: `${isoFilename}.asc`,
+    href: downloadUrl.signature,
+  },
+];
+
+// The three commands a user runs to verify a download. The command strings come
+// from site.ts so they always match the real filenames and signing email.
+const verifySteps = [
+  {
+    num: "01",
+    title: "Get the signing key",
+    body: "WKD lets GPG pull the release key straight from aelum.dev by email — no keyserver, no manual import.",
+    command: verifyCommands.fetchKey,
+  },
+  {
+    num: "02",
+    title: "Check the checksum",
+    body: "Run this in the folder with your downloads. It re-hashes the ISO and compares it with the published value.",
+    command: verifyCommands.checksum,
+  },
+  {
+    num: "03",
+    title: "Verify the signature",
+    body: "Confirms the ISO was signed by the Aelum release key and hasn't been altered since.",
+    command: verifyCommands.signature,
+  },
+];
 
 const flashTools = [
   {
@@ -120,50 +177,66 @@ const flashTools = [
     <div class="section-head reveal">
       <span class="eyebrow">
         <span class="eyebrow-chip" aria-hidden="true">
-          <span class="nf-icon">&#xee3c;</span>
+          <span class="nf-icon">&#xf012c;</span>
         </span>
         Verify
       </span>
       <h2 class="section-title">Check your download.</h2>
       <p class="section-sub">
-        Every release is signed. Compare the checksum, then verify the signature
-        against the signing key below.
+        Every Aelum release is signed with the Aelum release key. Check the
+        checksum, then verify the signature before you flash anything.
       </p>
     </div>
 
     <div class="card-grid grid-verify">
-      <div class="card card-pad-lg dl-verify">
+      <div class="card card-pad-lg dl-assets reveal">
         <div class="card-head">
           <span class="icon-tile" aria-hidden="true">
-            <span class="nf-icon">{glyph("f012c")}</span>
+            <span class="nf-icon">{glyph("f0965")}</span>
           </span>
-          <h3>Checksums</h3>
-        </div>
-        <div class="dl-verify-rows">
-          <div class="copy-field">
-            <span class="copy-field-label">SHA-256</span>
-            <code>{checksums.sha256}</code>
-            <CopyButton value={checksums.sha256} label="Copy SHA-256" />
-            <a
-              class="dl-asset-dl"
-              href={downloadUrl.sha256}
-              target="_blank"
-              rel="noopener"
-              title="Download SHA-256 checksum file"
-              aria-label="Download SHA-256 checksum file"
-            >
-              <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
-            </a>
+          <div class="card-head-text">
+            <span class="card-badge">{isoSize} · {isoDate}</span>
+            <h3>Release assets</h3>
           </div>
         </div>
+        <ul class="dl-asset-list">
+          {
+            assets.map((asset) => (
+              <li class="dl-asset">
+                <span class="dl-asset-icon" aria-hidden="true">
+                  <span class="nf-icon">{glyph(asset.icon)}</span>
+                </span>
+                <span class="dl-asset-text">
+                  <span class="dl-asset-name">{asset.name}</span>
+                  <span class="dl-asset-sub">{asset.sub}</span>
+                </span>
+                <a
+                  class="dl-asset-btn"
+                  href={asset.href}
+                  target="_blank"
+                  rel="noopener"
+                  title={`Download ${asset.sub}`}
+                  aria-label={`Download ${asset.sub}`}
+                >
+                  <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
 
-      <div class="card card-pad-lg dl-verify">
+      <div class="card card-pad-lg dl-key-card reveal">
         <div class="card-head">
           <span class="icon-tile" aria-hidden="true">
             <span class="nf-icon">{glyph("eb11")}</span>
           </span>
           <h3>Signing key</h3>
+          <CopyButton
+            value={signingKey.fingerprint}
+            label="Copy full fingerprint"
+            className="dl-key-copy"
+          />
         </div>
         <div class="dl-key">
           <span class="dl-key-uid">{signingKey.uid}</span>
@@ -173,31 +246,42 @@ const flashTools = [
             {signingKey.expires === "never" ? "No expiry" : `Expires ${signingKey.expires}`}
           </span>
         </div>
-        <div class="dl-key-actions">
-          <a
-            class="btn btn-ghost dl-key-dl"
-            href={downloadUrl.key}
-            target="_blank"
-            rel="noopener"
-          >
-            <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
-            Download signing key
-          </a>
-          <a
-            class="btn btn-ghost dl-key-dl"
-            href={downloadUrl.signature}
-            target="_blank"
-            rel="noopener"
-          >
-            <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
-            Download signature
-          </a>
-        </div>
-        <p class="dl-key-verify">
-          Verify with:{" "}
-          <code>gpg --verify {isoFilename}.asc {isoFilename}</code>
+        <p class="dl-key-wkd">
+          Get this key over <strong>WKD</strong> — GPG fetches it straight from{" "}
+          <a href={wkdKeyUrl} target="_blank" rel="noopener">
+            aelum.dev
+          </a>{" "}
+          by email, so there's no keyserver and nothing to import by hand.
         </p>
       </div>
+    </div>
+
+    <div class="dl-steps reveal">
+      <h3 class="dl-steps-title">
+        <span class="nf-icon" aria-hidden="true">{glyph("f120")}</span>
+        Verify in three commands
+      </h3>
+      <p class="dl-steps-note">
+        Download the files above into one folder, then run these there — one line
+        each.
+      </p>
+      <ol class="dl-step-list">
+        {
+          verifySteps.map((step) => (
+            <li class="dl-step">
+              <span class="dl-step-num">{step.num}</span>
+              <div class="dl-step-body">
+                <h4>{step.title}</h4>
+                <p>{step.body}</p>
+                <div class="dl-code">
+                  <code>{step.command}</code>
+                  <CopyButton value={step.command} label="Copy command" />
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </div>
 </section>
