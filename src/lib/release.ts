@@ -16,8 +16,7 @@ export const release: ReleaseMetadata = {
     iso: "https://cdn.aelum.dev/v2026.10.19/aelum-2026.10.19-x86_64.iso",
     sha256: "https://cdn.aelum.dev/v2026.10.19/aelum-2026.10.19-x86_64.iso.sha256",
     sha512: "https://cdn.aelum.dev/v2026.10.19/aelum-2026.10.19-x86_64.iso.sha512",
-    signature: "https://cdn.aelum.dev/v2026.10.19/aelum-2026.10.19-x86_64.iso.asc",
-    key: "https://cdn.aelum.dev/v2026.10.19/aelum-release-key.asc"
+    signature: "https://cdn.aelum.dev/v2026.10.19/aelum-2026.10.19-x86_64.iso.asc"
   },
   signingKey: {
     uid: "Aelum Release <release@aelum.dev>",

@@ -224,7 +224,6 @@ export const downloadUrl = {
   sha256: release.urls.sha256,
   sha512: release.urls.sha512,
   signature: release.urls.signature,
-  key: release.urls.key,
 } as const;
 
 // Verification data, shown in the Download section. Kept in one place so the

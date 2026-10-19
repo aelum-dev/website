@@ -12,7 +12,7 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 - **The installer** — the 7-shot auto-advancing walkthrough, the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages in a full-bleed marquee.
 - **CLI** — headless / scripted install examples (with a copy button).
-- **Download** — the ISO, its SHA-256 checksum, GPG signing key, and flashing tools (Ventoy, BalenaEtcher, dd).
+- **Download** — the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing key fetched via WKD, and copyable verification commands, plus flashing tools (Ventoy, BalenaEtcher, dd).
 - **Call to action** — a closing band that points to the download and the source.
 
 ## Project Structure

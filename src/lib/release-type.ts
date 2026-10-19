@@ -25,7 +25,6 @@ export interface ReleaseMetadata {
     sha256: string;
     sha512?: string;
     signature: string;
-    key: string;
   };
   /** GPG signing key metadata, shown in the verification section. */
   signingKey: {
