@@ -144,11 +144,16 @@ const flashTools = [
             <span class="copy-field-label">SHA-256</span>
             <code>{checksums.sha256}</code>
             <CopyButton value={checksums.sha256} label="Copy SHA-256" />
-          </div>
-          <div class="copy-field">
-            <span class="copy-field-label">SHA-512</span>
-            <code>{checksums.sha512}</code>
-            <CopyButton value={checksums.sha512} label="Copy SHA-512" />
+            <a
+              class="dl-asset-dl"
+              href={downloadUrl.sha256}
+              target="_blank"
+              rel="noopener"
+              title="Download SHA-256 checksum file"
+              aria-label="Download SHA-256 checksum file"
+            >
+              <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
+            </a>
           </div>
         </div>
       </div>
@@ -164,8 +169,34 @@ const flashTools = [
           <span class="dl-key-uid">{signingKey.uid}</span>
           <span class="dl-key-fp">{signingKey.fingerprintTop}</span>
           <span class="dl-key-fp">{signingKey.fingerprintBot}</span>
-          <span class="dl-key-exp">Expires {signingKey.expires}</span>
+          <span class="dl-key-exp">
+            {signingKey.expires === "never" ? "No expiry" : `Expires ${signingKey.expires}`}
+          </span>
         </div>
+        <div class="dl-key-actions">
+          <a
+            class="btn btn-ghost dl-key-dl"
+            href={downloadUrl.key}
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
+            Download signing key
+          </a>
+          <a
+            class="btn btn-ghost dl-key-dl"
+            href={downloadUrl.signature}
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="nf-icon" aria-hidden="true">{glyph("f0965")}</span>
+            Download signature
+          </a>
+        </div>
+        <p class="dl-key-verify">
+          Verify with:{" "}
+          <code>gpg --verify {isoFilename}.asc {isoFilename}</code>
+        </p>
       </div>
     </div>
   </div>

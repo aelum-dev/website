@@ -125,6 +125,33 @@
   display: grid;
 }
 
+/* Download-file icon button (checksum rows + key card). Mirrors .copy-btn. */
+.dl-asset-dl {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-dim);
+  text-decoration: none;
+  line-height: 0;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.2s var(--ease-spring);
+}
+.dl-asset-dl:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--surface-solid);
+  transform: translateY(-1px);
+}
+
 /* Verification card */
 .dl-verify {
   display: flex;
@@ -158,6 +185,25 @@
 .dl-key-exp {
   font-size: 0.78rem;
   color: var(--text-faint);
+}
+.dl-key-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.dl-key-dl {
+  align-self: flex-start;
+}
+.dl-key-dl .nf-icon {
+  margin-right: 0.35rem;
+}
+.dl-key-verify {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.dl-key-verify code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
 }
 
 /* Flash-to-USB tool cards */

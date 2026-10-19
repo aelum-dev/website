@@ -49,18 +49,18 @@ npm run check      # biome format . && astro check   # run before committing
 
 ## Deployment
 
-- Deployed as a **GitLab Pages** project/site page via `.gitlab-ci.yml` (runs on push to `main`).
-- `astro.config.mjs`: `site` = `https://aelum.gitlab.io/website/` and `base = "/website/"`. **If the repo name changes, update `base` there too.**
+- Deployed as a **GitHub Pages** site via `.github/workflows/pages.yml` (runs on push to `main`), served at the custom domain `https://aelum.dev/`.
+- `astro.config.mjs`: `site` = `https://aelum.dev/` and `base = "/"`. The custom domain is declared by `public/CNAME` (and must match the repo's Pages setting).
 - Sitemap strips trailing `index.html` / slashes for clean URLs.
-- `public/robots.txt` **must** point at the deployed sitemap: `https://aelum.gitlab.io/website/sitemap-index.xml` (not a GitHub Pages / old-repo URL). Keep it in sync with `site`/`base`.
-- **Caching:** GitLab Pages reads `public/_gitlab-pages-nginx.conf` (a Netlify `_headers` file is *not* honored by GitLab Pages). Match the deployed base path in the `location` regex. Reference `public/` assets with relative paths so they resolve under `/website/`.
+- `public/robots.txt` **must** point at the deployed sitemap: `https://aelum.dev/sitemap-index.xml`. Keep it in sync with `site`.
+- **Caching:** GitHub Pages ignores custom header config (there is no `_headers`/nginx equivalent). Content-hashed assets under `public/images/` already change filename when their content changes, so long-lived caching is safe without extra config.
 
 ## Content Sources
 
 All copy is derived from the upstream project READMEs:
 
-- [Aelum](https://gitlab.com/aelum/live-iso)
-- [Aelum-Installer](https://gitlab.com/aelum/installer)
+- [Aelum](https://github.com/aelum-dev/live-iso)
+- [Aelum-Installer](https://github.com/aelum-dev/installer)
 
 ## Release / Download Metadata (auto-generated)
 
@@ -72,7 +72,7 @@ hand:
   the same data as `latest.json`, uploaded to Cloudflare R2).
 - `docker/scripts/publish-iso.sh` runs it during a release and writes `release.ts`.
 - `docker/scripts/publish-website.sh` commits it to this repo's `main`, which
-  triggers GitLab Pages to redeploy with the new links.
+  triggers the GitHub Pages workflow to redeploy with the new links.
 - `scripts/fetch-release.mjs` can also regenerate it in CI by fetching `latest.json`
   from the Cloudflare Worker (`RELEASE_METADATA_URL`). If the URL is unset or the
   fetch fails it keeps the committed file, so the site always builds offline.
@@ -85,10 +85,9 @@ component consumes (`releaseVersion`, `downloadUrl`, `checksums`, `signingKey`).
 ## Assets
 
 - Static images live under `public/` and are served at the site root.
-- **Reference in-page `public/` assets with a relative path** (e.g. `src="logo.png"`), not a leading-slash absolute path. Because `astro.config.mjs` sets `base = "/website/"`, an absolute path like `/logo.png` is rejected at build time (the router expects `/website/logo.png`). Relative paths resolve correctly under the base — this is how the favicon (`star.svg`) and the nav logo are referenced.
-- **Links that must reach the site root** (e.g. the 404 page's "Back to home") must also be relative (`href="index.html"`), not `href="/"` — an absolute `/` misses the `/website/` base and lands on the GitLab user root.
-- For **canonical/absolute URLs** (OG/Twitter images in `Layout.astro`), derive them from Astro's config with `new URL("og-image.png", Astro.url).href` so the base and site URL stay in one place.
-- Do not hardcode the base string; keep it in `astro.config.mjs`.
+- Reference `public/` assets with a relative path (e.g. `src="logo.png"`) so they resolve regardless of the deploy base.
+- For **canonical/absolute URLs** (OG/Twitter images in `Layout.astro`), derive them from Astro's config with `new URL("og-image.png", Astro.url).href` so the site URL stays in one place.
+- Do not hardcode the site URL; keep it in `astro.config.mjs`.
 - **Favicons:** rounded, optimized PNGs live in `public/` (`favicon-16.png`, `favicon-32.png`) and are referenced in `Layout.astro`. They are derived from the master `public/logo.png` (downscaled with rounded corners). Prefer these small favicons over the large `logo.png` in hot paths like the header.
 - **OG share image (`og-image.png`)** is exported from its editable HTML source `scripts/og-image.html` — never hand-edit the PNG. It drives social/Telegram link previews, so edit the copy/logo/colours/layout in `scripts/og-image.html` and re-export when the site text or logo changes: `npm run og-image` (alias for `bash scripts/export-og-image.sh`). The script renders the 1200×630 wrapper headless with Chromium, which draws the self-hosted Nunito woff2 that `rsvg`/cairo cannot. `scripts/og-image.html` is the single source of truth, so the repo carries no base64-raster bloat (the old `public/og-image.svg` was removed).
 

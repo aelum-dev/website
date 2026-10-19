@@ -11,11 +11,9 @@ export const release: ReleaseMetadata = {
   publishedAt: "2026-10-18T11:25:42Z",
   sizeBytes: 3829907456,
   sha256: "c768306414804053e6bc2b7ad5b58446c6db398473426afc128821a7d05540f2",
-  sha512: "61814127c3e1eaf28298a0223a887f898ab871395a729b281b27f613616802ab70b4460e1045e72fd0efa8d8e3a82c83a3cbb9473314f0b2cd0f7f5cc124f7ba",
   urls: {
     iso: "https://cdn.aelum.dev/v2026.10.18/aelum-2026.10.18-x86_64.iso",
     sha256: "https://cdn.aelum.dev/v2026.10.18/aelum-2026.10.18-x86_64.iso.sha256",
-    sha512: "https://cdn.aelum.dev/v2026.10.18/aelum-2026.10.18-x86_64.iso.sha512",
     signature: "https://cdn.aelum.dev/v2026.10.18/aelum-2026.10.18-x86_64.iso.asc",
     key: "https://cdn.aelum.dev/v2026.10.18/aelum-release-key.asc"
   },

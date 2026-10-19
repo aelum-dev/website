@@ -17,13 +17,10 @@ export interface ReleaseMetadata {
   sizeBytes: number;
   /** SHA-256 of the ISO. */
   sha256: string;
-  /** SHA-512 of the ISO. */
-  sha512: string;
   /** Public download URLs for the ISO and its sidecar files. */
   urls: {
     iso: string;
     sha256: string;
-    sha512: string;
     signature: string;
     key: string;
   };

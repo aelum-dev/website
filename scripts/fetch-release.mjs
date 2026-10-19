@@ -39,11 +39,9 @@ function writeRelease(release) {
   lines.push(`  publishedAt: "${esc(release.publishedAt)}",`);
   lines.push(`  sizeBytes: ${Number(release.sizeBytes) || 0},`);
   lines.push(`  sha256: "${esc(release.sha256)}",`);
-  lines.push(`  sha512: "${esc(release.sha512)}",`);
   lines.push("  urls: {");
   lines.push(`    iso: "${esc(release.urls.iso)}",`);
   lines.push(`    sha256: "${esc(release.urls.sha256)}",`);
-  lines.push(`    sha512: "${esc(release.urls.sha512)}",`);
   lines.push(`    signature: "${esc(release.urls.signature)}",`);
   lines.push(`    key: "${esc(release.urls.key)}"`);
   lines.push("  },");

@@ -1,6 +1,6 @@
 # Aelum — Website
 
-This is the official landing site for [Aelum](https://gitlab.com/aelum/live-iso) and the [Aelum Installer](https://gitlab.com/aelum/installer), built with [Astro](https://astro.build/).
+This is the official landing site for [Aelum](https://github.com/aelum-dev/live-iso) and the [Aelum Installer](https://github.com/aelum-dev/installer), built with [Astro](https://astro.build/).
 
 Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer a few questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
 
@@ -12,7 +12,7 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 - **The installer** — the 7-shot auto-advancing walkthrough, the 6-step wizard, plus the ext4 vs btrfs choice.
 - **Languages** — all 28 installer languages in a full-bleed marquee.
 - **CLI** — headless / scripted install examples (with a copy button).
-- **Download** — the ISO, its SHA-256 / SHA-512 checksums, GPG signing key, and flashing tools (Ventoy, BalenaEtcher, dd).
+- **Download** — the ISO, its SHA-256 checksum, GPG signing key, and flashing tools (Ventoy, BalenaEtcher, dd).
 - **Call to action** — a closing band that points to the download and the source.
 
 ## Project Structure
@@ -84,8 +84,8 @@ Run `npm run check` (Biome + `astro check`) before committing.
 
 All copy on the site is sourced from the project READMEs:
 
-- [Aelum/README.md](https://gitlab.com/aelum/live-iso)
-- [Aelum-Installer/README.md](https://gitlab.com/aelum/installer)
+- [Aelum/README.md](https://github.com/aelum-dev/live-iso)
+- [Aelum-Installer/README.md](https://github.com/aelum-dev/installer)
 
 ---
 

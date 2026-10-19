@@ -1,8 +1,8 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
-export const mainRepo = "https://gitlab.com/aelum/live-iso";
-export const gitlabUrl = "https://gitlab.com/users/aelum/projects";
-export const installerRepo = "https://gitlab.com/aelum/installer";
+export const mainRepo = "https://github.com/aelum-dev/live-iso";
+export const githubUrl = "https://github.com/aelum-dev";
+export const installerRepo = "https://github.com/aelum-dev/installer";
 export const hyprlandUrl = "https://hyprland.org/";
 export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
 export const wailsUrl = "https://wails.io/";
@@ -216,15 +216,20 @@ export const isoFilename = release.filename;
 export const releaseSizeBytes = release.sizeBytes;
 export const releasePublishedAt = release.publishedAt;
 
+// Direct download URLs for the ISO and its published sidecars. The checksum,
+// signature, and signing key files are all downloadable, so the verification
+// section can link straight to them.
 export const downloadUrl = {
   iso: release.urls.iso,
+  sha256: release.urls.sha256,
+  signature: release.urls.signature,
+  key: release.urls.key,
 } as const;
 
 // Verification data, shown in the Download section. Kept in one place so the
 // component never reaches into the generated release.ts directly.
 export const checksums = {
   sha256: release.sha256,
-  sha512: release.sha512,
 } as const;
 
 export const signingKey = release.signingKey;
