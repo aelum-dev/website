@@ -200,7 +200,7 @@ export const installSteps: Step[] = [
 // Download / release metadata
 //
 // All of the values below are derived from src/lib/release.ts, which is
-// AUTO-GENERATED on every release by docker/scripts/build-release-metadata.sh
+// AUTO-GENERATED on every release by docker/scripts/gen-release-metadata.sh
 // (and committed to this repo, or overwritten in CI by scripts/fetch-release.mjs).
 // This keeps the website's download links in lockstep
 // with the files actually published to Cloudflare R2 — no manual editing.

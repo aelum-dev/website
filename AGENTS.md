@@ -68,7 +68,7 @@ The download links, checksums, and signing key in the Download section come from
 `src/lib/release.ts`, which is **generated on every release** — never edit it by
 hand:
 
-- `docker/scripts/build-release-metadata.sh` produces it from a signed ISO (and
+- `docker/scripts/gen-release-metadata.sh` produces it from a signed ISO (and
   the same data as `latest.json`, uploaded to Cloudflare R2).
 - `docker/scripts/publish-iso.sh` runs it during a release and writes `release.ts`.
 - `docker/scripts/publish-website.sh` commits it to this repo's `main`, which
