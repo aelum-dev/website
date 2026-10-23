@@ -72,9 +72,9 @@ export const features: Feature[] = [
   },
   {
     icon: "f0570", // nerd-fonts: view_grid
-    title: "ext4, btrfs, or LVM",
+    title: "ext4 or btrfs",
     description:
-      "Pick ext4 or btrfs — btrfs gets an automatic subvolume layout — optionally on top of LVM logical volumes.",
+      "Pick ext4 or btrfs — btrfs gets an automatic subvolume layout so every subvolume shares one free-space pool.",
   },
   {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
@@ -174,7 +174,7 @@ export const installSteps: Step[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
     description:
-      "Pick the drive, ext4 or btrfs, and optionally LUKS2 encryption or LVM — or partition manually for dual-boot.",
+      "Pick the drive, ext4 or btrfs, and optionally LUKS2 encryption — or partition manually for dual-boot.",
   },
   {
     num: "04",
