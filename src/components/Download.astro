@@ -137,9 +137,6 @@ const flashTools = [
               <span class="nf-icon">{glyph("ede9")}</span>
             </span>
             <div class="card-head-text">
-              <span class="card-badge">
-                {isoSize} · {isoDate}
-              </span>
               <h3>Installation ISO</h3>
             </div>
           </div>
@@ -147,6 +144,7 @@ const flashTools = [
           <div class="copy-field">
             <span class="copy-field-label">File</span>
             <code>{isoFilename}</code>
+            <span class="copy-field-size">{isoSize}</span>
             <CopyButton value={isoFilename} label="Copy filename" />
           </div>
 

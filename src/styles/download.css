@@ -9,7 +9,11 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(2rem, 4vw, 3rem);
-  align-items: center;
+  align-items: start;
+  min-width: 0;
+}
+.dl-hero-right {
+  min-width: 0;
 }
 .dl-hero-lead {
   color: var(--text-dim);
@@ -28,6 +32,7 @@
   gap: var(--space-3);
   padding: var(--space-7);
   background: linear-gradient(160deg, var(--accent-soft), transparent 55%), var(--surface);
+  min-width: 0;
 }
 .dl-iso-card .card-head {
   margin-bottom: var(--space-1);
@@ -53,6 +58,14 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: var(--space-2);
+}
+.dl-iso-size {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--on-accent);
+  opacity: 0.8;
+  margin-left: 0.35rem;
 }
 
 /* Copy-to-clipboard chip (filename + checksums). */
@@ -81,6 +94,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.copy-field-size {
+  flex: 0 0 auto;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--bg-elevated) 40%, transparent);
 }
 .copy-btn {
   flex: 0 0 auto;
@@ -395,5 +418,12 @@
 @media (min-width: 900px) {
   .dl-hero-grid {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile: tighten card padding so it stays within viewport. */
+@media (max-width: 599px) {
+  .dl-iso-card {
+    padding: var(--space-4);
   }
 }
