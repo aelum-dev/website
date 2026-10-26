@@ -60,9 +60,11 @@ export const languages = [
 ];
 
 // System requirements, copied from the installer's own welcome screen
-// (installer/frontend/src/translations/*.json → page.welcome.req*). The manual
-// mode additionally wants one 512 MB Boot and one 7680 MB System partition.
-export const requirements = ["UEFI boot", "GPT partition scheme", "At least 8 GB of disk space"];
+// (installer/frontend/src/translations/*.json → page.welcome.req*). No partition
+// scheme is listed: automatic mode erases the disk and writes its own layout.
+// The manual mode additionally wants one 512 MB Boot and one 7680 MB System
+// partition.
+export const requirements = ["UEFI boot", "At least 8 GB of disk space"];
 
 export interface Feature {
   icon: string;
@@ -316,7 +318,10 @@ export const showcase: ShowcaseTile[] = [
 // .messageManual) and the two code paths: automatic mode runs `sgdisk -Z`,
 // which drops the whole partition table before writing a fresh Boot + System
 // pair (installer/backend/install/format/format.go); manual mode only touches
-// the partitions you assign (installer/backend/install/partition/partition.go).
+// the partitions you assign (installer/backend/install/partition/partition.go)
+// and is applied with sgdisk too, so it needs a disk that already carries a GPT
+// (or has no table at all) — shared.ValidateManualPartitionTable rejects the rest
+// before anything on the disk is written.
 // ---------------------------------------------------------------------------
 
 export interface DiskMode {
@@ -349,6 +354,7 @@ export const diskModes: DiskMode[] = [
     points: [
       "Other partitions and their data are left untouched",
       "Needs a 512 MB Boot and a 7680 MB System partition",
+      "Needs a GPT partition table — automatic mode rewrites an older MBR one",
     ],
   },
 ];

@@ -345,9 +345,11 @@ const flashTools = [
           {requirements.map((need) => <li>{need}</li>)}
         </ul>
         <p class="dl-steps-note">
-          The same three requirements are on the installer's first screen, and it
-          refuses a disk that is too small. Manual mode wants one 512 MB Boot and
-          one 7680 MB System partition, and leaves every other partition alone.
+          The same requirements are on the installer's first screen, and it
+          refuses a disk that is too small. It writes its own partition layout:
+          automatic mode erases the whole disk, manual mode takes one 512 MB Boot
+          and one 7680 MB System partition and leaves every other partition
+          alone.
         </p>
       </div>
     </div>
