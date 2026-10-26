@@ -7,7 +7,8 @@
 //   1. Floating-nav scroll state + mobile menu + reading progress.
 //   2. Scroll reveal for `.reveal` elements, staggered inside [data-stagger].
 //   3. Copy-to-clipboard controls.
-//   4. Pointer effects — card glow, card tilt, ambient spotlight — in one loop.
+//   4. Pointer effects — card glow, button spotlight, card tilt, ambient
+//      spotlight — in one loop.
 //   5. Count-up on stat numbers.
 //   6. Which sections are on screen, so the loops inside them can pause.
 //
@@ -225,16 +226,21 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 // ---------------------------------------------------------------------------
 // Pointer effects — one loop for all three.
 //
-//   card glow   --mx / --my on the card the pointer is inside
-//   card tilt   --tilt-x / --tilt-y on whatever asked for [data-tilt]
-//   spotlight   --spot-x / --spot-y on .bg-spot itself
+//   card glow       --mx / --my on the card the pointer is inside
+//   btn spotlight   --mx / --my on the .btn the pointer is inside
+//   card tilt       --tilt-x / --tilt-y on whatever asked for [data-tilt]
+//   ambient spot    --spot-x / --spot-y on .bg-spot itself
+//
+// The card and the button read the same two property names on themselves, which
+// is why they share one loop: a button inside a card is tracked separately from
+// that card, so lighting the button never freezes the card's glow.
 //
 // Pointer events arrive coalesced: a 120 Hz device fires several between two
 // frames, and each one used to do its own getBoundingClientRect and its own
 // style writes. Here the events only record the latest position, and a single
-// rAF applies it once. Layout is read at most once per frame, and only while a
-// card is actually under the pointer — the cached rect is dropped whenever the
-// page moves underneath the pointer instead.
+// rAF applies it once. Layout is read at most once per frame per tracked
+// element, and only while something is actually under the pointer — the cached
+// rect is dropped whenever the page moves underneath the pointer instead.
 // ---------------------------------------------------------------------------
 (() => {
   const spot = document.querySelector(".bg-spot");
@@ -243,6 +249,8 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
   const pointer = { x: 0, y: 0, seen: false };
   let glowCard = null;
   let glowRect = null;
+  let litBtn = null;
+  let litBtnRect = null;
   let pending = null;
 
   const apply = () => {
@@ -255,9 +263,17 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
       glowCard.style.setProperty("--my", `${pointer.y - glowRect.top}px`);
     }
 
-    // Tilt and spotlight are motion; the glow is a hover affordance, so only
-    // these two bow out under prefers-reduced-motion.
+    // Tilt and the two spotlights are motion; the card glow is a hover
+    // affordance, so only those three bow out under prefers-reduced-motion. The
+    // button write sits below the return for the same reason: base.css hides
+    // .btn::after there, so coordinates written there would be work nobody reads.
     if (reducedMotion) return;
+
+    if (litBtn) {
+      if (!litBtnRect) litBtnRect = litBtn.getBoundingClientRect();
+      litBtn.style.setProperty("--mx", `${pointer.x - litBtnRect.left}px`);
+      litBtn.style.setProperty("--my", `${pointer.y - litBtnRect.top}px`);
+    }
 
     if (spot) {
       // Offset from the viewport centre. The multipliers are what make the
@@ -295,12 +311,19 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
       glowRect = null;
     }
 
+    const btn = event.target.closest(".btn");
+    if (btn !== litBtn) {
+      litBtn = btn;
+      litBtnRect = null;
+    }
+
     schedule();
   });
 
   // A cached rect is only valid until the page moves under the pointer.
   const invalidate = () => {
     glowRect = null;
+    litBtnRect = null;
     schedule();
   };
   window.addEventListener("scroll", invalidate, { passive: true });

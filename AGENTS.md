@@ -79,10 +79,11 @@ npm run format                # the generated manifest is committed biome-format
   - `app.js` — floating-nav scroll state + mobile menu + the nav's sliding active pill; the
     reading-progress bar (`--scroll` written on `.scroll-progress-bar`, the only reader of it); a
     scroll-reveal `IntersectionObserver` and the stagger indices it writes; the copy-to-clipboard
-    handler; **one** rAF loop for every pointer effect (card glow, hero tilt, ambient spotlight);
-    count-up on `[data-count]` numbers; and the section-liveness observer that pauses the decoration
-    in whatever is off screen (see Design Guidance → Motion has a budget). **It does not route:**
-    which content exists is decided at build time, and no page switching happens in the browser.
+    handler; **one** rAF loop for every pointer effect (card glow, button spotlight, hero tilt,
+    ambient spotlight); count-up on `[data-count]` numbers; and the section-liveness observer that
+    pauses the decoration in whatever is off screen (see Design Guidance → Motion has a budget). **It
+    does not route:** which content exists is decided at build time, and no page switching happens in
+    the browser.
 - **Scroll reveal** is progressive enhancement: `.reveal` elements are fully visible without JS, and `html.js` hides then reveals them via the observer in `app.js`. Reduced-motion users see everything immediately. Keep this invariant — never hide content in a way that depends on JS running.
 - **Groups stagger** with `data-stagger` on the container: `app.js` writes `--i` onto its direct
   `.reveal` children and `base.css` turns that into a transition delay. Order is still CSS; JS only
@@ -96,12 +97,12 @@ npm run format                # the generated manifest is committed biome-format
   change them in DMS. Overhauls change type, layout and motion, not the scheme.
 - **Motion is a system, not per-component improvisation.** Everything decorative in `base.css`:
   the ambient field (`.bg-aurora` / `.bg-grid` / `.bg-grain` / `.bg-spot`), the conic rim used by
-  cards, the CTA panel, the CLI window and the theme toggle, button sheen, `.eyebrow` sheen +
+  cards, the CTA panel, the CLI window and the theme toggle, the button spotlight, `.eyebrow` sheen +
   `.eyebrow-chip` pulse, `.reveal` and its stagger, and the nav's drop-in + sliding pill.
   Animated angles and percentage fills go through the registered custom properties `--spin` and
   `--fill` (`@property` at the top of `base.css`) — without registration a browser cannot interpolate
   a gradient, and the animation silently does nothing. Durations come from `--t-fast/base/slow` and
-  the ambient loops from `--t-aurora/sheen/spin`.
+  the ambient loops from `--t-aurora/spin`.
   Rules: animate `transform`/`opacity` on fixed decorative layers (never `background-position` on a
   large one), gate any animation that *hides* content on `html.js`, and add the reduced-motion
   opt-out in the same commit — the `@media (prefers-reduced-motion: reduce)` block in `base.css`
@@ -146,13 +147,15 @@ npm run format                # the generated manifest is committed biome-format
     at a new radius every frame — the worst thing to do to a page while it is being scrolled, and
     twelve cards arriving at once used to do exactly that.
   - **Write a custom property on the element that reads it.** `--scroll` goes on
-    `.scroll-progress-bar`, `--spot-x/--spot-y` on `.bg-spot`. Writing either on `:root` changes an
-    *inherited* value, which invalidates inherited style for every node in the document — on every
-    scroll frame, or every pointer move.
-  - **One rAF per frame, and no layout read per pointer event.** All three pointer effects share a
-    single coalesced loop; the hovered card's rect is cached and dropped when the page moves under
+    `.scroll-progress-bar`, `--spot-x/--spot-y` on `.bg-spot`, `--mx/--my` on the card or the `.btn`
+    whose gradient reads them. Writing any of them on `:root` changes an *inherited* value, which
+    invalidates inherited style for every node in the document — on every scroll frame, or every
+    pointer move.
+  - **One rAF per frame, and no layout read per pointer event.** All four pointer effects share a
+    single coalesced loop; each tracked element's rect is cached and dropped when the page moves under
     the pointer, not re-measured on every event (pointer events arrive coalesced: a 120 Hz device
-    fires several between two frames).
+    fires several between two frames). A `.btn` inside a card is tracked as its own element, so
+    lighting the button never freezes the card's glow.
   - **Colour transitions are for the theme switch only.** `base.css` gives elements their colour/
     border/box-shadow transition only while `<html>` has `.theme-anim`, which `theme.js` sets for
     exactly `--theme-duration` and then removes. As a permanent rule on `*` it put transition
