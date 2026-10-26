@@ -1,0 +1,114 @@
+---
+/**
+ * Responsive, theme-aware screenshot.
+ *
+ * Two decisions live here, and both are about fetching exactly one image.
+ *
+ * 1. FORMATS. The responsive ladder is AVIF only. The single WebP the manifest
+ *    carries (`fallback.webp`) is the `<img src>`: a browser that supports
+ *    `<picture>` but cannot decode AVIF skips the `<source>` and takes the
+ *    `<img src>`, so one WebP per screenshot covers every browser in scope
+ *    without shipping a second ladder nobody downloads.
+ *
+ * 2. THEME. Which derivatives the browser fetches is decided by the **site
+ *    theme**, not by the operating system's `prefers-color-scheme`. The two are
+ *    not the same here: theme.js is deliberately dark-first and ignores the OS
+ *    for the initial value, so a `media="(prefers-color-scheme: dark)"` source
+ *    would show a light screenshot inside the dark site for any visitor whose
+ *    OS prefers light. The markup therefore ships the **dark** set — the theme
+ *    every visitor gets before they have chosen anything — and carries the light
+ *    set in `data-aelum-*` attributes. theme.js writes the matching set whenever
+ *    it applies a theme, which is the only place a theme ever changes.
+ *
+ *    Trade-off, stated plainly: a visitor who has explicitly chosen light may
+ *    see the dark set start loading before theme.js swaps it. One extra request
+ *    on first paint for a minority of visitors, and far cheaper than fetching
+ *    both themes for everyone.
+ *
+ * Sources come from the generated manifest (src/lib/images.ts), so a re-shot
+ * screenshot changes the manifest and nothing else.
+ */
+import { images } from "../lib/images";
+
+interface Props {
+  /** key in the image manifest for the light scheme */
+  light: string;
+  /** optional key used when the document is in the dark scheme */
+  dark?: string;
+  alt: string;
+  /** CSS `sizes` hint; defaults to the container width used across the site */
+  sizes?: string;
+  /** ignore derivatives wider than this */
+  maxWidth?: number;
+  /** above-the-fold images: fetch eagerly and at high priority */
+  eager?: boolean;
+  class?: string;
+}
+
+const {
+  light,
+  dark,
+  alt,
+  sizes = "(max-width: 1160px) 100vw, 1160px",
+  maxWidth,
+  eager = false,
+  class: className,
+} = Astro.props;
+
+const primary = images[light];
+const secondary = dark ? images[dark] : undefined;
+
+if (!primary) {
+  throw new Error(`Shot: unknown image key "${light}" (see src/lib/images.ts)`);
+}
+
+const pick = (source: (typeof images)[string]) => source.variants.filter((v) => !maxWidth || v.width <= maxWidth);
+
+const srcset = (variants: (typeof images)[string]["variants"]) =>
+  variants.map((v) => `${v.avif} ${v.width}w`).join(", ");
+
+const lightVariants = pick(primary);
+const darkVariants = secondary ? pick(secondary) : undefined;
+
+// What the document serves, and what theme.js may swap it to.
+const servedVariants = darkVariants ?? lightVariants;
+const servedFallback = secondary ? secondary.fallback.webp : primary.fallback.webp;
+
+// Both sets travel with the <picture> only when a dark set exists; a
+// screenshot with no dark counterpart gets no attributes and is never swapped.
+const swap = secondary
+  ? {
+      avifDark: srcset(darkVariants ?? []),
+      avifLight: srcset(lightVariants),
+      srcDark: secondary.fallback.webp,
+      srcLight: primary.fallback.webp,
+    }
+  : null;
+---
+
+<picture
+  class={className}
+  data-aelum-avif-dark={swap?.avifDark}
+  data-aelum-avif-light={swap?.avifLight}
+  data-aelum-src-dark={swap?.srcDark}
+  data-aelum-src-light={swap?.srcLight}
+>
+  <source
+    data-aelum-type="avif"
+    type="image/avif"
+    srcset={srcset(servedVariants)}
+    sizes={sizes}
+    width={primary.width}
+    height={primary.height}
+  />
+  <img
+    src={servedFallback}
+    alt={alt}
+    width={primary.width}
+    height={primary.height}
+    sizes={sizes}
+    loading={eager ? "eager" : "lazy"}
+    fetchpriority={eager ? "high" : "auto"}
+    decoding={eager ? "sync" : "async"}
+  />
+</picture>

@@ -47,12 +47,28 @@
   flex-direction: column;
   gap: var(--space-3);
   overflow: hidden;
+  padding-block: var(--space-4);
   /* Full-bleed: escape the .container so chips fade at the true screen edges. */
   width: 100vw;
   margin-left: calc(50% - 50vw);
   /* Fade the edges so chips dissolve into the page. */
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+/* A faint accent band behind the scrolling rows, so the marquee reads as one
+   object rather than loose chips on the page. */
+.lang-marquee::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 10%, transparent) 35%,
+    color-mix(in srgb, var(--accent-3) 10%, transparent) 65%,
+    transparent
+  );
+  pointer-events: none;
 }
 .lang-track {
   display: flex;
@@ -76,6 +92,7 @@
   }
 }
 .lang-chip {
+  position: relative;
   flex: 0 0 auto;
   padding: 0.5rem 1.05rem;
   font-size: 0.9rem;
@@ -88,21 +105,64 @@
   white-space: nowrap;
   transition:
     color 0.25s,
-    border-color 0.25s;
+    border-color 0.25s,
+    transform 0.25s var(--ease-spring),
+    box-shadow 0.25s var(--ease);
 }
 .lang-chip:hover {
   color: var(--accent);
   border-color: var(--accent-line);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ---- CLI terminal ---- */
 .cli-card {
+  position: relative;
   overflow: hidden;
   background: var(--bg-elevated);
   border-color: var(--surface-border);
   margin-inline: auto;
   max-width: 780px;
   box-shadow: var(--shadow-md);
+}
+/* Conic light orbiting the window, same rim as the cards. */
+.cli-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0 24%,
+    color-mix(in srgb, var(--accent) 60%, transparent) 42%,
+    color-mix(in srgb, var(--accent-3) 45%, transparent) 56%,
+    transparent 74% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: card-ring calc(var(--t-spin) * 1.3) linear infinite;
+  pointer-events: none;
+}
+/* Faint scanlines over the code area: reads as a screen, not a code block. */
+.cli-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--text) 5%, transparent) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: 0.5;
+  pointer-events: none;
 }
 .cli-titlebar {
   display: flex;
@@ -137,6 +197,7 @@
   margin-left: auto;
 }
 .cli-code {
+  position: relative;
   margin: 0;
   padding: 1.5rem 1.4rem;
   overflow-x: auto;
@@ -144,6 +205,29 @@
   font-size: 0.9rem;
   line-height: 1.95;
   color: var(--text-dim);
+}
+/* A blinking block cursor after the last line. Pure decoration, so it is not
+   part of the copied text: CopyButton reads #cli-code, and a generated box is
+   not text. */
+.cli-code::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 1.05em;
+  margin-left: 0.35rem;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: caret-blink 1.3s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 .cli-note {
   margin-top: var(--space-6);
@@ -169,5 +253,12 @@
   /* Hide the duplicated chips used for the seamless loop. */
   .lang-chip[aria-hidden="true"] {
     display: none;
+  }
+  .cli-card::before,
+  .cli-code::after {
+    animation: none;
+  }
+  .cli-code::after {
+    opacity: 0.6;
   }
 }

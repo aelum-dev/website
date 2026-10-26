@@ -27,12 +27,39 @@
 
 /* Big ISO card */
 .dl-iso-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-7);
-  background: linear-gradient(160deg, var(--accent-soft), transparent 55%), var(--surface);
+  background: var(--grad-wash), var(--surface);
   min-width: 0;
+}
+/* The same orbiting rim the cards and the CTA panel get — this is the page's
+   primary object, so it earns one. */
+.dl-iso-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0 22%,
+    color-mix(in srgb, var(--accent) 70%, transparent) 42%,
+    color-mix(in srgb, var(--accent-3) 55%, transparent) 56%,
+    transparent 76% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: card-ring calc(var(--t-spin) * 1.1) linear infinite;
+  pointer-events: none;
 }
 .dl-iso-card .card-head {
   margin-bottom: var(--space-1);
@@ -163,6 +190,15 @@
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+  transition:
+    border-color 0.25s,
+    background 0.25s,
+    transform 0.25s var(--ease-spring);
+}
+.dl-asset:hover {
+  border-color: var(--accent-line);
+  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+  transform: translateX(3px);
 }
 .dl-asset-icon {
   flex: 0 0 auto;
@@ -260,11 +296,13 @@
 
 /* "Verify in three commands" block */
 .dl-steps {
+  position: relative;
+  overflow: hidden;
   margin-top: var(--space-6);
   padding: var(--space-6) var(--space-7);
   border-radius: var(--radius);
   border: 1px solid var(--surface-border);
-  background: linear-gradient(160deg, var(--accent-soft), transparent 60%), var(--surface);
+  background: var(--grad-wash), var(--surface);
 }
 .dl-steps-title {
   display: flex;

@@ -1,17 +1,21 @@
 /* ============================================================
    Aelum-Web — Home page (home.css)
-   Hero. Imports base.css for tokens, reset and shared UI.
+   Hero, the three-move flow, and the showcase bento.
+   Imports base.css for tokens, reset and shared UI.
+   ============================================================ */
+
+/* ============================================================
+   Hero
    ============================================================ */
 
 .hero-section {
-  min-height: min(100vh, 880px);
+  min-height: min(100vh, 900px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-block: clamp(1.5rem, 5vh, 4rem);
 }
 
-/* Wide: copy on the left, screenshot on the right. */
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -26,6 +30,11 @@
   align-items: flex-start;
   gap: var(--space-5);
 }
+
+/* Each headline line is clipped by its own box and the text inside rises into
+   it. The animation is CSS-only and gated on html.js (set before first paint by
+   the inline script in Layout), so with JavaScript off the lines are simply
+   rendered and nothing is hidden. */
 .hero-title {
   font-family: var(--font-display);
   font-size: var(--text-display-1);
@@ -34,6 +43,52 @@
   line-height: 1.02;
   text-wrap: balance;
 }
+.hero-line {
+  display: block;
+  overflow: hidden;
+  /* Room for the descenders the clip would otherwise cut. */
+  padding-bottom: 0.09em;
+}
+.hero-line > span {
+  display: block;
+}
+html.js .hero-line > span {
+  transform: translateY(115%);
+  animation: hero-line-rise 1s var(--ease) forwards;
+}
+.hero-line:nth-child(2) > span {
+  animation-delay: 130ms;
+}
+@keyframes hero-line-rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* The emphasised word keeps a solid accent colour (a headline is not a
+   gradient) and gets a gradient underline drawn on after the lines land.
+   The underline is a background on an INLINE span with box-decoration-break:
+   clone, so each wrapped line fragment gets its own underline sized to that
+   fragment — an ::after on the box would span the whole line box instead. */
+.hero-accent {
+  color: var(--accent);
+  background-image: var(--grad-brand);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+html.js .hero-accent {
+  background-size: 0 3px;
+  animation: hero-rule 0.9s var(--ease) 0.75s forwards;
+}
+@keyframes hero-rule {
+  to {
+    background-size: 100% 3px;
+  }
+}
+
 .hero-lead {
   color: var(--text-dim);
   font-size: var(--lead);
@@ -66,16 +121,18 @@
   color: var(--accent);
 }
 
-/* Stat tiles — glassy mini cards. */
+/* Stat tiles — a full-width strip under both hero columns, so the numbers read
+   as one band instead of three boxes squeezed under the copy. */
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3);
-  margin: var(--space-3) 0 0;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
   width: 100%;
-  max-width: 520px;
 }
 .stat {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -84,6 +141,25 @@
   border: 1px solid var(--surface-border);
   background: var(--surface);
   backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-xs);
+  transition:
+    transform 0.4s var(--ease),
+    border-color 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+.stat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
+}
+.stat:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-pop);
 }
 .stat dt {
   font-family: var(--font-mono);
@@ -96,30 +172,64 @@
 .stat dd {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-size: clamp(1.5rem, 3vw, 1.95rem);
   font-weight: 700;
   letter-spacing: var(--track-tight);
   line-height: 1.1;
-  font-variant-numeric: tabular-nums lining-nums;
 }
-.stat dd span {
+/* A stat number is data, not a headline: it may carry a gradient. */
+.stat-num {
+  background: linear-gradient(160deg, var(--text) 20%, color-mix(in srgb, var(--accent) 70%, var(--text)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stat-unit {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-dim);
   margin-left: 0.15rem;
 }
 
-/* ---- Visual column — desktop screenshot in a soft device frame ---- */
+/* ---- Visual column ---- */
 .hero-visual-wrap {
   position: relative;
   display: grid;
   place-items: center;
 }
+
+/* Accent halo behind the device. Two stacked gradients: a tight core and a
+   wide bloom, so the frame looks lit rather than pasted onto a blob. */
+.hero-halo {
+  position: absolute;
+  inset: 8% 4%;
+  z-index: 0;
+  filter: blur(58px);
+  opacity: 0.55;
+  border-radius: 50%;
+  background:
+    radial-gradient(52% 60% at 50% 22%, color-mix(in srgb, var(--accent) 70%, transparent), transparent 70%),
+    radial-gradient(70% 80% at 60% 80%, color-mix(in srgb, var(--accent-3) 45%, transparent), transparent 72%);
+  animation: hero-halo 16s ease-in-out infinite alternate;
+}
+@keyframes hero-halo {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(1.12) translateY(-3%);
+    opacity: 0.62;
+  }
+}
+
 .hero-visual {
   position: relative;
   isolation: isolate;
+  z-index: 1;
   box-sizing: border-box;
-  width: min(100%, calc(46vh * 16 / 9));
+  width: 100%;
+  max-width: 780px;
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
@@ -131,36 +241,90 @@
   box-shadow:
     var(--shadow-lg),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  /* Pointer tilt: app.js writes --tilt-x/--tilt-y on the wrapper, this is the
+    only place they are read. No JS, no tilt — the frame just stands still. */
+  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.6s var(--ease);
 }
-.hero-visual::before {
-  /* Soft accent glow behind the screenshot */
-  content: "";
+
+/* Conic light orbiting the device rim. */
+.hero-ring {
   position: absolute;
-  inset: 6%;
-  z-index: -1;
-  filter: blur(70px);
-  opacity: 0.5;
-  background: radial-gradient(60% 70% at 50% 20%, var(--accent), transparent 70%);
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    color-mix(in srgb, var(--accent) 12%, transparent) 0 18%,
+    color-mix(in srgb, var(--accent) 80%, transparent) 34%,
+    color-mix(in srgb, var(--accent-3) 65%, transparent) 48%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 66% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: card-ring calc(var(--t-spin) * 0.8) linear infinite;
+  pointer-events: none;
 }
-.hero-shot {
+
+.hero-frame {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   border-radius: 18px;
-  display: none;
   overflow: hidden;
 }
-.hero-shot img {
+/* One <picture> carries both themes behind media="(prefers-color-scheme: dark)"
+   sources, so the browser fetches exactly one theme's derivatives. (The old
+   markup shipped a dark and a light <img> and hid one with CSS — hidden images
+   are still downloaded.) */
+.hero-frame picture,
+.hero-frame img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 18px;
+}
+
+/* A slow light sweeping across the screen of the device. */
+.hero-sheen {
+  position: absolute;
+  inset: 0.75rem;
+  z-index: 2;
+  border-radius: 18px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-sheen::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: var(--sheen);
+  opacity: 0.55;
+  transform: translateX(-85%) rotate(6deg);
+  animation: hero-sheen 11s var(--ease) 2s infinite;
+}
+@keyframes hero-sheen {
+  0% {
+    transform: translateX(-85%) rotate(6deg);
+  }
+  45%,
+  100% {
+    transform: translateX(85%) rotate(6deg);
+  }
 }
 
 /* Floating feature chips around the frame. */
 .hero-chip {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -200,23 +364,59 @@
   }
 }
 
-/* Show the matching screenshot for the active theme */
-[data-theme="dark"] .hero-shot--light {
+/* Scroll cue: a rail with a travelling highlight. Decorative, so it is hidden
+   from assistive tech and dropped entirely on short viewports. */
+.hero-scroll {
   display: none;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: clamp(1.5rem, 4vh, 3rem);
+  justify-content: center;
 }
-[data-theme="dark"] .hero-shot--dark {
-  display: block;
+.hero-scroll-line {
+  position: relative;
+  width: 130px;
+  height: 1px;
+  background: color-mix(in srgb, var(--text) 14%, transparent);
 }
-[data-theme="light"] .hero-shot--light {
-  display: block;
+.hero-scroll-line::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 34px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--grad-brand);
+  animation: hero-scroll-travel 3.4s var(--ease) infinite;
 }
-[data-theme="light"] .hero-shot--dark {
-  display: none;
+@keyframes hero-scroll-travel {
+  0% {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(290%);
+    opacity: 0;
+  }
+}
+.hero-scroll-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--text-faint);
 }
 
 @media (min-width: 1025px) {
   .hero-grid {
-    grid-template-columns: 5fr 6fr;
+    grid-template-columns: 5fr 7fr;
+  }
+  .hero-scroll {
+    display: flex;
   }
 }
 
@@ -240,7 +440,7 @@
     margin-inline: auto;
   }
   .hero-visual {
-    width: min(100%, calc(42vh * 16 / 9));
+    max-width: 640px;
   }
 }
 
@@ -253,11 +453,261 @@
   }
 }
 
+/* ============================================================
+   Flow — the three moves
+   ============================================================ */
+
+.flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* The rail the three steps sit on, with a highlight travelling along it. */
+.flow-line {
+  position: absolute;
+  top: 0;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-line) 20%, var(--accent-line) 80%, transparent);
+  pointer-events: none;
+}
+.flow-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0 38%,
+    color-mix(in srgb, var(--accent) 85%, transparent) 50%,
+    transparent 62% 100%
+  );
+  background-size: 260% 100%;
+  animation: flow-travel 7s linear infinite;
+}
+@keyframes flow-travel {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -160% 0;
+  }
+}
+
+.flow-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+.flow-step:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-pop);
+}
+/* Oversized outline numeral: the step order is the loudest thing in the row. */
+.flow-num {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
+  color: transparent;
+}
+.flow-step h3 {
+  font-size: 1.2rem;
+}
+.flow-step p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+  .flow {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .flow-line {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Showcase bento
+   ============================================================ */
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.bento-tile {
+  grid-column: span 4;
+  min-width: 0;
+}
+.bento-wide {
+  grid-column: span 8;
+}
+
+/* Screenshot tiles: the image fills the tile and the caption is a bar under it.
+   Overlaying the caption on the picture looked good in a mock and read badly on
+   a real screenshot — the text landed on top of the installer's own UI. */
+.bento-shot {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  transition:
+    transform 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+.bento-shot:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-pop);
+}
+.bento-shot-inner {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+.bento-shot-inner picture,
+.bento-shot-inner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease);
+}
+.bento-shot:hover .bento-shot-inner img {
+  transform: scale(1.04);
+}
+.bento-caption {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--surface-border);
+  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+/* Stat tiles */
+.bento-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--grad-wash), var(--surface);
+}
+.bento-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  background: linear-gradient(160deg, var(--text) 25%, color-mix(in srgb, var(--accent) 75%, var(--text)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bento-unit {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.bento-stat h3 {
+  font-size: 1.05rem;
+  margin-top: var(--space-2);
+}
+.bento-stat p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* Feature tiles */
+.bento-feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.bento-feature h3 {
+  font-size: 1.05rem;
+}
+.bento-feature p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bento-tile {
+    grid-column: span 1;
+  }
+  .bento-wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .bento {
+    grid-template-columns: 1fr;
+  }
+  .bento-tile,
+  .bento-wide {
+    grid-column: span 1;
+  }
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
   .hero-visual {
     box-shadow: none;
+    transform: none;
   }
-  .hero-chip {
+  .hero-chip,
+  .hero-halo,
+  .hero-sheen::after,
+  .hero-ring,
+  .hero-scroll-line::after,
+  .flow-line::after {
     animation: none;
+  }
+  .hero-sheen,
+  .hero-scroll {
+    display: none;
+  }
+  html.js .hero-line > span {
+    transform: none;
+  }
+  html.js .hero-accent {
+    background-size: 100% 3px;
+  }
+  .bento-shot:hover .bento-shot-inner img {
+    transform: none;
   }
 }

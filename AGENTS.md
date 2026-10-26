@@ -22,6 +22,9 @@ npm run format     # biome format --write .
 npm run format:check
 npm run lint       # biome lint . (optional; Prettier never linted)
 npm run check      # biome format . && astro check   # run before committing
+
+# Generated assets (run manually, commit the output — see Assets → Screenshots)
+python3 scripts/build-images.py  # rebuild public/images + src/lib/images.ts from assets/
 ```
 
 ## Layout & Conventions
@@ -38,16 +41,17 @@ npm run check      # biome format . && astro check   # run before committing
   exported data here and consume it from components — don't hardcode strings in templates. This makes
   reviews and edits easy.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
-  `/` → `Hero` · `/download/` → `Download` · `/install/` → `Install` ·
+  `/` → `Hero` + `Flow` + `Showcase` · `/download/` → `Download` · `/install/` → `Install` ·
   `/features/` → `Desktop` + `Features` + `Languages` + `CLI`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
   the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard
-  button with copy/check icons) are reusable building blocks.
+  button with copy/check icons) are reusable building blocks. `Flow.astro` (the three-move strip) and
+  `Showcase.astro` (the landing-page bento) are home-only and read `flow` / `showcase` from `site.ts`.
 - **Layout & chrome** in `src/layouts/Layout.astro`: the `<head>` boilerplate (meta, OG/Twitter,
-  favicon, theme script) **and** the site chrome (skip link, ambient background, `Nav`, `<main>`,
-  `CTA`, `Footer`). A page supplies only its title/description, an `active` page id, its own CSS
-  imports and its sections. `showCta={false}` suppresses the call-to-action where it would be
-  redundant (the Download page).
+  favicon, theme script) **and** the site chrome (skip link, the ambient background layers, the
+  reading-progress bar, `Nav`, `<main>`, `CTA`, `Footer`). A page supplies only its title/description,
+  an `active` page id, its own CSS imports and its sections. `showCta={false}` suppresses the
+  call-to-action where it would be redundant (the Download page).
 - **Reference `public/` assets from the site root** (`/logo.svg`, `/images/…`, `/scripts/…`).
   Relative paths (`logo.svg`) break on nested routes: from `/download/` they resolve to
   `/download/logo.svg` and 404. Canonical/absolute URLs (OG images) still come from `Astro.url`.
@@ -57,14 +61,28 @@ npm run check      # biome format . && astro check   # run before committing
   section CSS, so Astro emits a shared chunk for `base.css` and per-page CSS for the rest — keep
   section styles in their own file and the payload stays small. Add tokens/classes here rather than
   inline styles.
+- **Screenshots go through `Shot.astro`, never a raw `<img>`.** Pass the manifest keys
+  (`light="installer-step-3-light" dark="installer-step-3-dark"`). The emitted `<picture>` serves the
+  **dark** derivatives — the theme every visitor gets before they have chosen anything — and carries
+  the light set in `data-aelum-*` attributes; `theme.js` writes the matching set whenever it applies a
+  theme. Two things this replaces, both of which were wrong:
+  - `media="(prefers-color-scheme: dark)"` selects by the **operating system**, but the site's theme
+    is its own dark-first choice, so an OS-light visitor saw a light screenshot inside the dark site.
+  - Two `<img>` tags with one hidden by CSS: hidden images are still downloaded.
+  A screenshot with no dark counterpart gets no `data-aelum-*` attributes and is never swapped.
 - **Interactivity** is plain JS in `public/scripts/`:
   - `theme.js` / `theme-toggle.js` — light/dark theme + toggle (persisted in `localStorage`, defaults
-    to dark). `theme.js` owns persistence and exposes `window.aelumTheme.get/set`; the toggle is the
-    only caller of `set`.
-  - `app.js` — the floating-nav scroll state + mobile menu; a scroll-reveal `IntersectionObserver`;
-    the copy-to-clipboard handler; the pointer-tracked card glow. **It does not route:** which content
+    to dark). `theme.js` owns persistence, exposes `window.aelumTheme.get/set`, and is the only thing
+    that rewrites theme-dependent screenshots (`syncImages`). The toggle is the only caller of `set`.
+  - `app.js` — floating-nav scroll state + mobile menu + the nav's sliding active pill; the
+    reading-progress bar (`--scroll` on the document); a scroll-reveal `IntersectionObserver` and the
+    stagger indices it writes; the copy-to-clipboard handler; pointer effects (card glow, hero tilt,
+    ambient spotlight); count-up on `[data-count]` numbers. **It does not route:** which content
     exists is decided at build time, and no page switching happens in the browser.
 - **Scroll reveal** is progressive enhancement: `.reveal` elements are fully visible without JS, and `html.js` hides then reveals them via the observer in `app.js`. Reduced-motion users see everything immediately. Keep this invariant — never hide content in a way that depends on JS running.
+- **Groups stagger** with `data-stagger` on the container: `app.js` writes `--i` onto its direct
+  `.reveal` children and `base.css` turns that into a transition delay. Order is still CSS; JS only
+  supplies an index. Do not hand-write per-child delays in a section stylesheet.
 
 ## Design Guidance
 
@@ -72,6 +90,19 @@ npm run check      # biome format . && astro check   # run before committing
 - **The palette is frozen.** `--bg`, `--accent`, … in `base.css` are the exported DankMaterialShell
   light/dark scheme and must stay identical to the desktop's. Do not "improve" the colours here —
   change them in DMS. Overhauls change type, layout and motion, not the scheme.
+- **Motion is a system, not per-component improvisation.** Everything decorative in `base.css`:
+  the ambient field (`.bg-aurora` / `.bg-grid` / `.bg-grain` / `.bg-spot`), the conic rim used by
+  cards, the CTA panel, the CLI window and the theme toggle, button sheen, `.eyebrow` sheen +
+  `.eyebrow-chip` pulse, `.reveal` and its stagger, and the nav's drop-in + sliding pill.
+  Animated angles and percentage fills go through the registered custom properties `--spin` and
+  `--fill` (`@property` at the top of `base.css`) — without registration a browser cannot interpolate
+  a gradient, and the animation silently does nothing. Durations come from `--t-fast/base/slow` and
+  the ambient loops from `--t-aurora/sheen/spin`.
+  Rules: animate `transform`/`opacity` on fixed decorative layers (never `background-position` on a
+  large one), gate any animation that *hides* content on `html.js`, and add the reduced-motion
+  opt-out in the same commit — the `@media (prefers-reduced-motion: reduce)` block in `base.css`
+  drops the drifting auroras, the spotlight and every conic rim while keeping the static wash, grid
+  and grain that carry depth on their own.
 - **Type faces**: `Sora` (display — page and section titles only), `Nunito` (body — everything else,
   including card titles) and `JetBrains Mono` (commands, filenames, versions, checksums). All three
   are **variable with the `wght` axis clamped to the range the CSS asks for**, so no weight is ever
@@ -126,7 +157,9 @@ generated files) and overwritten on each release. `src/lib/release-type.ts`
 component consumes (`releaseVersion`, `downloadUrl`, `checksums`, `signingKey`).
 
 `site.ts` also derives the signing email from `signingKey.uid`, the WKD URL
-(`wkdKeyUrl`) and the user-facing `verifyCommands`, so the Download section's
+(`wkdKeyUrl`), the user-facing `verifyCommands` and `isoSizeLabel` (one ISO-size
+formatter, shared by the Download card and the landing-page stats, so one file is
+never two different sizes), so the Download section's
 "Verify in three commands" block always matches the shipped filenames and the
 current key. The release key is published over **WKD** under
 `public/.well-known/openpgpkey/` (generated by `docker/scripts/export-wkd.sh`);
@@ -134,6 +167,31 @@ the `hu/<hash>` path is z-base-32(SHA-1(local-part)) of the signing email, so it
 changes if that email ever changes.
 
 ## Assets
+
+### Screenshots (generated)
+
+```
+assets/<key>.png                    the screenshots themselves — the only copy, never served
+  -> public/images/<key>-<w>w.<hash>.avif          the responsive ladder (AVIF only)
+  -> public/images/<key>-<w>w.<hash>.webp          ONE WebP, at the fallback width
+  -> src/lib/images.ts              generated manifest: key -> variants + fallback
+```
+
+- `python3 scripts/build-images.py` (needs Pillow + `avifenc`) rebuilds all of it. Widths are derived
+  per source and a source is never upscaled, so a 1200 px screenshot gets 800 px and 1200 px variants,
+  not 1920 px. Stale derivatives are deleted, so re-shooting a screenshot does not leave orphans.
+- **One format serves the page.** The `<source>` ladder is AVIF; the single WebP per source is the
+  `<img src>`, which is what a browser that supports `<picture>` but cannot decode AVIF ends up using.
+  Shipping a full WebP ladder as well cost ~530 KB of repo for a format almost nobody fetched — AVIF
+  is ~1.7x smaller on these screenshots. Do not re-add a WebP `srcset`.
+- Components never name a file: they pass a key to `Shot.astro`. Re-shot screenshot → new hash →
+  manifest changes → nothing to edit by hand.
+- The hashes exist because GitHub Pages has no header control: a filename that changes with its
+  content can be cached forever.
+- Cost, for reference: the hero went from 804 KB (PNG) to 30 KB AVIF at 1920 px, and the old markup
+  fetched light **and** dark. The installer steps are 2–5 KB each.
+
+### Other assets
 
 - Static images live under `public/` and are served at the site root.
 - Reference `public/` assets from the site root (`/logo.svg`, `/images/…`): pages are served at

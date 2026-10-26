@@ -1,16 +1,17 @@
 ---
 import { installSteps } from "../lib/site";
+import Shot from "./Shot.astro";
 
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const slides = [
-  { n: 1, alt: "language selection", dark: "38d5732e", light: "6d1c7201" },
-  { n: 2, alt: "creating the user account", dark: "e6ba2eca", light: "07d02c0c" },
-  { n: 3, alt: "selecting a disk", dark: "27bca97b", light: "0ecfebc7" },
-  { n: 4, alt: "partitioning the disk", dark: "15386dcd", light: "e1ed8651" },
-  { n: 5, alt: "confirming installation", dark: "46ff0530", light: "eb9c208c" },
-  { n: 6, alt: "installing the system", dark: "f3a374ac", light: "2e4ca679" },
-  { n: 7, alt: "installation complete", dark: "ccabadb0", light: "414a3186" },
+  { n: 1, alt: "language selection" },
+  { n: 2, alt: "creating the user account" },
+  { n: 3, alt: "selecting a disk" },
+  { n: 4, alt: "partitioning the disk" },
+  { n: 5, alt: "confirming installation" },
+  { n: 6, alt: "installing the system" },
+  { n: 7, alt: "installation complete" },
 ];
 ---
 
@@ -19,6 +20,7 @@ const slides = [
     <div class="install-grid">
       <div class="install-visual reveal">
         <div class="features-demo-frame">
+          <span class="frame-ring" aria-hidden="true"></span>
           <div
             class="slideshow"
             role="group"
@@ -27,27 +29,23 @@ const slides = [
             {
               slides.map((s) => (
                 <div class="slideshow-slide">
-                  <img
-                    class="shot shot--dark"
-                    src={`/images/installer-step-${s.n}-dark.${s.dark}.png`}
-                    width="1200"
-                    height="800"
+                  <Shot
+                    light={`installer-step-${s.n}-light`}
+                    dark={`installer-step-${s.n}-dark`}
                     alt={`Aelum installer — ${s.alt}`}
-                    loading={s.n === 1 ? "eager" : "lazy"}
-                    fetchpriority={s.n === 1 ? "high" : "auto"}
-                  />
-                  <img
-                    class="shot shot--light"
-                    src={`/images/installer-step-${s.n}-light.${s.light}.png`}
-                    width="1200"
-                    height="800"
-                    alt={`Aelum installer — ${s.alt}`}
-                    loading="lazy"
+                    sizes="(max-width: 620px) 100vw, 620px"
+                    eager={s.n === 1}
+                    class="shot"
                   />
                 </div>
               ))
             }
           </div>
+          <!-- One segment per slide; the active one fills as the pause runs out.
+            Decorative: the walkthrough itself is announced by the group above. -->
+          <span class="frame-progress" aria-hidden="true">
+            {slides.map(() => <span class="frame-seg"></span>)}
+          </span>
         </div>
       </div>
 
@@ -66,11 +64,18 @@ const slides = [
       </div>
 
       <script type="text/javascript" is:inline>
-        // Auto-advancing installer walkthrough, with clickable progress dots.
+        // Auto-advancing installer walkthrough.
+        //
+        // The slides are all in the document (every one of them is a real
+        // <picture>), so with JavaScript off the first slide simply stays put
+        // and the progress bar is empty. JS only moves which one you see.
         (function () {
           var slides = document.querySelectorAll(".slideshow-slide");
           if (!slides.length) return;
           var order = Array.prototype.slice.call(slides);
+          var segments = Array.prototype.slice.call(
+            document.querySelectorAll(".frame-seg"),
+          );
           var index = 0;
           var timer = null;
           var PAUSE = 3500;
@@ -79,6 +84,15 @@ const slides = [
             index = (i + order.length) % order.length;
             order.forEach(function (s, n) {
               s.classList.toggle("is-active", n === index);
+            });
+            segments.forEach(function (seg, n) {
+              seg.classList.toggle("is-active", n === index);
+              // Restart the fill animation on the newly active segment.
+              if (n === index) {
+                seg.style.animation = "none";
+                void seg.offsetWidth;
+                seg.style.animation = "";
+              }
             });
           }
 

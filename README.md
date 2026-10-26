@@ -6,30 +6,43 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 
 ## What's on the site
 
-- **Hero** — the one-line pitch, key stats (~1 min install, 3.2 GB installed, 28 languages), inline value props, and the desktop preview with floating chips.
-- **Features** — why Aelum: offline install, auto-launching installer, silent boot, auto monitor scaling, fast install, minimal live ISO.
-- **What you install** — the finished desktop: Hyprland, DMS greeter, matugen, Firefox, PipeWire, Plymouth, GTK/Qt theming, ZRAM swap.
-- **The installer** — the 7-shot auto-advancing walkthrough, the 6-step wizard, plus the ext4 vs btrfs choice.
-- **Languages** — all 28 installer languages in a full-bleed marquee.
-- **CLI** — headless / scripted install examples (with a copy button).
-- **Download** — the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing key fetched via WKD, and copyable verification commands, plus flashing tools (Ventoy, BalenaEtcher, dd).
-- **Call to action** — a closing band that points to the download and the source.
+Four real routes, one Astro page each.
+
+- **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1 min install, 3.2 GB installed, 28
+  languages — inline value props, and the desktop preview in a lit device frame with floating chips),
+  **Flow** (the three moves: flash it, answer four questions, reboot), and **Showcase** (a bento of
+  real installer screenshots, hard numbers and the two choices that matter).
+- **`/install/` — Install**: the auto-advancing 7-shot walkthrough with a progress rail, and the
+  6-step wizard grid.
+- **`/features/` — Features**: why Aelum (offline install, auto-launching installer, optional LUKS2,
+  dual-boot-safe manual partitioning, ext4/btrfs, silent boot, auto monitor scaling, GUI or CLI),
+  **What you install** (Hyprland, DankMaterialShell, DMS greeter, matugen, GTK/Qt theming, Kitty,
+  Firefox, Aelum splash), the 28-language marquee, and **CLI** headless install examples.
+- **`/download/` — Download**: the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing
+  key fetched via WKD, copyable verification commands, and flashing tools (Ventoy, BalenaEtcher, dd).
+- **Call to action** and **Footer** are site chrome, rendered by the layout on every page but the
+  Download page.
 
 ## Project Structure
 
 ```
 src/
   pages/
-    index.astro        # the single-page landing site
+    index.astro        # / (Hero + Flow + Showcase)
+    download.astro     # /download/
+    install.astro      # /install/
+    features.astro     # /features/
     404.astro          # fallback page
   layouts/
-    Layout.astro       # head, fonts, theme script, meta
+    Layout.astro       # head, theme script, meta + site chrome (ambient field, progress bar)
   components/
-    Nav.astro          # navigation / floating glass header
-    Hero.astro         # hero section
+    Nav.astro          # floating glass header + sliding active pill
+    Hero.astro         # hero
+    Flow.astro         # the three moves
+    Showcase.astro     # landing-page bento
     Features.astro     # features section
     Desktop.astro      # finished desktop section
-    Install.astro      # installer wizard section
+    Install.astro      # installer walkthrough + step grid
     Languages.astro    # installer languages marquee
     CLI.astro          # headless install examples
     CTA.astro          # closing call-to-action band
@@ -37,25 +50,30 @@ src/
     Footer.astro       # footer
     Card.astro         # reusable glassy card
     CopyButton.astro   # copy-to-clipboard control
+    Shot.astro         # the only way to place a screenshot
   lib/
-    site.ts            # all site copy (languages, links, feature text)
+    site.ts            # all site copy (languages, links, feature text, home data)
+    release.ts         # generated on every release — never hand-edited
+    images.ts          # generated screenshot manifest — never hand-edited
   styles/
-    base.css           # design system (colors, layout, ambient background, glassy cards)
-    home.css           # hero / home section
+    base.css           # design system (tokens, ambient field, cards, buttons, nav, motion)
+    home.css           # hero / flow / showcase
     download.css       # download page
     features.css       # features section
     install.css        # installer section
-    fonts/             # self-hosted Nunito + JetBrains Mono + Nerd Fonts symbols
+    fonts/             # self-hosted Sora + Nunito + JetBrains Mono + Nerd Fonts symbols
 public/
   logo.png             # brand mark / large logo
   favicon-16.png       # small favicon (16×16)
   favicon-32.png       # small favicon (32×32)
   og-image.png         # social share image (raster export; see scripts/og-image.html)
-  images/              # hero shots + installer demo video
+  images/              # content-hashed AVIF derivatives + one WebP fallback each
   robots.txt           # points at the deployed sitemap
   scripts/
-    app.js             # hash-based single-shell page router
+    app.js             # nav state, reveals, clipboard, pointer effects, count-up
     theme.js           # light/dark theme logic (persisted in localStorage)
+    theme-toggle.js    # theme toggle button
+```
     og-image.html      # OG share image source (edit, then `npm run og-image`)
     export-og-image.sh # headless-Chromium export -> public/og-image.png
     theme-toggle.js    # theme toggle button
@@ -76,9 +94,16 @@ Run `npm run check` (Biome + `astro check`) before committing.
 
 ## Tech notes
 
-- Built on **Astro 7** (static site generation). The whole site is one server-rendered HTML shell, so every page is present without JavaScript; `public/scripts/app.js` then switches between pages by hash (progressive enhancement — with JS it shows a single active shell, without JS it falls back to a scrollable view). `app.js` also drives the mobile nav, scroll reveal, copy buttons, and the card glow — all enhancement-only.
-- The palette and glassy cards echo the **Material-You** look of the desktop the installer ships.
-- The site itself is a static site — no backend, no API calls, no network requests to serve it. Fonts are self-hosted woff2 files under `src/styles/fonts/`.
+- Built on **Astro 7** (static site generation) with real routes: every page is its own server-rendered
+  document, so all content — including which sections exist — is decided at build time and is present
+  with JavaScript off. `public/scripts/app.js` only adds behaviour the browser has to provide (nav
+  state and its active pill, scroll reveal, copy buttons, pointer effects, count-up numbers) and
+  `theme.js` owns the theme plus the theme-matched screenshots. Everything in them is enhancement.
+- The palette and glassy cards echo the **Material-You** look of the desktop the installer ships. The
+  scheme itself is the exported DankMaterialShell light/dark palette and is not a website choice.
+- The site is a static site — no backend, no API calls, no network requests to serve it. Fonts are
+  self-hosted woff2 files under `src/styles/fonts/`; screenshots are served from `public/images/` as
+  content-hashed AVIF with a single WebP fallback each.
 
 ## Content
 

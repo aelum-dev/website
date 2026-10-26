@@ -40,6 +40,30 @@
   opacity: 0.5;
   background: radial-gradient(60% 70% at 50% 20%, var(--accent), transparent 70%);
 }
+/* Conic light orbiting the frame, same treatment as the hero device. */
+.frame-ring {
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    color-mix(in srgb, var(--accent) 12%, transparent) 0 18%,
+    color-mix(in srgb, var(--accent) 80%, transparent) 34%,
+    color-mix(in srgb, var(--accent-3) 65%, transparent) 48%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 66% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: card-ring calc(var(--t-spin) * 0.8) linear infinite;
+  pointer-events: none;
+}
 
 /* Auto-advancing walkthrough: slides stack and cross-fade inside the frame. */
 .slideshow {
@@ -55,31 +79,65 @@
   height: 100%;
   border-radius: 18px;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transform: scale(1.02);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.9s var(--ease);
 }
-/* Specificity note: kept as `img.shot` (0,1,1), not prefixed with
-   `.slideshow-slide`. The theme-gating rules below are (0,2,0) and must win
-   over this base `display: block`, otherwise both shots stay visible. */
-img.shot {
+/* Each slide holds one <picture> that carries both themes behind
+   media="(prefers-color-scheme: dark)" sources: the browser picks the matching
+   set, so only the active theme's file is ever fetched, and the flip still works
+   with no JS. (The old markup shipped a dark and a light <img> per slide and hid
+   one with CSS - hidden images are still downloaded.) */
+picture.shot {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+}
+picture.shot img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   border-radius: 18px;
 }
-/* Each slide holds a dark and a light shot; show only the one matching the
-   active site theme. Gating on [data-theme] means the slideshow flips live
-   when the user toggles theme, with no JS. */
-[data-theme="dark"] .shot--light {
-  display: none;
-}
-[data-theme="light"] .shot--dark {
-  display: none;
-}
 .slideshow-slide.is-active {
   opacity: 1;
+  transform: scale(1);
+}
+
+/* One segment per slide. The active segment fills over the pause, so the frame
+   says how long the current screen has left. */
+.frame-progress {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 1.35rem;
+  z-index: 3;
+  display: flex;
+  gap: 4px;
+}
+.frame-seg {
+  flex: 1 1 0;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+  overflow: hidden;
+}
+.frame-seg.is-active {
+  background:
+    linear-gradient(var(--grad-brand), var(--grad-brand)) 0 0 / var(--fill, 0%) 100% no-repeat,
+    color-mix(in srgb, var(--text) 16%, transparent);
+  animation: frame-fill 3.5s linear forwards;
+}
+@keyframes frame-fill {
+  from {
+    --fill: 0%;
+  }
+  to {
+    --fill: 100%;
+  }
 }
 
 /* Step timeline — a numbered grid with a connecting line. */
@@ -94,22 +152,18 @@ img.shot {
   gap: var(--space-3);
   padding-top: var(--space-8);
 }
+/* The step number is outline type in the corner: order first, decoration never. */
 .step-num {
   position: absolute;
   top: var(--space-5);
   right: var(--space-6);
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 2.1rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 800;
   line-height: 1;
-  color: color-mix(in srgb, var(--accent) 24%, transparent);
-  letter-spacing: -0.04em;
-}
-
-@media (max-width: 1024px) {
-  .features-demo-frame {
-    padding: 0.6rem;
-  }
+  letter-spacing: -0.05em;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
+  color: transparent;
 }
 
 @media (min-width: 1025px) {
@@ -123,5 +177,27 @@ img.shot {
   .install-head {
     grid-column: 2;
     grid-row: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .features-demo-frame {
+    padding: 0.6rem;
+  }
+  .frame-progress {
+    bottom: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame-ring,
+  .frame-seg.is-active {
+    animation: none;
+  }
+  .frame-seg.is-active {
+    background: var(--accent-line);
+  }
+  .slideshow-slide {
+    transform: none;
   }
 }

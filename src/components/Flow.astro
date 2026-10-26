@@ -1,0 +1,39 @@
+---
+import { flow } from "../lib/site";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">{glyph("f046a")}</span>
+        </span>
+        How it goes
+      </span>
+      <h2 class="section-title">Boot it. Answer. Reboot.</h2>
+      <p class="section-sub">
+        There is no partitioning to plan, no mirror to configure, no post-install
+        setup to follow. Three moves from a USB stick to a desktop.
+      </p>
+    </div>
+
+    <ol class="flow" data-stagger>
+      <span class="flow-line" aria-hidden="true"></span>
+      {
+        flow.map((step) => (
+          <li class="flow-step reveal">
+            <span class="flow-num nums">{step.num}</span>
+            <span class="icon-tile" style="--c:var(--accent)" aria-hidden="true">
+              <span class="nf-icon">{glyph(step.icon)}</span>
+            </span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

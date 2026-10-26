@@ -76,7 +76,21 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
   </head>
   <body>
     <a class="skip-link" href="#top">Skip to main content</a>
-    <div class="bg-field" aria-hidden="true"></div>
+    <!-- Reading progress for the current document, pinned to the top edge of the
+      window. Site chrome rather than nav chrome: it measures the page, and the
+      nav is just the first thing on it. --scroll (0…1) is set by app.js. -->
+    <div class="scroll-progress" aria-hidden="true">
+      <span class="scroll-progress-bar"></span>
+    </div>
+    <!-- Ambient field layers (see base.css → Ambient background). Decorative, so
+      one aria-hidden container and nothing inside it is focusable. -->
+    <div class="bg-field" aria-hidden="true">
+      <span class="bg-aurora bg-aurora--a"></span>
+      <span class="bg-aurora bg-aurora--b"></span>
+      <span class="bg-grid"></span>
+      <span class="bg-grain"></span>
+      <span class="bg-spot"></span>
+    </div>
 
     <Nav active={active} />
 

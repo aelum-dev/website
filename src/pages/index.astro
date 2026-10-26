@@ -1,8 +1,10 @@
 ---
 import "../styles/base.css";
 import "../styles/home.css";
+import Flow from "../components/Flow.astro";
 import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
+import Showcase from "../components/Showcase.astro";
 
 const title = "Aelum — an Arch Linux distro with an offline installer";
 const description =
@@ -35,4 +37,7 @@ const description =
       <a class="btn btn-ghost btn-lg" href="/install/">Watch it install</a>
     </Fragment>
   </Hero>
+
+  <Flow />
+  <Showcase />
 </Layout>

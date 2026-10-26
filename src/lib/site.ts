@@ -174,6 +174,130 @@ export interface Step {
   description: string;
 }
 
+// ---------------------------------------------------------------------------
+// Home page
+//
+// The landing page tells the whole story in three moves (boot → answer →
+// reboot) and then shows what that looks like. Both are data like every other
+// section. The numbers here are the same facts the Install and Features pages
+// state; the ISO size is derived from release.ts so it can never drift from the
+// file actually published.
+// ---------------------------------------------------------------------------
+
+export interface FlowStep {
+  num: string;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export const flow: FlowStep[] = [
+  {
+    num: "01",
+    icon: "ede9", // nerd-fonts: USB stick
+    title: "Flash it and boot it",
+    description:
+      "Write the ISO to a USB drive and boot from it. The live session starts a bare Hyprland that opens the installer on its own.",
+  },
+  {
+    num: "02",
+    icon: "f02ca", // nerd-fonts: harddisk
+    title: "Answer four questions",
+    description:
+      "Language, user, disk, confirm. Filesystem, encryption and partitioning are all inside the disk question.",
+  },
+  {
+    num: "03",
+    icon: "f0379", // nerd-fonts: monitor
+    title: "Reboot into your desktop",
+    description:
+      "The installer writes the system from the ISO in about a minute. Reboot and you are already logged in.",
+  },
+];
+
+/** One tile of the landing-page showcase grid. `span: "wide"` takes the wider
+    column of the bento row; the grid itself is laid out in home.css. */
+export type ShowcaseTile =
+  | {
+      kind: "shot";
+      span: "wide" | "";
+      light: string;
+      dark: string;
+      alt: string;
+      caption: string;
+    }
+  | {
+      kind: "stat";
+      span: "";
+      value: string;
+      unit: string;
+      label: string;
+      note: string;
+    }
+  | {
+      kind: "feature";
+      span: "wide" | "";
+      icon: string;
+      title: string;
+      description: string;
+    };
+
+export const showcase: ShowcaseTile[] = [
+  {
+    kind: "shot",
+    span: "wide",
+    light: "installer-step-5-light",
+    dark: "installer-step-5-dark",
+    alt: "Aelum installer confirming the installation",
+    caption: "The last screen. Everything above it is already decided.",
+  },
+  {
+    kind: "stat",
+    span: "",
+    value: "0",
+    unit: "fetches",
+    label: "Network calls during install",
+    note: "The package mirror lives inside the ISO, so the installer never asks for a connection.",
+  },
+  {
+    kind: "feature",
+    span: "",
+    icon: "eb11", // nerd-fonts: key
+    title: "Encrypted if you want it",
+    description: "LUKS2 under the root filesystem, unlocked with a passphrase on the boot splash.",
+  },
+  {
+    kind: "feature",
+    span: "",
+    icon: "f0570", // nerd-fonts: view_grid
+    title: "btrfs layout, ready made",
+    description: "@home, @srv, @cache, @tmp and @log on one free-space pool — or plain ext4.",
+  },
+  {
+    kind: "stat",
+    span: "",
+    value: "4",
+    unit: "questions",
+    label: "What the wizard asks",
+    note: "Language, user, disk, confirm. Nothing else stands between you and a reboot.",
+  },
+  {
+    kind: "shot",
+    span: "wide",
+    light: "installer-step-7-light",
+    dark: "installer-step-7-dark",
+    alt: "Aelum installer finishing the installation",
+    caption: "Reboot, and the desktop is already waiting for you.",
+  },
+  {
+    kind: "feature",
+    span: "",
+    icon: "f0581", // nerd-fonts: volume_off (silent boot)
+    title: "A splash, not console spam",
+    description: "A branded Plymouth boot screen — with the passphrase prompt built into it on encrypted installs.",
+  },
+];
+
 export const installSteps: Step[] = [
   {
     num: "01",
@@ -233,6 +357,10 @@ export const releaseArch = release.arch;
 export const isoFilename = release.filename;
 export const releaseSizeBytes = release.sizeBytes;
 export const releasePublishedAt = release.publishedAt;
+
+// The ISO size as the site states it. One formatter so the Download card and the
+// landing-page stats can never print two different numbers for one file.
+export const isoSizeLabel = `${(release.sizeBytes / 1e9).toFixed(2)} GB`;
 
 // Direct download URLs for the ISO and its published sidecars. The checksum,
 // signature, and signing key files are all downloadable, so the verification

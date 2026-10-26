@@ -4,9 +4,9 @@ import {
   checksums,
   downloadUrl,
   isoFilename,
+  isoSizeLabel,
   releaseArch,
   releasePublishedAt,
-  releaseSizeBytes,
   releaseVersion,
   signingKey,
   ventoyUrl,
@@ -17,7 +17,8 @@ import CopyButton from "./CopyButton.astro";
 
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
-const isoSize = `${(releaseSizeBytes / 1e9).toFixed(2)} GB`;
+// The size string comes from site.ts (isoSizeLabel), which is the same one the
+// landing-page stats use — one file must never be two different sizes.
 const isoDate = releasePublishedAt.slice(0, 10);
 
 // Release assets offered for download, in the order users need them.
@@ -144,7 +145,7 @@ const flashTools = [
           <div class="copy-field">
             <span class="copy-field-label">File</span>
             <code>{isoFilename}</code>
-            <span class="copy-field-size">{isoSize}</span>
+            <span class="copy-field-size">{isoSizeLabel}</span>
             <CopyButton value={isoFilename} label="Copy filename" />
           </div>
 
@@ -193,7 +194,7 @@ const flashTools = [
             <span class="nf-icon">{glyph("f0965")}</span>
           </span>
           <div class="card-head-text">
-            <span class="card-badge">{isoSize} · {isoDate}</span>
+            <span class="card-badge">{isoSizeLabel} · {isoDate}</span>
             <h3>Release assets</h3>
           </div>
         </div>

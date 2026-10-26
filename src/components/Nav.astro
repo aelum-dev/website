@@ -28,6 +28,11 @@ const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
     </a>
 
     <nav class="nav-links" id="nav-menu" data-nav-menu aria-label="Primary">
+      <!-- Sliding pill behind the links: it rests on the active item and follows
+        the pointer. Decorative (the real active state is the aria-current
+        attribute and the CSS below), and it only appears once app.js has
+        measured a position for it. -->
+      <span class="nav-indicator" aria-hidden="true"></span>
       {
         navLinks.map((link) => (
           <a

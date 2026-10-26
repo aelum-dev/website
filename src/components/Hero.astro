@@ -1,25 +1,51 @@
 ---
 import { languages } from "../lib/site";
+import Shot from "./Shot.astro";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const points = [
   { icon: "f05aa", label: "No internet needed to install" },
   { icon: "f012c", label: "Verified, signed release" },
+];
+
+// Headline lines. Each one is masked and rises into place on load (see
+// home.css → hero-title): with JavaScript off the `js` class is never added and
+// the lines are simply there.
+const lines = [
+  { text: "Arch power.", accent: false },
+  { text: "Material elegance.", accent: true },
+];
+
+// The three numbers a first-time visitor actually compares. "Installed size" is
+// the btrfs figure the Features page states; the count-up reads the decimal
+// places straight out of the string so "3.2" never renders as "3.20".
+const stats = [
+  { dt: "Install time", value: "1", prefix: "~", unit: "min" },
+  { dt: "Installed size", value: "3.2", unit: "GB" },
+  { dt: "Languages", value: String(languages.length) },
 ];
 ---
 
 <section class="section hero-section">
   <div class="container">
     <div class="hero-grid">
-      <div class="hero-copy reveal">
+      <div class="hero-copy">
         <span class="eyebrow">
           <span class="eyebrow-chip" aria-hidden="true">
-            <span class="nf-icon">&#xf0ed;</span>
+            <span class="nf-icon">{glyph("f0ed")}</span>
           </span>
           Fully offline installer
         </span>
 
         <h1 class="hero-title">
-          Arch power. <span class="text-accent">Material elegance.</span>
+          {
+            lines.map((line) => (
+              <span class="hero-line">
+                <span class={line.accent ? "hero-accent" : undefined}>{line.text}</span>
+              </span>
+            ))
+          }
         </h1>
 
         <p class="hero-lead">
@@ -37,60 +63,63 @@ const points = [
             points.map((p) => (
               <li>
                 <span class="nf-icon" aria-hidden="true">
-                  {String.fromCodePoint(parseInt(p.icon, 16))}
+                  {glyph(p.icon)}
                 </span>
                 {p.label}
               </li>
             ))
           }
         </ul>
-
-        <dl class="hero-stats">
-          <div class="stat">
-            <dt>Install time</dt>
-            <dd>~1<span>min</span></dd>
-          </div>
-          <div class="stat">
-            <dt>Installed size</dt>
-            <dd>3.2<span>GB</span></dd>
-          </div>
-          <div class="stat">
-            <dt>Languages</dt>
-            <dd>{languages.length}</dd>
-          </div>
-        </dl>
       </div>
 
       <div class="hero-visual-wrap reveal" aria-hidden="true">
-        <div class="hero-chip hero-chip--tl">
-          <span class="nf-icon">&#xf0570;</span> Tiling by Hyprland
+        <span class="hero-halo"></span>
+        <div class="hero-visual" data-tilt>
+          <span class="hero-ring"></span>
+          <div class="hero-frame">
+            <Shot
+              light="hero-light"
+              dark="hero-dark"
+              alt="Aelum fastfetch output on the Aelum desktop"
+              sizes="(max-width: 640px) 100vw, 640px"
+              eager={true}
+            />
+          </div>
+          <span class="hero-sheen"></span>
         </div>
-        <div class="hero-visual">
-          <div class="hero-shot hero-shot--dark">
-            <img
-              src="/images/hero-dark.c85a862f.png"
-              width="2560"
-              height="1440"
-              alt="Aelum fastfetch output in dark theme"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </div>
-          <div class="hero-shot hero-shot--light">
-            <img
-              src="/images/hero-light.5f88cc72.png"
-              width="2560"
-              height="1440"
-              alt="Aelum fastfetch output in light theme"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </div>
+        <div class="hero-chip hero-chip--tl">
+          <span class="nf-icon">{glyph("f0570")}</span> Tiling by Hyprland
         </div>
         <div class="hero-chip hero-chip--br">
-          <span class="nf-icon">&#xf0342;</span> DankMaterialShell
+          <span class="nf-icon">{glyph("f0342")}</span> DankMaterialShell
         </div>
       </div>
+    </div>
+
+    <dl class="hero-stats">
+      {
+        stats.map((s) => (
+          <div class="stat">
+            <dt>{s.dt}</dt>
+            <dd>
+              <span
+                class="stat-num nums"
+                data-count={s.value}
+                data-decimals={(s.value.split(".")[1] ?? "").length}
+              >
+                {s.prefix ?? ""}
+                {s.value}
+              </span>
+              {s.unit && <span class="stat-unit">{s.unit}</span>}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <span class="hero-scroll-line"></span>
+      <span class="hero-scroll-label">Keep going</span>
     </div>
   </div>
 </section>

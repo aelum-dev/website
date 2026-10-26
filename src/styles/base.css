@@ -69,6 +69,24 @@
   vertical-align: -0.12em;
 }
 
+/* Registered custom property: the angle of every conic sweep on the site.
+   Registering it is what makes the angle animatable — without @property a
+   browser interpolates the whole gradient as a string and nothing moves.
+   Where @property is unsupported the gradient simply stays static. */
+@property --spin {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Registered for the same reason: the walkthrough's progress fill is a
+   background-size, and only a registered <percentage> interpolates. */
+@property --fill {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: false;
+}
+
 :root {
   /* ----------------------------------------------------------
      Palette — exported DankMaterialShell (DMS) light scheme.
@@ -158,6 +176,34 @@
   --t-fast: 160ms;
   --t-base: 320ms;
   --t-slow: 700ms;
+
+  /* Ambient loops. Everything decorative runs on a transform or an angle only —
+     never on background-position or filter — so it stays on the compositor. */
+  --t-aurora: 38s;
+  --t-sheen: 1.15s;
+  --t-spin: 14s;
+
+  /* --- Gradient layers ---
+     The palette itself is frozen (it is the DMS export); these are the only
+     gradients the site draws from it, so "the Aelum gradient" is one value. */
+  --grad-brand: linear-gradient(104deg, var(--accent) 0%, var(--accent-3) 52%, var(--accent-2) 100%);
+  --grad-brand-soft: linear-gradient(
+    104deg,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    color-mix(in srgb, var(--accent-3) 45%, transparent)
+  );
+  --grad-wash: radial-gradient(120% 150% at 50% -20%, var(--accent-soft), transparent 62%);
+  --sheen: linear-gradient(
+    100deg,
+    transparent 22%,
+    color-mix(in srgb, var(--bg-elevated) 70%, transparent) 46%,
+    transparent 70%
+  );
+
+  /* Film grain. An inline SVG turbulence tile, so it costs no request and no
+     binary asset. Kept at a whisper: it is there to stop large flat surfaces
+     from banding, not to be seen as a texture. */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 
   /* Light/dark theme transition timing. */
   --theme-duration: 650ms;
@@ -288,11 +334,17 @@ body {
 }
 
 /* ============================================================
-   Ambient background — one static horizon, no animation
+   Ambient background — a layered field, not a flat colour
 
-   Deliberately not the old aurora: no blurred drifting orbs, no decorative
-   grid, no keyframes. Two fixed washes give the page depth and put the light
-   source at the top of the document, which is also where the nav sits.
+   Five stacked layers, all fixed, all pointer-transparent:
+     1-2. two accent auroras drifting on long transform loops
+     3.   a hairline grid, masked away at the edges
+     4.   film grain over the whole field (kills banding on large washes)
+     5.   a pointer spotlight that follows the cursor (--px/--py from app.js)
+
+   Every animated layer moves with transform only. The auroras are plain
+   radial gradients on their own elements: animating a gradient's position
+   repaints the whole viewport, animating the element does not.
    ============================================================ */
 .bg-field {
   position: fixed;
@@ -300,9 +352,117 @@ body {
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  /* Static base wash: the light source stays at the top of the document,
+     where the nav is, even when every animated layer is switched off. */
   background:
     radial-gradient(1250px 640px at 50% -14%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 72%),
     radial-gradient(900px 520px at 104% 106%, color-mix(in srgb, var(--accent-3) 9%, transparent), transparent 70%);
+}
+
+/* Sizes are capped in pixels deliberately. A blurred element is rasterised into
+   one composited surface, and a 78vmax layer (11 000 px on a 1440p screen) with
+   a 90 px blur is a bigger surface than the compositor needs to draw a wash that
+   is only partly on screen. The cap keeps the same visual scale and stops the
+   page allocating an 11 000 px texture per aurora.
+
+   (An earlier pass of this file concluded these layers rendered *nothing* and
+   doubled their opacity. That measurement was wrong: it ran with
+   prefers-reduced-motion forced, and the reduced-motion block below hides the
+   auroras and the spotlight on purpose. The intensities here are the ones that
+   measured correct with motion enabled.) */
+.bg-aurora {
+  position: absolute;
+  width: min(72vmax, 1000px);
+  height: min(72vmax, 1000px);
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  will-change: transform;
+}
+.bg-aurora--a {
+  top: -14vmax;
+  left: -6vmax;
+  background: radial-gradient(circle at 45% 45%, color-mix(in srgb, var(--accent) 44%, transparent), transparent 66%);
+  animation: aurora-a var(--t-aurora) ease-in-out infinite alternate;
+}
+.bg-aurora--b {
+  bottom: -18vmax;
+  right: -8vmax;
+  background: radial-gradient(circle at 55% 55%, color-mix(in srgb, var(--accent-3) 34%, transparent), transparent 64%);
+  animation: aurora-b calc(var(--t-aurora) * 1.35) ease-in-out infinite alternate;
+}
+@keyframes aurora-a {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(9vmax, 5vmax, 0) scale(1.15);
+  }
+}
+@keyframes aurora-b {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-8vmax, -6vmax, 0) scale(0.9);
+  }
+}
+
+.bg-grid {
+  position: absolute;
+  inset: -1px;
+  /* Two hairline families at different scales read as a technical surface
+     rather than a wallpaper pattern. */
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--text) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--text) 5%, transparent) 1px, transparent 1px);
+  background-size:
+    92px 92px,
+    92px 92px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000, transparent 72%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000, transparent 72%);
+  opacity: 0.75;
+}
+
+.bg-grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  background-repeat: repeat;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* Pointer spotlight: a light source in the upper half of the page that trails
+   the cursor. app.js writes --spot-x/--spot-y (offsets from the viewport
+   centre); the long transition is what makes it trail rather than follow. With
+   JavaScript off it sits at the top centre, which is also where the static wash
+   in .bg-field puts its light. */
+.bg-spot {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  width: min(44vmax, 760px);
+  height: min(44vmax, 760px);
+  transform: translate(calc(-50% + var(--spot-x, 0px)), calc(-50% + var(--spot-y, 0px)));
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.4;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 24%, transparent), transparent 62%);
+  transition: transform 1.4s var(--ease);
+}
+
+/* The light scheme needs the field pushed slightly harder: the same wash at the
+   same opacity nearly disappears against #fff7f9, and the hairline grid is what
+   gives the light page its structure. */
+[data-theme="light"] .bg-aurora {
+  opacity: 0.62;
+}
+[data-theme="light"] .bg-grid {
+  opacity: 0.95;
+}
+[data-theme="light"] .bg-grain {
+  opacity: 0.07;
 }
 
 .container {
@@ -376,6 +536,7 @@ code {
    Margins are owned by `.section-head`'s gap so no child needs its own. */
 /* Eyebrows are labels, not prose: set them in the engineering face. */
 .eyebrow {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -390,10 +551,38 @@ code {
   border-radius: var(--radius-pill);
   background: var(--surface);
   backdrop-filter: blur(12px);
+  box-shadow: 0 10px 26px -20px var(--accent-shadow-strong);
   margin: 0;
+  overflow: hidden;
+}
+/* A light travelling along the pill. Small element, so repainting its gradient
+   position is cheap — this is the only place on the site that animates a
+   background-position. */
+.eyebrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 32%,
+    color-mix(in srgb, var(--accent) 30%, transparent) 48%,
+    transparent 64%
+  );
+  background-size: 260% 100%;
+  animation: eyebrow-sheen 7s linear infinite;
+  pointer-events: none;
+}
+@keyframes eyebrow-sheen {
+  from {
+    background-position: 220% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
 }
 /* Small numbered/icon chip that leads an eyebrow. */
 .eyebrow-chip {
+  position: relative;
   display: grid;
   place-items: center;
   width: 1.5rem;
@@ -403,7 +592,31 @@ code {
   color: var(--on-accent);
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
 }
+/* A ring pulsing outward from the chip — the section head's "live" signal. */
+.eyebrow-chip::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  animation: chip-pulse 3.2s var(--ease) infinite;
+}
+@keyframes chip-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
 .eyebrow-chip .nf-icon {
+  position: relative;
+  z-index: 1;
   font-size: 13px;
   color: var(--on-accent);
 }
@@ -416,6 +629,20 @@ code {
   margin: 0;
   max-width: 30ch;
   text-wrap: balance;
+}
+
+/* A gradient rule closing a section head: the heading gets something to sit on
+   instead of dissolving into the page. Owned by .section-head so every section
+   gets the same one without a component having to remember it. */
+.section-head::after {
+  content: "";
+  width: min(220px, 40%);
+  height: 1px;
+  margin-top: var(--space-2);
+  background: linear-gradient(90deg, var(--accent-line), transparent);
+}
+.section-head--center::after {
+  background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
 }
 
 .section-sub {
@@ -529,6 +756,8 @@ code {
    ============================================================ */
 
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -553,7 +782,23 @@ code {
   transform: translateY(0);
 }
 .btn .nf-icon {
+  position: relative;
+  z-index: 1;
   font-size: 1.15rem;
+}
+/* Sheen sweep on hover. The label sits above it (z-index), the sweep never
+   catches pointer events. */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sheen);
+  transform: translateX(-130%);
+  transition: transform var(--t-sheen) var(--ease);
+  pointer-events: none;
+}
+.btn:hover::after {
+  transform: translateX(130%);
 }
 
 .btn-primary {
@@ -659,6 +904,7 @@ code {
     border-color 0.45s var(--ease),
     box-shadow 0.45s var(--ease);
 }
+/* Pointer-tracked glow inside the card. */
 .card--interactive::after {
   content: "";
   position: absolute;
@@ -673,12 +919,49 @@ code {
   transition: opacity 0.45s var(--ease);
   pointer-events: none;
 }
+/* A conic light orbiting the card rim on hover. The mask pair (content-box XOR
+   full box) keeps only the 1px padding ring visible, so it reads as a border
+   that catches light rather than a glow bleeding over the content. */
+.card--interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0 28%,
+    color-mix(in srgb, var(--accent) 75%, transparent) 44%,
+    color-mix(in srgb, var(--accent-3) 60%, transparent) 56%,
+    transparent 72% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  animation: card-ring var(--t-spin) linear infinite;
+  transition: opacity 0.45s var(--ease);
+  pointer-events: none;
+}
+@keyframes card-ring {
+  to {
+    --spin: 360deg;
+  }
+}
 .card--interactive:hover {
   transform: translateY(-5px);
-  border-color: var(--accent-line);
+  border-color: transparent;
   box-shadow: var(--shadow-pop);
 }
 .card--interactive:hover::after {
+  opacity: 1;
+}
+.card--interactive:hover::before {
   opacity: 1;
 }
 
@@ -714,6 +997,7 @@ code {
 
 /* Colored icon tile — the colored glyph sits on a tinted, ringed square. */
 .icon-tile {
+  position: relative;
   width: 46px;
   height: 46px;
   border-radius: 14px;
@@ -724,11 +1008,35 @@ code {
   background: color-mix(in srgb, var(--c, var(--accent)) 16%, transparent);
   border: 1px solid color-mix(in srgb, var(--c, var(--accent)) 26%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    transform 0.4s var(--ease-spring),
+    box-shadow 0.4s var(--ease),
+    background 0.4s;
+}
+/* Light falling on the top edge of the tile. */
+.icon-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    70% 70% at 50% -10%,
+    color-mix(in srgb, var(--c, var(--accent)) 45%, transparent),
+    transparent 70%
+  );
+  opacity: 0.55;
+  pointer-events: none;
 }
 .card--interactive:hover .icon-tile {
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.05);
+  background: color-mix(in srgb, var(--c, var(--accent)) 24%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 10px 26px -12px color-mix(in srgb, var(--c, var(--accent)) 65%, transparent);
 }
 .icon-tile .nf-icon {
+  position: relative;
+  z-index: 1;
   font-size: 23px;
 }
 
@@ -741,17 +1049,24 @@ code {
    Content is visible by default; JS adds .reveal, and `.in`
    animates it into view. No-JS and reduced-motion users see
    everything immediately.
+
+   Groups stagger: app.js writes --i (0,1,2…) onto the children of any
+   [data-stagger] container, and the delay below reads it. Nothing about the
+   order is decided in JavaScript beyond that index.
    ============================================================ */
 html.js .reveal {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(22px);
+  filter: blur(6px);
 }
 html.js .reveal.in {
   opacity: 1;
   transform: none;
+  filter: none;
   transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
+    opacity 0.7s var(--ease) calc(var(--i, 0) * 70ms),
+    transform 0.7s var(--ease) calc(var(--i, 0) * 70ms),
+    filter 0.7s var(--ease) calc(var(--i, 0) * 70ms);
 }
 
 /* ============================================================
@@ -785,6 +1100,21 @@ html.js .reveal.in {
   z-index: 50;
   padding-block: 0.7rem;
 }
+/* The bar settles in on load. Gated on html.js for the same reason the scroll
+   reveal is: with JavaScript off it is simply there from the first paint. */
+html.js .nav {
+  animation: nav-drop 0.8s var(--ease) both;
+}
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 .nav-inner {
   position: relative;
   display: flex;
@@ -801,13 +1131,41 @@ html.js .reveal.in {
   transition:
     background 0.4s var(--ease),
     box-shadow 0.4s var(--ease),
-    border-color 0.4s var(--ease);
+    border-color 0.4s var(--ease),
+    height 0.45s var(--ease);
 }
-/* Deepen the bar once the page has scrolled. */
+/* Once the page has scrolled the bar deepens and gets out of the way: a shorter
+   bar with a stronger blur reads as "docked" without hiding anything. */
+.nav.is-scrolled {
+  --nav-h: 56px;
+  padding-block: 0.5rem;
+}
 .nav.is-scrolled .nav-inner {
   background: color-mix(in srgb, var(--bg) 86%, transparent);
   box-shadow: var(--shadow-md);
   border-color: color-mix(in srgb, var(--surface-border) 100%, transparent);
+}
+/* Reading progress, pinned to the top edge of the window. Fixed rather than
+   part of the floating bar: the bar has rounded ends and a 0.7rem inset, so a
+   progress line inside it reads as a decoration of the bar instead of a
+   measurement of the page. --scroll (0…1) is set by app.js; with JS off it
+   stays 0 and nothing is drawn. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: 3px;
+  pointer-events: none;
+}
+.scroll-progress-bar {
+  display: block;
+  height: 100%;
+  background: var(--grad-brand);
+  box-shadow: 0 0 14px -2px var(--accent-shadow-strong);
+  transform: scaleX(var(--scroll, 0));
+  transform-origin: left center;
 }
 
 .brand {
@@ -830,15 +1188,50 @@ html.js .reveal.in {
   width: 30px;
   height: auto;
   filter: drop-shadow(0 4px 10px var(--accent-shadow));
+  transition:
+    transform 0.45s var(--ease-spring),
+    filter 0.45s var(--ease);
+}
+.brand:hover .glyph img {
+  transform: scale(1.12) rotate(-5deg);
+  filter: drop-shadow(0 7px 18px var(--accent-shadow-strong));
 }
 
 .nav-links {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.3rem;
 }
+/* The pill that sits under the links. app.js measures the active link (and then
+   whatever the pointer is over) and writes transform/width/height; until it has
+   done so the element stays at size 0 and invisible, so the CSS .active styling
+   below is what a no-JS page shows. */
+.nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  box-shadow:
+    inset 0 0 0 1px var(--accent-line),
+    0 10px 22px -16px var(--accent-shadow-strong);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.42s var(--ease-spring),
+    width 0.42s var(--ease-spring),
+    height 0.42s var(--ease-spring),
+    opacity 0.3s var(--ease);
+}
+.nav-links.is-ready .nav-indicator {
+  opacity: 1;
+}
 .nav-links a {
   position: relative;
+  z-index: 1;
   color: var(--text-dim);
   font-size: 0.94rem;
   font-weight: 600;
@@ -855,6 +1248,14 @@ html.js .reveal.in {
 .nav-links a.active {
   color: var(--accent);
   background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+/* Once the indicator is driving the highlight, the per-link backgrounds would
+   draw the same pill twice. */
+html.js .nav-links.is-ready a:hover,
+html.js .nav-links.is-ready a.active {
+  background: transparent;
+  box-shadow: none;
 }
 .nav-actions {
   display: flex;
@@ -915,6 +1316,7 @@ html.js .reveal.in {
 
 .cta-panel {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -924,7 +1326,7 @@ html.js .reveal.in {
   padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-xl);
-  background: radial-gradient(120% 140% at 50% -10%, var(--accent-soft), transparent 60%), var(--surface);
+  background: var(--grad-wash), var(--surface);
   backdrop-filter: blur(14px);
   box-shadow: var(--shadow-md);
 }
@@ -936,6 +1338,32 @@ html.js .reveal.in {
   filter: blur(90px);
   opacity: 0.4;
   background: radial-gradient(circle, var(--accent), transparent 70%);
+  pointer-events: none;
+}
+/* Slow conic light orbiting the panel rim — the same rim treatment as the
+   cards, at the scale of a whole section. */
+.cta-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0 22%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 42%,
+    color-mix(in srgb, var(--accent-3) 45%, transparent) 58%,
+    transparent 78% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: card-ring calc(var(--t-spin) * 1.6) linear infinite;
   pointer-events: none;
 }
 .cta-panel h2 {
@@ -961,11 +1389,48 @@ html.js .reveal.in {
    ============================================================ */
 
 .footer {
+  position: relative;
   border-top: 1px solid var(--surface-border);
   padding-block: var(--space-16) var(--space-8);
   color: var(--text-faint);
   font-size: 0.92rem;
   margin-top: var(--space-10);
+}
+/* A gradient hairline standing in for the plain top border. */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-line) 30%,
+    color-mix(in srgb, var(--accent-3) 45%, transparent) 65%,
+    transparent
+  );
+}
+/* Oversized wordmark sitting behind the columns: the footer's only graphic, and
+   it is type, so it costs nothing to fetch and stays legible in any theme. */
+.footer-mark {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 13vw, 11rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  margin: 0 0 var(--space-8);
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--text) 26%, transparent),
+    color-mix(in srgb, var(--accent) 40%, transparent)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
 }
 .footer-grid {
   display: grid;
@@ -1025,6 +1490,8 @@ html.js .reveal.in {
    ============================================================ */
 
 .theme-toggle {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1042,6 +1509,36 @@ html.js .reveal.in {
     color 0.3s,
     border-color 0.3s;
 }
+/* A light circling the control on hover — the same rim treatment the cards and
+   the CTA panel use, at 42px. */
+.theme-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0 26%,
+    color-mix(in srgb, var(--accent) 85%, transparent) 46%,
+    transparent 66% 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  animation: card-ring 6s linear infinite;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+.theme-toggle:hover::before {
+  opacity: 1;
+}
 .theme-toggle:hover {
   transform: translateY(-2px) rotate(-8deg);
   background: var(--surface-solid);
@@ -1053,6 +1550,8 @@ html.js .reveal.in {
   outline-offset: 2px;
 }
 .theme-toggle-icon {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   line-height: 0;
@@ -1209,6 +1708,32 @@ html.js .reveal.in {
     padding: 0.75rem 0.9rem;
     border-radius: var(--radius-sm);
   }
+  /* The open menu arrives item by item rather than as one block. */
+  .nav.is-open .nav-links a {
+    animation: nav-item-in 0.4s var(--ease) both;
+  }
+  .nav.is-open .nav-links a:nth-child(2) {
+    animation-delay: 60ms;
+  }
+  .nav.is-open .nav-links a:nth-child(3) {
+    animation-delay: 110ms;
+  }
+  .nav.is-open .nav-links a:nth-child(4) {
+    animation-delay: 160ms;
+  }
+  .nav.is-open .nav-links a:nth-child(5) {
+    animation-delay: 210ms;
+  }
+  @keyframes nav-item-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
   .nav.is-open .nav-links {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -1261,5 +1786,24 @@ html.js .reveal.in {
   html.js .reveal {
     opacity: 1;
     transform: none;
+    filter: none;
+  }
+  /* The ambient field keeps its static wash and grid (they carry depth on
+     their own) but drops the drifting auroras and the cursor spotlight. */
+  .bg-aurora,
+  .bg-spot {
+    display: none;
+  }
+  .bg-grain {
+    opacity: 0.035;
+  }
+  .card--interactive::before,
+  .cta-panel::after,
+  .eyebrow::after,
+  .eyebrow-chip::after {
+    display: none;
+  }
+  .card--interactive:hover {
+    border-color: var(--accent-line);
   }
 }
