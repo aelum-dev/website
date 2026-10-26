@@ -105,48 +105,7 @@
   border-radius: var(--radius-xs);
   background: color-mix(in srgb, var(--bg-elevated) 40%, transparent);
 }
-.copy-btn {
-  flex: 0 0 auto;
-  display: inline-grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border-radius: var(--radius-xs);
-  border: 1px solid var(--surface-border);
-  background: var(--surface);
-  color: var(--text-dim);
-  cursor: pointer;
-  transition:
-    color 0.2s,
-    border-color 0.2s,
-    background 0.2s,
-    transform 0.2s var(--ease-spring);
-}
-.copy-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent-line);
-  background: var(--surface-solid);
-  transform: translateY(-1px);
-}
-.copy-btn.is-copied {
-  color: var(--accent-green);
-  border-color: color-mix(in srgb, var(--accent-green) 45%, transparent);
-}
-.copy-glyph {
-  display: grid;
-  place-items: center;
-  line-height: 0;
-}
-.copy-glyph--done {
-  display: none;
-}
-.copy-btn.is-copied .copy-glyph--copy {
-  display: none;
-}
-.copy-btn.is-copied .copy-glyph--done {
-  display: grid;
-}
+/* .copy-btn / .copy-glyph live in base.css: CopyButton.astro is shared UI. */
 
 /* Download-file icon button (checksum rows + key card). Mirrors .copy-btn. */
 .dl-asset-dl {

@@ -582,6 +582,55 @@ code {
 }
 
 /* ============================================================
+   Copy button — the control behind CopyButton.astro
+   It is a shared component (Download and CLI both use it), so its styles live
+   with the other shared UI, not in whichever section introduced it.
+   ============================================================ */
+
+.copy-btn {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.2s var(--ease-spring);
+}
+.copy-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--surface-solid);
+  transform: translateY(-1px);
+}
+.copy-btn.is-copied {
+  color: var(--accent-green);
+  border-color: color-mix(in srgb, var(--accent-green) 45%, transparent);
+}
+.copy-glyph {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+.copy-glyph--done {
+  display: none;
+}
+.copy-btn.is-copied .copy-glyph--copy {
+  display: none;
+}
+.copy-btn.is-copied .copy-glyph--done {
+  display: grid;
+}
+
+/* ============================================================
    Cards
    ============================================================ */
 
@@ -858,6 +907,53 @@ html.js .reveal.in {
 }
 .nav.is-open .nav-burger .bar:nth-child(3) {
   transform: translateX(-50%) translateY(-5px) rotate(-45deg);
+}
+
+/* ============================================================
+   Call-to-action band (site chrome, rendered by Layout on most pages)
+   ============================================================ */
+
+.cta-panel {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-5);
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-xl);
+  background: radial-gradient(120% 140% at 50% -10%, var(--accent-soft), transparent 60%), var(--surface);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-md);
+}
+.cta-panel::before {
+  content: "";
+  position: absolute;
+  inset: -40% 20% auto;
+  height: 320px;
+  filter: blur(90px);
+  opacity: 0.4;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+  pointer-events: none;
+}
+.cta-panel h2 {
+  font-size: var(--title-2);
+  max-width: 22ch;
+  text-wrap: balance;
+}
+.cta-panel p {
+  color: var(--text-dim);
+  font-size: var(--subtitle-size);
+  max-width: 54ch;
+}
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-2);
 }
 
 /* ============================================================
