@@ -17,11 +17,14 @@ const lines = [
   { text: "Material elegance.", accent: true },
 ];
 
-// The three numbers a first-time visitor actually compares. "Installed size" is
-// the btrfs figure the Features page states; the count-up reads the decimal
-// places straight out of the string so "3.2" never renders as "3.20".
+// The three numbers a first-time visitor actually compares. "Install time" is
+// the end-to-end span measured in this project's own QEMU install matrix
+// (docker/logs/matrix → first step to "Installation completed successfully");
+// "Installed size" is the btrfs figure the Features page states. The count-up
+// reads the decimal places straight out of the string so "3.2" never renders as
+// "3.20".
 const stats = [
-  { dt: "Install time", value: "1", prefix: "~", unit: "min" },
+  { dt: "Install time", value: "1.5", prefix: "~", unit: "min" },
   { dt: "Installed size", value: "3.2", unit: "GB" },
   { dt: "Languages", value: String(languages.length) },
 ];
@@ -49,9 +52,9 @@ const stats = [
         </h1>
 
         <p class="hero-lead">
-          Boots into a barebones Hyprland session that just runs the installer.
-          Answer a few questions and you get a finished Hyprland +
-          DankMaterialShell desktop — no internet needed.
+          Boots into a minimal Hyprland session that just runs the installer.
+          Answer four questions and you get a themed Hyprland +
+          DankMaterialShell desktop — no internet needed for the install.
         </p>
 
         <div class="hero-actions">

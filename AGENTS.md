@@ -215,7 +215,8 @@ hand:
 - `docker/scripts/publish-website.sh` commits it to this repo's `main`, which
   triggers the GitHub Pages workflow to redeploy with the new links.
 - `scripts/fetch-release.mjs` can also regenerate it in CI by fetching `latest.json`
-  from the Cloudflare Worker (`RELEASE_METADATA_URL`). If the URL is unset or the
+  from the public R2 bucket (`RELEASE_METADATA_URL`, i.e. `https://cdn.aelum.dev/latest.json`;
+  there is no Worker in front of the CDN). If the URL is unset or the
   fetch fails it keeps the committed file, so the site always builds offline.
 
 `src/lib/release.ts` is committed as an **offline baseline** (a normal pattern for

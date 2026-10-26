@@ -8,6 +8,7 @@ import {
   releaseArch,
   releasePublishedAt,
   releaseVersion,
+  requirements,
   signingKey,
   ventoyUrl,
   verifyCommands,
@@ -296,9 +297,9 @@ const flashTools = [
       </span>
       <h2 class="section-title">Flash it to a USB drive.</h2>
       <p class="section-sub">
-        Any of these writes the ISO to a USB stick in a minute. Ventoy keeps the
-        stick usable for other files; BalenaEtcher does a clean, single-image
-        flash; dd is a built-in command line tool.
+        Any of these puts the {isoSizeLabel} ISO on a USB stick. Ventoy keeps the
+        stick usable for other files; BalenaEtcher does a single-image flash; dd
+        is a built-in command line tool.
       </p>
     </div>
 
@@ -333,6 +334,22 @@ const flashTools = [
           </div>
         ))
       }
+      <div class="card card-pad-md flash-card">
+        <div class="card-head">
+          <span class="icon-tile" aria-hidden="true">
+            <span class="nf-icon">{glyph("f02ca")}</span>
+          </span>
+          <h3>What your machine needs</h3>
+        </div>
+        <ul class="flash-steps">
+          {requirements.map((need) => <li>{need}</li>)}
+        </ul>
+        <p class="dl-steps-note">
+          The same three requirements are on the installer's first screen, and it
+          refuses a disk that is too small. Manual mode wants one 512 MB Boot and
+          one 7680 MB System partition, and leaves every other partition alone.
+        </p>
+      </div>
     </div>
   </div>
 </section>

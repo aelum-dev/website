@@ -2,13 +2,13 @@
 
 This is the official landing site for [Aelum](https://github.com/aelum-dev/live-iso) and the [Aelum Installer](https://github.com/aelum-dev/installer), built with [Astro](https://astro.build/).
 
-Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer a few questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
+Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer four questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
 
 ## What's on the site
 
 Four real routes, one Astro page each.
 
-- **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1 min install, 3.2 GB installed, 28
+- **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1.5 min install, 3.2 GB installed, 28
   languages — inline value props, and the desktop preview in a lit device frame with floating chips),
   **Flow** (the three moves: flash it, answer four questions, reboot), and **Showcase** (a bento of
   real installer screenshots, hard numbers and the two choices that matter).

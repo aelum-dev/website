@@ -13,8 +13,9 @@ import CopyButton from "./CopyButton.astro";
       </span>
       <h2 class="section-title">Drive it from the terminal</h2>
       <p class="section-sub">
-        Prefer scripted, headless installs? The live ISO also ships a CLI. The
-        GUI and the CLI share the exact same install engine, so results match.
+        Prefer scripted, headless installs? The live ISO ships a CLI next to the
+        GUI. Both call the same eight install steps, so the result is the same
+        system.
       </p>
     </div>
 
@@ -38,8 +39,11 @@ import CopyButton from "./CopyButton.astro";
 <span style="color:var(--accent-green)"># CLI — full install</span>
 <span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda</span>
 
-<span style="color:var(--accent-green)"># CLI — btrfs root instead of ext4</span>
-<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem btrfs</span></code></pre>
+<span style="color:var(--accent-green)"># CLI — ext4 root instead of the default btrfs</span>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem ext4</span>
+
+<span style="color:var(--accent-green)"># LUKS2 + LVM. Passwords are read from stdin, never from a flag</span>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --luks --lvm</span></code></pre>
     </div>
   </div>
 </section>

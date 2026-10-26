@@ -59,6 +59,11 @@ export const languages = [
   "Bahasa Indonesia",
 ];
 
+// System requirements, copied from the installer's own welcome screen
+// (installer/frontend/src/translations/*.json → page.welcome.req*). The manual
+// mode additionally wants one 512 MB Boot and one 7680 MB System partition.
+export const requirements = ["UEFI boot", "GPT partition scheme", "At least 8 GB of disk space"];
+
 export interface Feature {
   icon: string;
   title: string;
@@ -74,8 +79,9 @@ export const features: Feature[] = [
   },
   {
     icon: "f06a9", // nerd-fonts: robot
-    title: "Zero-touch installer",
-    description: "greetd starts a barebones Hyprland that opens the installer on its own. No terminal, no commands.",
+    title: "Starts on its own",
+    description:
+      "On the live ISO, greetd logs in as the live user and starts a minimal Hyprland, and that session launches the installer. No terminal, no commands.",
   },
   {
     icon: "eb11", // nerd-fonts: key
@@ -86,7 +92,7 @@ export const features: Feature[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Dual-boot safe",
     description:
-      "Manual mode only touches the Boot and Root partitions you pick — mark the rest Preserve to keep another OS and your files.",
+      "Manual mode formats only the Boot and System partitions you assign; every other partition is left as it is. Give Aelum its own Boot partition — it does not reuse another OS's ESP.",
   },
   {
     icon: "f0570", // nerd-fonts: view_grid
@@ -98,23 +104,25 @@ export const features: Feature[] = [
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
     title: "Silent boot",
     description:
-      "A branded Aelum Plymouth splash — with passphrase unlock on encrypted installs — instead of console spam.",
+      "The boot entries carry quiet splash loglevel=3, so the Aelum Plymouth splash covers the boot — including the passphrase prompt on encrypted installs.",
   },
   {
     icon: "f037a", // nerd-fonts: monitor-multiple
     title: "Auto monitor scaling",
-    description: "Each connected monitor gets the right Hyprland scale automatically — crisp at 1080p, 1440p, and 4K.",
+    description:
+      "The live session reads each connected monitor and sets a Hyprland scale for it (1.0 / 1.33 / 2.0 for 1080p / 1440p / 4K). The installed desktop uses Hyprland's own automatic scale.",
   },
   {
     icon: "f051b", // nerd-fonts: timer
-    title: "~1 minute install",
+    title: "About a minute and a half",
     description:
-      "Nothing is downloaded during install, so a full system lands on disk in about a minute — roughly 3.2 GB on btrfs (compression) or 4.7 GB on ext4.",
+      "Nothing is downloaded during install. Partitioning, both package runs, the bootloader and verification take under 95 seconds end to end in our QEMU test installs (20 GB virtual disk). The finished system uses about 3.2 GB on btrfs (compressed) or 4.7 GB on ext4.",
   },
   {
     icon: "f120", // nerd-fonts: terminal
     title: "GUI or CLI",
-    description: "Use the graphical wizard, or script a headless install with the aelum-installer-cli binary.",
+    description:
+      "Use the graphical wizard, or run a headless install with the aelum-installer-cli binary that ships in the same ISO. Passwords are read from stdin, never from a flag.",
   },
 ];
 
@@ -158,7 +166,7 @@ export const software: Software[] = [
   {
     icon: "f0239", // nerd-fonts: firefox
     title: "Firefox",
-    description: "Themed to match, and shipped with uBlock Origin.",
+    description: "The shipped browser, themed to match the desktop.",
   },
   {
     icon: "f02e9", // nerd-fonts: image (branded boot splash)
@@ -197,7 +205,7 @@ export const flow: FlowStep[] = [
     icon: "ede9", // nerd-fonts: USB stick
     title: "Flash it and boot it",
     description:
-      "Write the ISO to a USB drive and boot from it. The live session starts a bare Hyprland that opens the installer on its own.",
+      "Write the ISO to a USB drive and boot it on a UEFI machine. The live session logs itself in and opens the installer.",
   },
   {
     num: "02",
@@ -211,7 +219,7 @@ export const flow: FlowStep[] = [
     icon: "f0379", // nerd-fonts: monitor
     title: "Reboot into your desktop",
     description:
-      "The installer writes the system from the ISO in about a minute. Reboot and you are already logged in.",
+      "The installer writes the system from the ISO in about a minute and a half. Reboot, log in at the Aelum greeter, and the desktop is already themed.",
   },
 ];
 
@@ -249,7 +257,7 @@ export const showcase: ShowcaseTile[] = [
     light: "installer-step-5-light",
     dark: "installer-step-5-dark",
     alt: "Aelum installer confirming the installation",
-    caption: "The last screen. Everything above it is already decided.",
+    caption: "The summary before it starts. Everything above it is already decided.",
   },
   {
     kind: "stat",
@@ -279,7 +287,7 @@ export const showcase: ShowcaseTile[] = [
     value: "4",
     unit: "questions",
     label: "What the wizard asks",
-    note: "Language, user, disk, confirm. Nothing else stands between you and a reboot.",
+    note: "Language, user, disk, confirm. Manual partitioning is on the disk page, not an extra step.",
   },
   {
     kind: "shot",
@@ -287,7 +295,7 @@ export const showcase: ShowcaseTile[] = [
     light: "installer-step-7-light",
     dark: "installer-step-7-dark",
     alt: "Aelum installer finishing the installation",
-    caption: "Reboot, and the desktop is already waiting for you.",
+    caption: "Reboot, log in, and the desktop is there.",
   },
   {
     kind: "feature",
@@ -303,7 +311,8 @@ export const installSteps: Step[] = [
     num: "01",
     icon: "f0ac", // nerd-fonts: globe
     title: "Pick a language",
-    description: "Choose from 28 languages. This sets the installer UI, your system locale, and the mirror country.",
+    description:
+      "Choose from 28 languages. This sets the installer UI and your system locale, and writes a regional Arch mirror list for the installed system (worldwide mirrors where Arch lists none).",
   },
   {
     num: "02",
@@ -334,7 +343,7 @@ export const installSteps: Step[] = [
     num: "06",
     icon: "f0379", // nerd-fonts: monitor
     title: "Boot into it",
-    description: "Reboot into a finished Hyprland + DankMaterialShell desktop.",
+    description: "Reboot, log in at the greeter, and the Hyprland + DankMaterialShell desktop is ready.",
   },
 ];
 
