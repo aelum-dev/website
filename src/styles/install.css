@@ -1,6 +1,6 @@
 /* ============================================================
    Aelum-Web — Install page (install.css)
-   Installer walkthrough + numbered steps + filesystem picker.
+   Installer walkthrough + numbered steps + the disk selection step cards.
    Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
@@ -180,6 +180,29 @@ picture.shot img {
   letter-spacing: -0.05em;
   -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
   color: transparent;
+}
+
+/* Disk selection step (DiskModes.astro) — the two cards that say what the disk
+   question decides. They are ordinary site cards: same glassy surface, same
+   hover glow + rim + icon-tile lift as every other card grid, monochrome like
+   them. The two modes are told apart by their glyph and their words. */
+.grid-disk-modes {
+  --cell-min: 320px;
+  --grid-gap: var(--space-6);
+}
+/* Each card's own footnote, under its description. */
+.disk-mode-points {
+  margin: var(--space-4) 0 0;
+  padding-left: var(--space-5);
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 0.9rem;
+}
+.disk-mode-points li::marker {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 @media (min-width: 1025px) {

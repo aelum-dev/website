@@ -43,7 +43,7 @@ npm run format                # the generated manifest is committed biome-format
   exported data here and consume it from components — don't hardcode strings in templates. This makes
   reviews and edits easy.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
-  `/` → `Hero` + `Flow` + `Showcase` · `/download/` → `Download` · `/install/` → `Install` ·
+  `/` → `Hero` + `Flow` + `Showcase` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` ·
   `/features/` → `Desktop` + `Features` + `Languages` + `CLI`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
   the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard

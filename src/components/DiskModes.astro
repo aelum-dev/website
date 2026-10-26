@@ -1,0 +1,44 @@
+---
+// The disk selection step — one card per mode.
+//
+// Split in two on purpose: the two modes do opposite things to your data, and a
+// single panel that explains both reads as one decision with two footnotes. Two
+// cards say "pick one of these", and they are the same cards the rest of the
+// site uses (Card.astro), so they carry the same hover glow, rim and icon-tile
+// lift and stay monochrome like everything else here.
+import { diskModes, diskModesPanel } from "../lib/site";
+import Card from "./Card.astro";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf02ca;</span>
+        </span>
+        {diskModesPanel.eyebrow}
+      </span>
+      <h2 class="section-title">{diskModesPanel.title}</h2>
+      <p class="section-sub">{diskModesPanel.sub}</p>
+    </div>
+
+    <div class="card-grid grid-disk-modes">
+      {
+        diskModes.map((mode) => (
+          <Card
+            title={mode.title}
+            badge={mode.badge}
+            icon={mode.icon}
+            description={mode.body}
+            size="lg"
+          >
+            <ul class="disk-mode-points">
+              {mode.points.map((point) => <li>{point}</li>)}
+            </ul>
+          </Card>
+        ))
+      }
+    </div>
+  </div>
+</section>

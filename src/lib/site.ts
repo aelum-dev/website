@@ -92,7 +92,7 @@ export const features: Feature[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Dual-boot safe",
     description:
-      "Manual mode formats only the Boot and System partitions you assign; every other partition is left as it is. Give Aelum its own Boot partition — it does not reuse another OS's ESP.",
+      "Automatic mode erases the whole disk. Manual mode formats only the Boot and System partitions you assign; every other partition is left as it is, and Aelum writes its own Boot partition instead of reusing another OS's ESP.",
   },
   {
     icon: "f0570", // nerd-fonts: view_grid
@@ -212,7 +212,7 @@ export const flow: FlowStep[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Answer four questions",
     description:
-      "Language, user, disk, confirm. Filesystem, encryption and partitioning are all inside the disk question.",
+      "Language, user, disk, confirm. Filesystem, encryption and partitioning are all inside the disk question — and automatic mode erases the whole disk.",
   },
   {
     num: "03",
@@ -306,6 +306,53 @@ export const showcase: ShowcaseTile[] = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// The disk question — what gets destroyed
+//
+// The highest-stakes sentence on an install page, so it is stated once here and
+// read by every place it matters: the /install/ disk section, the disk step, the
+// dual-boot card. It mirrors the installer's own confirm dialog
+// (installer/frontend/src/translations/*.json → dialog.confirm.message and
+// .messageManual) and the two code paths: automatic mode runs `sgdisk -Z`,
+// which drops the whole partition table before writing a fresh Boot + System
+// pair (installer/backend/install/format/format.go); manual mode only touches
+// the partitions you assign (installer/backend/install/partition/partition.go).
+// ---------------------------------------------------------------------------
+
+export interface DiskMode {
+  icon: string;
+  badge: string;
+  title: string;
+  body: string;
+  points: string[];
+}
+
+export const diskModesPanel = {
+  eyebrow: "Disk selection step",
+  title: "Automatic erases the disk. Manual doesn't.",
+  sub: "Automatic and Manual are a switch on the disk screen, not a separate step, and only one of the two destroys data. The installer says the same thing on its own confirm dialog before anything is written.",
+};
+
+export const diskModes: DiskMode[] = [
+  {
+    icon: "f0029", // nerd-fonts: alert-octagon
+    badge: "Automatic mode",
+    title: "Erases the whole disk",
+    body: "Automatic wipes the disk's partition table and writes a new layout from scratch: one 512 MB Boot partition and one System partition using the rest of the drive. Every partition that was on that disk — another OS, your files — is gone, and the installer says so in those words before it starts.",
+    points: ["Right when the disk is Aelum's alone", "Not right on a disk that still holds data you want"],
+  },
+  {
+    icon: "f0498", // nerd-fonts: shield
+    badge: "Manual mode",
+    title: "Formats only what you assign",
+    body: "Manual lists the partitions already on the disk and formats only the two you mark — one Boot, one System. Everything else stays exactly as it is, and Aelum writes its own Boot partition rather than reusing another OS's ESP.",
+    points: [
+      "Other partitions and their data are left untouched",
+      "Needs a 512 MB Boot and a 7680 MB System partition",
+    ],
+  },
+];
+
 export const installSteps: Step[] = [
   {
     num: "01",
@@ -325,13 +372,14 @@ export const installSteps: Step[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
     description:
-      "Pick the drive, ext4 or btrfs, and optionally LUKS2 encryption — or partition manually for dual-boot.",
+      "Pick the drive, ext4 or btrfs, and optionally LUKS2 encryption. Automatic mode wipes the disk's partition table and takes the whole drive; switch the same screen to Manual to keep your other partitions.",
   },
   {
     num: "04",
     icon: "f012c", // nerd-fonts: check
     title: "Confirm",
-    description: "Review the summary, then hit install. That's it.",
+    description:
+      "Review the summary, then hit install. On automatic mode the dialog spells out what it is about to do: all data on this disk will be permanently erased.",
   },
   {
     num: "05",
