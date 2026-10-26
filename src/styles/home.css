@@ -27,15 +27,16 @@
   gap: var(--space-5);
 }
 .hero-title {
-  font-size: clamp(2.4rem, 6vw, 4.1rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
+  font-family: var(--font-display);
+  font-size: var(--text-display-1);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
   line-height: 1.02;
   text-wrap: balance;
 }
 .hero-lead {
   color: var(--text-dim);
-  font-size: clamp(1.02rem, 1.8vw, 1.18rem);
+  font-size: var(--lead);
   max-width: 50ch;
 }
 .hero-actions {
@@ -85,18 +86,21 @@
   backdrop-filter: blur(12px);
 }
 .stat dt {
-  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
   color: var(--text-faint);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 700;
+  letter-spacing: var(--track-wide);
+  font-weight: 500;
 }
 .stat dd {
   margin: 0;
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 1.9rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: var(--track-tight);
   line-height: 1.1;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 .stat dd span {
   font-size: 0.9rem;

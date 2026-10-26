@@ -16,16 +16,16 @@
 -->
 <style>
   @font-face {
-    font-family: "Nunito";
+    font-family: "Sora";
     font-style: normal;
-    font-weight: 400;
-    src: url("../src/styles/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+    font-weight: 400 800;
+    src: url("../src/styles/fonts/sora-wght-latin.woff2") format("woff2");
   }
   @font-face {
     font-family: "Nunito";
     font-style: normal;
-    font-weight: 700;
-    src: url("../src/styles/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+    font-weight: 400 900;
+    src: url("../src/styles/fonts/nunito-wght-latin.woff2") format("woff2");
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 1200px; height: 630px; }
@@ -45,11 +45,19 @@
   .blob-bl { bottom: -160px; left: -120px; width: 560px; height: 560px;
              background: radial-gradient(circle, #b77aa5, transparent 70%); opacity: 0.35; }
   .copy { position: absolute; left: 108px; top: 150px; max-width: 560px; }
-  .title { font-size: 76px; font-weight: 700; line-height: 1.02; letter-spacing: -0.02em; }
+  .title {
+    font-family: "Sora", "Nunito", system-ui, sans-serif;
+    font-size: 76px;
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
   .subtitle {
+    font-family: "Sora", "Nunito", system-ui, sans-serif;
     font-size: 42px;
     font-weight: 700;
     line-height: 1.05;
+    letter-spacing: -0.025em;
     margin-top: 12px;
     background: linear-gradient(104deg, #834c74 0%, #6f5767 48%, #815341 100%);
     -webkit-background-clip: text;

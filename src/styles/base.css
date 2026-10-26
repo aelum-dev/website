@@ -7,25 +7,45 @@
    install.css and features.css.
    ============================================================ */
 
-/* Self-hosted fonts (no third-party CDN / build-time network dependency).
-   Mirrors the fonts bundled with the installer. */
+/* Self-hosted text fonts (no third-party CDN / build-time network dependency).
+   Rebuilt by scripts/build-fonts.sh; the woff2 files are committed artifacts.
+
+   Both faces are VARIABLE and the wght axis is clamped to exactly the range the
+   CSS asks for. That is deliberate: the previous build shipped Nunito at 400
+   only while the CSS asked for 600-800, so every heading on the site was
+   faux-bold (synthesized by the browser). A clamped axis makes that impossible.
+
+   unicode-range is explicit so the Latin and Cyrillic cuts are chosen per glyph
+   instead of the last declared face winning for the whole document. */
+@font-face {
+  font-family: "Sora";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("./fonts/sora-wght-latin.woff2") format("woff2");
+  unicode-range:
+    U+0-7F, U+80-FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 @font-face {
   font-family: "Nunito";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 900;
   font-display: swap;
   /* Relative to this CSS file (src/styles/). Vite resolves these into the
      asset pipeline at build time: the woff2 files are hashed into
      _astro/fonts/ and Astro prepends the configured `base`, so the emitted
      URLs are correct both on the dev server and the deployed domain. */
-  src: url("./fonts/nunito-v16-latin-regular.woff2") format("woff2");
+  src: url("./fonts/nunito-wght-latin.woff2") format("woff2");
+  unicode-range:
+    U+0-7F, U+80-FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Nunito";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 900;
   font-display: swap;
-  src: url("./fonts/nunito-v16-cyrillic-regular.woff2") format("woff2");
+  src: url("./fonts/nunito-wght-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 @font-face {
   font-family: "JetBrains Mono";
@@ -85,6 +105,33 @@
   --hairline: color-mix(in srgb, var(--text) 10%, transparent);
   --on-accent: #ffffff;
 
+  /* ----------------------------------------------------------
+     Type — three faces, each with a clear job.
+     Sora is the display voice (page + section titles only), Nunito is the
+     reading voice (everything else, including card titles), JetBrains Mono is
+     the engineering voice (commands, filenames, versions, checksums).
+     The palette above is the exported DankMaterialShell scheme and is frozen:
+     it is the desktop's palette, not a website design choice.
+     ---------------------------------------------------------- */
+  --font-display: "Sora", "Nunito", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  /* Fluid type scale — five named steps instead of ad-hoc clamps. */
+  --text-display-1: clamp(2.55rem, 6.2vw, 4.35rem);
+  --text-display-2: clamp(2rem, 4.6vw, 3.25rem);
+  --title-2: clamp(1.7rem, 3.9vw, 2.7rem);
+  --lead: clamp(1.05rem, 1.7vw, 1.22rem);
+  --subtitle-size: clamp(1rem, 1.6vw, 1.12rem);
+  --text-small: 0.9rem;
+  --text-micro: 0.74rem;
+
+  /* Tracking tightens as type grows — this is most of what reads as "designed". */
+  --track-display: -0.035em;
+  --track-title: -0.025em;
+  --track-tight: -0.01em;
+  --track-wide: 0.16em;
+
   /* Radii — a soft, rounded scale matching the desktop shell */
   --radius-xl: 30px;
   --radius: 22px;
@@ -105,6 +152,12 @@
   --nav-h: 66px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Motion durations. Anything that is not a direct response to a pointer
+     input belongs to --t-base or slower. */
+  --t-fast: 160ms;
+  --t-base: 320ms;
+  --t-slow: 700ms;
 
   /* Light/dark theme transition timing. */
   --theme-duration: 650ms;
@@ -195,7 +248,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -235,7 +288,11 @@ body {
 }
 
 /* ============================================================
-   Ambient background — aurora glows over a faded grid
+   Ambient background — one static horizon, no animation
+
+   Deliberately not the old aurora: no blurred drifting orbs, no decorative
+   grid, no keyframes. Two fixed washes give the page depth and put the light
+   source at the top of the document, which is also where the nav sits.
    ============================================================ */
 .bg-field {
   position: fixed;
@@ -243,74 +300,9 @@ body {
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: radial-gradient(
-    1100px 560px at 50% -12%,
-    color-mix(in srgb, var(--accent) 12%, transparent),
-    transparent 70%
-  );
-}
-/* Faint technical grid, faded to nothing toward the edges. */
-.bg-field::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
-  background-size: 66px 66px;
-  -webkit-mask-image: radial-gradient(1100px 720px at 50% 0%, #000 0%, transparent 78%);
-  mask-image: radial-gradient(1100px 720px at 50% 0%, #000 0%, transparent 78%);
-  opacity: 0.55;
-}
-/* Soft, slowly drifting color orbs. */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  will-change: transform;
-}
-.orb-1 {
-  width: 560px;
-  height: 560px;
-  top: -190px;
-  left: -130px;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  animation: orb-drift-a 22s ease-in-out infinite alternate;
-}
-.orb-2 {
-  width: 520px;
-  height: 520px;
-  top: 26vh;
-  right: -170px;
-  background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
-  opacity: 0.3;
-  animation: orb-drift-b 26s ease-in-out infinite alternate;
-}
-.orb-3 {
-  width: 480px;
-  height: 480px;
-  bottom: -220px;
-  left: 28%;
-  background: radial-gradient(circle, var(--accent-3) 0%, transparent 70%);
-  opacity: 0.24;
-  animation: orb-drift-a 30s ease-in-out infinite alternate-reverse;
-}
-@keyframes orb-drift-a {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(60px, 40px, 0) scale(1.12);
-  }
-}
-@keyframes orb-drift-b {
-  from {
-    transform: translate3d(0, 0, 0) scale(1.05);
-  }
-  to {
-    transform: translate3d(-70px, 50px, 0) scale(0.95);
-  }
+  background:
+    radial-gradient(1250px 640px at 50% -14%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 72%),
+    radial-gradient(900px 520px at 104% 106%, color-mix(in srgb, var(--accent-3) 9%, transparent), transparent 70%);
 }
 
 .container {
@@ -329,13 +321,25 @@ body {
    Typography — one scale, reused everywhere
    ============================================================ */
 
+/* Page and section titles use the display face. Card titles (h3) deliberately
+   stay in the reading face: the contrast between the two is what gives a page
+   hierarchy without making every heading the same size. */
 h1,
-h2,
-h3 {
-  line-height: 1.06;
-  letter-spacing: -0.025em;
+h2 {
+  font-family: var(--font-display);
+  line-height: 1.04;
+  letter-spacing: var(--track-display);
   margin: 0;
-  font-weight: 800;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h3 {
+  font-family: var(--font-body);
+  line-height: 1.2;
+  letter-spacing: var(--track-tight);
+  margin: 0;
+  font-weight: 700;
 }
 
 p {
@@ -354,23 +358,31 @@ strong {
 }
 
 code {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.9em;
 }
 
 .mono {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-mono);
+}
+
+/* Numbers that are measurements (sizes, versions, checksums, timings) are set
+   in tabular figures so they never jitter as they render. */
+.nums {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 /* Section eyebrow pill + heading + subtitle — unified across every page.
    Margins are owned by `.section-head`'s gap so no child needs its own. */
+/* Eyebrows are labels, not prose: set them in the engineering face. */
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-wide);
   text-transform: uppercase;
   color: var(--accent);
   padding: 0.42rem 0.95rem 0.42rem 0.5rem;
@@ -397,8 +409,10 @@ code {
 }
 
 .section-title {
+  font-family: var(--font-display);
   font-size: var(--title-2);
-  font-weight: 800;
+  font-weight: 700;
+  letter-spacing: var(--track-title);
   margin: 0;
   max-width: 30ch;
   text-wrap: balance;
@@ -409,6 +423,12 @@ code {
   color: var(--text-dim);
   font-size: var(--subtitle-size);
   max-width: 62ch;
+}
+
+/* A headline is not a gradient. Colour one word for emphasis and let the type
+   do the rest; .text-gradient stays for small chips and badges only. */
+.text-accent {
+  color: var(--accent);
 }
 
 .text-gradient {
@@ -449,7 +469,8 @@ code {
   text-align: center;
 }
 
-/* Anchor targets settle below the sticky nav, so in-page links don't hide under it */
+/* Anchor targets settle below the sticky nav, so in-page links don't hide under it.
+   These are the real in-page anchors; page-to-page navigation is a plain link. */
 #home,
 #desktop,
 #install,
@@ -907,19 +928,15 @@ html.js .reveal.in {
 }
 
 /* ============================================================
-   Client-side page router
-   Every page ships in the HTML so all content loads at start;
-   only the active one shows under JS.
+   Client-side page router (removed in the routing commit)
    ============================================================ */
 
 .page {
   display: none;
 }
-/* No-JS fallback: render every page (a scroll view). */
 .no-js .page {
   display: block;
 }
-/* JS: only the active page is visible. */
 html.js .page.active {
   display: block;
 }

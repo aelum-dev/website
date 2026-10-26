@@ -1,10 +1,9 @@
 // Wires up the light/dark toggle button. Expects an element with
-// data-theme-toggle (the icon button). Each click flips light <-> dark and
-// persists the choice to localStorage. A radial "ink" morph overlays the
-// switch for a smooth, satisfying transition.
+// data-theme-toggle (the icon button). Each click flips light <-> dark through
+// the theme controller installed by theme.js, so the storage rules live in one
+// place. A radial "ink" morph overlays the switch for a smooth transition.
 
 (() => {
-  const STORAGE_KEY = "aelum-theme";
   const ROOT = document.documentElement;
   const TOGGLE = document.querySelector("[data-theme-toggle]");
 
@@ -15,8 +14,15 @@
     light: "#fff7f9",
   };
 
+  // theme.js runs first (it is a classic inline script in <head>) and installs
+  // the controller; fall back to reading data-theme directly if it did not.
+  const theme = window.aelumTheme ?? {
+    get: () => ROOT.getAttribute("data-theme") || "dark",
+    set: (t) => ROOT.setAttribute("data-theme", t),
+  };
+
   function current() {
-    return ROOT.getAttribute("data-theme");
+    return theme.get();
   }
 
   // Reflect the active scheme on the control itself. The icons are aria-hidden
@@ -29,14 +35,9 @@
     TOGGLE.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
   }
 
-  function set(theme) {
-    ROOT.setAttribute("data-theme", theme);
-    syncControl(theme);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, theme);
-    } catch (_) {}
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "dark" ? "#141218" : "#fff7f9");
+  function set(next) {
+    theme.set(next);
+    syncControl(next);
   }
 
   // Radial ink wipe tinted with the destination theme color. Dark morphs in
@@ -69,8 +70,8 @@
   document.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-theme-toggle]");
     if (!btn) return;
-    // Flip light <-> dark. The initial theme still follows the OS unless the
-    // user has made an explicit choice (see theme.js); this button just toggles.
+    // Flip light <-> dark. theme.js owns persistence and defaults to dark when
+    // the user has never chosen (see theme.js); this button just flips.
     const next = current() === "dark" ? "light" : "dark";
     set(next);
     morph(next);
