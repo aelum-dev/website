@@ -1,27 +1,41 @@
 ---
-// Shared document shell: owns the <head> boilerplate (meta tags, OG/Twitter
-// cards, favicon, theme scripts) so pages don't duplicate it.
+// Shared document shell AND site chrome.
+//
+// With real routes there is one document per page, so the parts that are the
+// same on every page (skip link, ambient background, nav, call-to-action,
+// footer) live here instead of being repeated in each page template. A page
+// supplies only its own <head> metadata and its <section> content.
+//
+// Asset URLs in this file are absolute from the site root (/logo.svg,
+// /scripts/theme.js). Pages are served at nested routes (/download/), where a
+// relative URL would resolve inside that directory and 404.
+import CTA from "../components/CTA.astro";
+import Footer from "../components/Footer.astro";
+import Nav from "../components/Nav.astro";
+import type { PageId } from "../lib/site";
+
 interface Props {
   title: string;
   description: string;
+  /** Which nav item represents this page. Drives the active state server-side. */
+  active: PageId;
+  /** Set false where a call-to-action would be redundant (the Download page). */
+  showCta?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, active, showCta = true } = Astro.props;
 
 // Derive canonical / OG image URLs from Astro's config so the base path and
-// site URL stay in a single place (astro.config.mjs) instead of being
-// hardcoded in every page.
+// site URL stay in a single place (astro.config.mjs) instead of being hardcoded in every page.
 const canonical = Astro.url.href;
 const imageUrl = new URL("og-image.png", Astro.url).href;
 ---
 
 <html lang="en" class="no-js">
   <head>
-    <!-- Flip no-js -> js before first paint so the router CSS can hide the
-      inactive pages immediately (no flash of every page at once). This stays a
-      classic, non-deferred script on purpose: Astro renders bare inline scripts
-      as modules, which are deferred and would run after first paint and defeat
-      this intent. A synchronous classic script runs during parsing, before paint. -->
+    <!-- Flip no-js -> js before first paint. This stays a classic, non-deferred
+      script on purpose: Astro renders bare inline scripts as modules, which are
+      deferred and would run after first paint. -->
     <script type="text/javascript" is:inline>
       document.documentElement.classList.remove("no-js");
       document.documentElement.classList.add("js");
@@ -51,20 +65,31 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
     <meta name="twitter:image" content={imageUrl} />
 
     <title>{title}</title>
-    <link rel="icon" type="image/png" href="favicon-16.png" sizes="16x16" />
-    <link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
 
     <!-- Theme must be applied before first paint to avoid a flash. -->
-    <script src="scripts/theme.js" is:inline></script>
+    <script src="/scripts/theme.js" is:inline></script>
 
     <!-- Pages can inject extra head markup (e.g. structured data) here. -->
     <slot name="head" />
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#top">Skip to main content</a>
+    <div class="bg-field" aria-hidden="true"></div>
 
-    <!-- Client router: runs before first paint (defer) to set the active page. -->
-    <script src="scripts/app.js" defer is:inline></script>
-    <script src="scripts/theme-toggle.js" is:inline></script>
+    <Nav active={active} />
+
+    <main id="top">
+      <slot />
+    </main>
+
+    {showCta && <CTA />}
+    <Footer />
+
+    <!-- Client behaviour (nav scroll state, reveals, clipboard, card glow).
+      Page switching is server-side routing; nothing here decides what renders. -->
+    <script src="/scripts/app.js" defer is:inline></script>
+    <script src="/scripts/theme-toggle.js" is:inline></script>
   </body>
 </html>

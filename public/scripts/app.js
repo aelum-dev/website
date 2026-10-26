@@ -1,114 +1,13 @@
 // Client-side behaviour for the Aelum site.
 //
-// 1. Router — the site is a single HTML shell that ships every page
-//    server-side (so all content is present on first load). This script
-//    switches between them by hash without a page reload: it toggles the
-//    `.active` page, highlights the matching nav link, updates the document
-//    title, and scrolls to the top. Progressive enhancement: with no JS, every
-//    page renders (a scroll view); with JS, only the active page shows.
-// 2. Floating-nav scroll state + mobile menu.
-// 3. Scroll reveal for `.reveal` elements.
-// 4. Copy-to-clipboard controls.
-// 5. Pointer-tracked glow on interactive cards.
-
-const PAGES = [
-  {
-    id: "home",
-    title: "Aelum — an Arch Linux distro with an offline installer",
-  },
-  { id: "download", title: "Download Aelum — verify the ISO" },
-  { id: "install", title: "Install Aelum — a few questions. That's it." },
-  { id: "features", title: "Features — a painless, offline install" },
-];
-const DEFAULT_PAGE = "home";
-
-const validId = (raw) => {
-  const id = (raw || "").replace(/^#/, "");
-  return PAGES.some((p) => p.id === id) ? id : DEFAULT_PAGE;
-};
-
-// Switch to the given page id. `push` records the change in session history
-// so back/forward work; the initial load and popstate handling pass false.
-// `resetScroll` is disabled when landing on an in-page anchor (e.g.
-// #install-tools) so the browser can position on the anchor instead.
-function go(id, push = true, resetScroll = true) {
-  const next = validId(id);
-
-  document.querySelectorAll(".page").forEach((el) => {
-    el.classList.toggle("active", el.id === next);
-  });
-
-  document.querySelectorAll("a[data-page]").forEach((el) => {
-    el.classList.toggle("active", el.dataset.page === next);
-  });
-
-  const page = PAGES.find((p) => p.id === next);
-  if (page) document.title = page.title;
-
-  if (push) {
-    history.pushState({ page: next }, "", `#${next}`);
-  }
-
-  if (resetScroll) window.scrollTo({ top: 0 });
-}
-
-// Nav clicks (both the top nav links and the brand logo) switch pages.
-document.addEventListener("click", (event) => {
-  const link = event.target.closest("a[data-page]");
-  if (!link) return;
-  event.preventDefault();
-  go(link.dataset.page);
-});
-
-// Resolve the current URL hash. A page hash (#download) switches pages; an
-// in-page anchor (#install-tools, #top) activates whichever page contains it
-// and lands on the anchor. Crucially an anchor is NOT an unknown page: it must
-// not fall through to the default page, which would bounce the user to home.
-// An empty or unknown hash leaves the active page untouched.
-function syncFromHash({ instant = false } = {}) {
-  const raw = (location.hash || "").replace(/^#/, "");
-
-  if (PAGES.some((p) => p.id === raw)) {
-    go(raw, false);
-    return;
-  }
-
-  const anchor = raw ? document.getElementById(raw) : null;
-  const hostPage = anchor?.closest(".page")?.id;
-  if (hostPage) go(hostPage, false, false);
-  if (!anchor) return;
-
-  if (instant) {
-    // Skip the smooth animation for deep links: jump straight to the target.
-    const root = document.documentElement;
-    const prev = root.style.scrollBehavior;
-    root.style.scrollBehavior = "auto";
-    anchor.scrollIntoView();
-    root.style.scrollBehavior = prev;
-  } else {
-    anchor.scrollIntoView();
-  }
-}
-
-// Same-document navigations: fragment links fire `hashchange`, back/forward
-// fire `popstate` (some browsers fire both for a fragment click), so handle
-// both with one idempotent handler.
-window.addEventListener("popstate", () => syncFromHash());
-window.addEventListener("hashchange", () => syncFromHash());
-
-// Initial load: honour a deep link, otherwise land on the home page.
-if (location.hash) {
-  const isAnchor = !PAGES.some((p) => p.id === location.hash.slice(1));
-  syncFromHash({ instant: isAnchor });
-  // Fonts and images finish loading after the first pass and can shift the
-  // anchor's position, so re-apply once the page has fully loaded.
-  if (isAnchor) {
-    window.addEventListener("load", () => syncFromHash({ instant: true }), {
-      once: true,
-    });
-  }
-}
-if (!document.querySelector(".page.active")) go(DEFAULT_PAGE, false);
+// Page switching is NOT here: the site is real Astro routes (/download/,
+// /install/, /features/), so which content exists is decided at build time and
+// the active nav item is marked in the HTML. What remains is everything that
+// needs a browser:
+//   1. Floating-nav scroll state + mobile menu.
+//   2. Scroll reveal for `.reveal` elements.
+//   3. Copy-to-clipboard controls.
+//   4. Pointer-tracked glow on interactive cards.
 
 // ---------------------------------------------------------------------------
 // Floating nav: deepen the bar on scroll, and drive the mobile menu.

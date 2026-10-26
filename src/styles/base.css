@@ -471,10 +471,7 @@ code {
 
 /* Anchor targets settle below the sticky nav, so in-page links don't hide under it.
    These are the real in-page anchors; page-to-page navigation is a plain link. */
-#home,
 #desktop,
-#install,
-#features,
 #languages,
 #cli,
 #cta,
@@ -925,20 +922,6 @@ html.js .reveal.in {
   gap: var(--space-4);
   justify-content: space-between;
   align-items: center;
-}
-
-/* ============================================================
-   Client-side page router (removed in the routing commit)
-   ============================================================ */
-
-.page {
-  display: none;
-}
-.no-js .page {
-  display: block;
-}
-html.js .page.active {
-  display: block;
 }
 
 /* ============================================================

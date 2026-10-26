@@ -1,0 +1,20 @@
+---
+import "../styles/base.css";
+import "../styles/features.css";
+import CLI from "../components/CLI.astro";
+import Desktop from "../components/Desktop.astro";
+import Features from "../components/Features.astro";
+import Languages from "../components/Languages.astro";
+import Layout from "../layouts/Layout.astro";
+
+const title = "Features — a painless, offline install";
+const description =
+  "What ships with Aelum: Hyprland with DankMaterialShell, a themed login screen, automatic monitor scaling, optional LUKS2 and btrfs, 28 languages, and a headless CLI installer.";
+---
+
+<Layout title={title} description={description} active="features">
+  <Desktop />
+  <Features />
+  <Languages />
+  <CLI />
+</Layout>

@@ -1,13 +1,23 @@
 ---
-import { githubUrl } from "../lib/site";
+import { githubUrl, navLinks, type PageId } from "../lib/site";
+
+interface Props {
+  /** The page being rendered; marks the matching link server-side so the
+    active state is correct with JavaScript off. */
+  active: PageId;
+}
+
+const { active } = Astro.props;
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 ---
 
 <header class="nav" data-nav>
   <div class="container nav-inner">
-    <a class="brand" href="#home" data-page="home">
+    <a class="brand" href="/" aria-current={active === "home" ? "page" : undefined}>
       <span class="glyph">
         <img
-          src="logo.svg"
+          src="/logo.svg"
           alt="Aelum logo"
           width="30"
           height="27"
@@ -18,10 +28,17 @@ import { githubUrl } from "../lib/site";
     </a>
 
     <nav class="nav-links" id="nav-menu" data-nav-menu aria-label="Primary">
-      <a class="active" href="#home" data-page="home">Home</a>
-      <a href="#download" data-page="download">Download</a>
-      <a href="#install" data-page="install">Install</a>
-      <a href="#features" data-page="features">Features</a>
+      {
+        navLinks.map((link) => (
+          <a
+            class={link.id === active ? "active" : undefined}
+            href={link.href}
+            aria-current={link.id === active ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
     </nav>
 
     <div class="nav-actions">
@@ -39,7 +56,7 @@ import { githubUrl } from "../lib/site";
           aria-hidden="true"
           title="Switch to light mode"
         >
-          <span class="nf-icon">&#xf0594;</span>
+          <span class="nf-icon">{glyph("f0594")}</span>
         </span>
         <span
           class="theme-toggle-icon"
@@ -47,16 +64,12 @@ import { githubUrl } from "../lib/site";
           aria-hidden="true"
           title="Switch to dark mode"
         >
-          <span class="nf-icon">&#xf522;</span>
+          <span class="nf-icon">{glyph("f522")}</span>
         </span>
       </button>
-      <a
-        class="btn btn-ghost nav-gl"
-        href={githubUrl}
-        target="_blank"
-        rel="noopener"
-      >
-        <span class="nf-icon" aria-hidden="true">&#xf09b;</span> GitHub
+      <a class="btn btn-ghost nav-gl" href={githubUrl} target="_blank" rel="noopener">
+        <span class="nf-icon" aria-hidden="true">{glyph("f09b")}</span>
+        GitHub
       </a>
       <button
         type="button"

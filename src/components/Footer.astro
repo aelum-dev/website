@@ -1,14 +1,14 @@
 ---
-import { dmsUrl, githubUrl, hyprlandUrl, installerRepo, mainRepo, wailsUrl } from "../lib/site";
+import { dmsUrl, githubUrl, hyprlandUrl, installerRepo, mainRepo, navLinks, wailsUrl } from "../lib/site";
 ---
 
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="brand" href="#home" data-page="home">
+        <a class="brand" href="/">
           <span class="glyph">
-            <img src="logo.svg" alt="Aelum logo" width="32" height="29" />
+            <img src="/logo.svg" alt="Aelum logo" width="32" height="29" />
           </span>
           <span class="hero-brand">Aelum</span>
         </a>
@@ -21,10 +21,13 @@ import { dmsUrl, githubUrl, hyprlandUrl, installerRepo, mainRepo, wailsUrl } fro
       <div class="footer-col">
         <h4>Site</h4>
         <ul>
-          <li><a href="#home" data-page="home">Home</a></li>
-          <li><a href="#download" data-page="download">Download</a></li>
-          <li><a href="#install" data-page="install">Install</a></li>
-          <li><a href="#features" data-page="features">Features</a></li>
+          {
+            navLinks.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))
+          }
         </ul>
       </div>
 

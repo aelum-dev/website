@@ -1,16 +1,18 @@
 ---
-import Layout from "../layouts/Layout.astro";
 import "../styles/base.css";
-import { mainRepo } from "../lib/site";
+import Layout from "../layouts/Layout.astro";
+import { mainRepo, navLinks } from "../lib/site";
+
+const home = navLinks[0].href;
 ---
 
-<Layout title="404 — Not found | Aelum" description="Page not found for Aelum.">
-  <div class="bg-field" aria-hidden="true">
-    <span class="orb orb-1"></span>
-    <span class="orb orb-2"></span>
-    <span class="orb orb-3"></span>
-  </div>
-  <main class="not-found">
+<Layout
+  title="404 — Not found | Aelum"
+  description="Page not found on aelum.dev."
+  active="home"
+  showCta={false}
+>
+  <section class="not-found">
     <div class="container not-found-card">
       <span class="glyph" aria-hidden="true">
         <span class="nf-icon">&#xf0ed;</span>
@@ -19,16 +21,11 @@ import { mainRepo } from "../lib/site";
       <h1>Page not found</h1>
       <p>This page drifted off into space. Let's get you back on track.</p>
       <div class="btn-row">
-        <a class="btn btn-primary" href="index.html">Back to home</a>
-        <a
-          class="btn btn-ghost"
-          href={mainRepo}
-          target="_blank"
-          rel="noopener"
-        >
+        <a class="btn btn-primary" href={home}>Back to home</a>
+        <a class="btn btn-ghost" href={mainRepo} target="_blank" rel="noopener">
           View the ISO repo
         </a>
       </div>
     </div>
-  </main>
+  </section>
 </Layout>

@@ -1,5 +1,23 @@
 // Shared site data, kept out of the page template so it's easy to review and edit.
 
+// Site navigation. Real routes now — one Astro page per entry (see src/pages/).
+// The hrefs carry a trailing slash because astro.config.mjs builds directory
+// output (`/download/index.html`), which is what GitHub Pages serves.
+export type PageId = "home" | "download" | "install" | "features";
+
+export interface NavLink {
+  id: PageId;
+  href: string;
+  label: string;
+}
+
+export const navLinks: NavLink[] = [
+  { id: "home", href: "/", label: "Home" },
+  { id: "download", href: "/download/", label: "Download" },
+  { id: "install", href: "/install/", label: "Install" },
+  { id: "features", href: "/features/", label: "Features" },
+];
+
 export const mainRepo = "https://github.com/aelum-dev/live-iso";
 export const githubUrl = "https://github.com/aelum-dev";
 export const installerRepo = "https://github.com/aelum-dev/installer";

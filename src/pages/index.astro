@@ -1,19 +1,7 @@
 ---
 import "../styles/base.css";
 import "../styles/home.css";
-import "../styles/download.css";
-import "../styles/install.css";
-import "../styles/features.css";
-import CLI from "../components/CLI.astro";
-import CTA from "../components/CTA.astro";
-import Desktop from "../components/Desktop.astro";
-import DownloadPage from "../components/Download.astro";
-import Features from "../components/Features.astro";
-import Footer from "../components/Footer.astro";
 import Hero from "../components/Hero.astro";
-import Install from "../components/Install.astro";
-import Languages from "../components/Languages.astro";
-import Nav from "../components/Nav.astro";
 import Layout from "../layouts/Layout.astro";
 
 const title = "Aelum — an Arch Linux distro with an offline installer";
@@ -21,7 +9,7 @@ const description =
   "Aelum — an Arch Linux distro whose installer works fully offline. Boot it, run the installer, and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; the installed system uses the internet like any other Arch machine.";
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} active="home">
   <Fragment slot="head">
     <script type="application/ld+json" is:inline>
       {
@@ -36,52 +24,15 @@ const description =
     </script>
   </Fragment>
 
-  <a class="skip-link" href="#top">Skip to main content</a>
-  <div class="bg-field" aria-hidden="true">
-    <span class="orb orb-1"></span>
-    <span class="orb orb-2"></span>
-    <span class="orb orb-3"></span>
-  </div>
-
-  <Nav />
-
-  <main id="top">
-    <!-- Home -->
-    <section id="home" class="page active" aria-label="Home">
-      <Hero>
-        <Fragment slot="actions">
-          <a class="btn btn-primary btn-lg" href="#download" data-page="download">
-            <span class="nf-icon" aria-hidden="true">
-              {String.fromCodePoint(0xf0ed)}
-            </span>
-            Download
-          </a>
-          <a class="btn btn-ghost btn-lg" href="#install" data-page="install">
-            Watch it install
-          </a>
-        </Fragment>
-      </Hero>
-    </section>
-
-    <!-- Download -->
-    <section id="download" class="page" aria-label="Download">
-      <DownloadPage />
-    </section>
-
-    <!-- Install -->
-    <section id="install" class="page" aria-label="Install">
-      <Install />
-    </section>
-
-    <!-- Desktop + Features -->
-    <section id="features" class="page" aria-label="Features">
-      <Desktop />
-      <Features />
-      <Languages />
-      <CLI />
-    </section>
-  </main>
-
-  <CTA />
-  <Footer />
+  <Hero>
+    <Fragment slot="actions">
+      <a class="btn btn-primary btn-lg" href="/download/">
+        <span class="nf-icon" aria-hidden="true">
+          {String.fromCodePoint(0xf0ed)}
+        </span>
+        Download
+      </a>
+      <a class="btn btn-ghost btn-lg" href="/install/">Watch it install</a>
+    </Fragment>
+  </Hero>
 </Layout>
