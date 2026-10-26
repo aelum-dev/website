@@ -46,7 +46,15 @@
     }
   }
 
-  function apply(theme) {
+  function apply(theme, animate) {
+    // The colour crossfade that accompanies a switch is opt-in. base.css gives
+    // elements their colour transition only while <html> carries .theme-anim,
+    // so the site does not carry transition machinery on every element all the
+    // time (see base.css → the .theme-anim rule).
+    //
+    // The initial apply() below deliberately passes nothing: nothing should fade
+    // into place on load, the page should simply be in the theme you asked for.
+    if (animate) startColorMorph();
     ROOT.setAttribute("data-theme", theme);
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", META_CONTENT[theme]);
@@ -61,12 +69,26 @@
     document.addEventListener("DOMContentLoaded", () => syncImages(ROOT.getAttribute("data-theme") || "dark"));
   }
 
+  // Mirrors --theme-duration in base.css (read from the stylesheet when there is
+  // one, with the same fallback theme-toggle.js uses) plus enough margin for the
+  // last colour transition to finish before the class comes off.
+  const FALLBACK_DURATION = 650;
+  let morphTimer = null;
+
+  function startColorMorph() {
+    ROOT.classList.add("theme-anim");
+    if (morphTimer) clearTimeout(morphTimer);
+    const stated = parseInt(getComputedStyle(ROOT).getPropertyValue("--theme-duration"), 10);
+    const duration = Number.isFinite(stated) ? stated : FALLBACK_DURATION;
+    morphTimer = setTimeout(() => ROOT.classList.remove("theme-anim"), duration + 120);
+  }
+
   // Exposed so theme-toggle.js (and any future control) drives the same state
-  // instead of duplicating the storage rules.
+  // instead of duplicating the storage rules. set() is the one path that animates.
   window.aelumTheme = {
     get: () => ROOT.getAttribute("data-theme") || "dark",
     set: (theme) => {
-      apply(theme);
+      apply(theme, true);
       try {
         window.localStorage.setItem(STORAGE_KEY, theme);
       } catch (_) {}

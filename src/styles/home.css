@@ -140,7 +140,6 @@ html.js .hero-accent {
   border-radius: var(--radius-md);
   border: 1px solid var(--surface-border);
   background: var(--surface);
-  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-xs);
   transition:
     transform 0.4s var(--ease),
@@ -199,7 +198,10 @@ html.js .hero-accent {
 }
 
 /* Accent halo behind the device. Two stacked gradients: a tight core and a
-   wide bloom, so the frame looks lit rather than pasted onto a blob. */
+   wide bloom, so the frame looks lit rather than pasted onto a blob.
+   The loop translates and fades; it does not scale. A blurred layer is
+   rasterised at a scale and reused, and scale() in a keyframe is exactly what
+   makes the compositor throw that raster away and re-blur it. */
 .hero-halo {
   position: absolute;
   inset: 8% 4%;
@@ -214,11 +216,11 @@ html.js .hero-accent {
 }
 @keyframes hero-halo {
   0% {
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
     opacity: 0.45;
   }
   100% {
-    transform: scale(1.12) translateY(-3%);
+    transform: translateY(-3%);
     opacity: 0.62;
   }
 }
@@ -237,7 +239,6 @@ html.js .hero-accent {
   border-radius: var(--radius-xl);
   background: var(--surface);
   border: 1px solid var(--surface-border);
-  backdrop-filter: blur(14px);
   box-shadow:
     var(--shadow-lg),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -467,35 +468,38 @@ html.js .hero-accent {
   padding: 0;
 }
 
-/* The rail the three steps sit on, with a highlight travelling along it. */
+/* The rail the three steps sit on, with a highlight travelling along it.
+   The highlight is a short segment that translates across the rail rather than
+   a background-position sliding inside a full-width element: the second repaints
+   the whole rail on every frame of a 7s loop. */
 .flow-line {
   position: absolute;
   top: 0;
   left: 6%;
   right: 6%;
   height: 1px;
+  /* Clips the travelling highlight to the rail. Without it the segment slides
+     out past the ends, which the rail's own gradient fades to nothing. */
+  overflow: hidden;
   background: linear-gradient(90deg, transparent, var(--accent-line) 20%, var(--accent-line) 80%, transparent);
   pointer-events: none;
 }
 .flow-line::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0 38%,
-    color-mix(in srgb, var(--accent) 85%, transparent) 50%,
-    transparent 62% 100%
-  );
-  background-size: 260% 100%;
+  top: 0;
+  left: 0;
+  width: 34%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 85%, transparent) 50%, transparent);
   animation: flow-travel 7s linear infinite;
 }
 @keyframes flow-travel {
   from {
-    background-position: 200% 0;
+    transform: translateX(-110%);
   }
   to {
-    background-position: -160% 0;
+    transform: translateX(300%);
   }
 }
 
@@ -508,7 +512,6 @@ html.js .hero-accent {
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
   background: var(--surface);
-  backdrop-filter: blur(14px);
   transition:
     transform 0.45s var(--ease),
     border-color 0.45s var(--ease),
@@ -678,6 +681,22 @@ html.js .hero-accent {
   .bento-wide {
     grid-column: span 1;
   }
+}
+
+/* ============================================================
+   Off-screen loops (see base.css → Off-screen loops)
+   The hero is the loudest decoration on the site, and it is also the first
+   thing you scroll past: the halo, the sheen crossing the device, the two
+   floating chips and the orbiting rim all kept running while you were reading
+   the bento three screens down.
+   ============================================================ */
+html.loops-managed .section:not(.is-live) .hero-halo,
+html.loops-managed .section:not(.is-live) .hero-ring,
+html.loops-managed .section:not(.is-live) .hero-sheen::after,
+html.loops-managed .section:not(.is-live) .hero-chip,
+html.loops-managed .section:not(.is-live) .hero-scroll-line::after,
+html.loops-managed .section:not(.is-live) .flow-line::after {
+  animation-play-state: paused;
 }
 
 /* ============================================================

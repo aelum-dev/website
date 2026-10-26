@@ -77,10 +77,12 @@ npm run format                # the generated manifest is committed biome-format
     to dark). `theme.js` owns persistence, exposes `window.aelumTheme.get/set`, and is the only thing
     that rewrites theme-dependent screenshots (`syncImages`). The toggle is the only caller of `set`.
   - `app.js` — floating-nav scroll state + mobile menu + the nav's sliding active pill; the
-    reading-progress bar (`--scroll` on the document); a scroll-reveal `IntersectionObserver` and the
-    stagger indices it writes; the copy-to-clipboard handler; pointer effects (card glow, hero tilt,
-    ambient spotlight); count-up on `[data-count]` numbers. **It does not route:** which content
-    exists is decided at build time, and no page switching happens in the browser.
+    reading-progress bar (`--scroll` written on `.scroll-progress-bar`, the only reader of it); a
+    scroll-reveal `IntersectionObserver` and the stagger indices it writes; the copy-to-clipboard
+    handler; **one** rAF loop for every pointer effect (card glow, hero tilt, ambient spotlight);
+    count-up on `[data-count]` numbers; and the section-liveness observer that pauses the decoration
+    in whatever is off screen (see Design Guidance → Motion has a budget). **It does not route:**
+    which content exists is decided at build time, and no page switching happens in the browser.
 - **Scroll reveal** is progressive enhancement: `.reveal` elements are fully visible without JS, and `html.js` hides then reveals them via the observer in `app.js`. Reduced-motion users see everything immediately. Keep this invariant — never hide content in a way that depends on JS running.
 - **Groups stagger** with `data-stagger` on the container: `app.js` writes `--i` onto its direct
   `.reveal` children and `base.css` turns that into a transition delay. Order is still CSS; JS only
@@ -105,6 +107,69 @@ npm run format                # the generated manifest is committed biome-format
   opt-out in the same commit — the `@media (prefers-reduced-motion: reduce)` block in `base.css`
   drops the drifting auroras, the spotlight and every conic rim while keeping the static wash, grid
   and grain that carry depth on their own.
+
+- **Motion has a budget.** The overhaul made the site heavy enough to tax a GPU, and what made it
+  heavy was not the number of effects — it was which ones were running, and continuously. These are
+  the rules that keep it affordable; breaking one is a regression, not a preference.
+  - **Nothing loops off screen.** `app.js` observes every `.section` and marks the visible ones
+    `.is-live`; each stylesheet pauses the loops inside any section that is not
+    (`html.loops-managed .section:not(.is-live) … { animation-play-state: paused }`). Without it the
+    features page ran 17 card rims, a 56-chip marquee and a blinking terminal cursor while you were
+    reading something else. `.loops-managed` is added only after the observer has classified every
+    section, so a page with no JS keeps every loop. The walkthrough's own timer pauses the same way,
+    in `Install.astro` — a paused progress bar and an unpaused slide timer drift apart.
+  - **A loop you are not looking at is not running.** The conic rims on cards and on the theme toggle
+    are `animation-play-state: paused` until `:hover`/`:focus-within`. They are invisible until then
+    anyway; only their cost was being paid.
+  - **`--spin` and `--fill` are not compositor animations.** A registered custom property used inside
+    a gradient ticks a style recalculation and a repaint of that gradient (and its mask) every frame.
+    That is fine for a rim on something you are pointing at, and never for a whole page of them.
+  - **Never `scale()` a blurred layer.** A `filter: blur()` layer is rasterised once at a given scale
+    and reused; a scale in the keyframes makes the compositor re-blur it. The auroras and the hero
+    halo translate only — where the old scale mattered (the second aurora is larger than the first)
+    the size is written into the element instead.
+  - **No `background-position` loops.** `.eyebrow::after` and `.flow-line::after` are oversized
+    pseudo-elements that translate under an `overflow: hidden` parent. Same picture, no repaint.
+  - **`backdrop-filter` is the expensive one.** It re-samples and re-blurs everything behind the
+    element on every frame that backdrop changes — and behind everything here is the drifting field.
+    It is kept where it genuinely reads through *content* (`.nav-inner`, the mobile menu, the chips
+    floating over the hero screenshot) and gone from anything that only sat on the page background:
+    `.card`, `.stat`, `.flow-step`, `.cta-panel`, `.eyebrow`, `.btn-ghost`, `.hero-visual`,
+    `.features-demo-frame`. `--surface` is already 72% of a solid colour over a field that is itself
+    soft gradients, so the blur was contributing nothing visible — the before/after renders are
+    identical. Do not re-add it to a card.
+  - **No full-viewport blend, and no blur standing in for a gradient.** `.bg-grain` has no
+    `mix-blend-mode` (a blend of the whole viewport, every frame, for a texture at 5% opacity), and
+    the CTA panel's and demo frame's glows are soft gradient stops rather than a solid with a
+    70–90px `filter: blur()` on it.
+  - **`.reveal` is opacity + transform, never `filter`.** A blur transition re-rasterises the element
+    at a new radius every frame — the worst thing to do to a page while it is being scrolled, and
+    twelve cards arriving at once used to do exactly that.
+  - **Write a custom property on the element that reads it.** `--scroll` goes on
+    `.scroll-progress-bar`, `--spot-x/--spot-y` on `.bg-spot`. Writing either on `:root` changes an
+    *inherited* value, which invalidates inherited style for every node in the document — on every
+    scroll frame, or every pointer move.
+  - **One rAF per frame, and no layout read per pointer event.** All three pointer effects share a
+    single coalesced loop; the hovered card's rect is cached and dropped when the page moves under
+    the pointer, not re-measured on every event (pointer events arrive coalesced: a 120 Hz device
+    fires several between two frames).
+  - **Colour transitions are for the theme switch only.** `base.css` gives elements their colour/
+    border/box-shadow transition only while `<html>` has `.theme-anim`, which `theme.js` sets for
+    exactly `--theme-duration` and then removes. As a permanent rule on `*` it put transition
+    machinery on every element on every page and turned every hover into a 650 ms fade. It uses
+    `:where()` so it contributes no specificity and a component's own `transition:` shorthand still
+    wins.
+  - **`will-change` is not permanent.** The theme-morph blob carries it only while `.active`, and is
+    150vmax scaled to 2.4× rather than 300vmax scaled to 1× — same end circle, a quarter of the
+    texture, and nothing allocated on page load for a click that may never happen.
+  - **Minifier trap:** Astro's CSS minifier folds an `animation-play-state` longhand that trails a
+    fully-literal `animation:` shorthand — and drops it, which then makes the matching `:hover`
+    longhand look like a no-op and drops it too. Write the pause inside the shorthand
+    (`animation: card-ring 6s linear infinite paused`). It only survived on the card rim because its
+    duration is a `var()` the minifier cannot parse. Verify in `dist/_astro/*.css`, not in the source.
+  - Verify the effect, not the intent: `chromium --headless=new --dump-dom` against a built page, and
+    read `getComputedStyle(el, "::before")` / `document.getAnimations()`. Half of what this site does
+    is decoration that is *supposed* to be invisible.
 - **Type faces**: `Sora` (display — page and section titles only), `Nunito` (body — everything else,
   including card titles) and `JetBrains Mono` (commands, filenames, versions, checksums). All three
   are **variable with the `wght` axis clamped to the range the CSS asks for**, so no weight is ever

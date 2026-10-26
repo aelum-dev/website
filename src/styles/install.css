@@ -13,7 +13,10 @@
 }
 
 /* Installer demo frame — shared visual shell (3:2 glassy window).
-   Same shell as the home-page hero-visual (home.css), different aspect. */
+   Same shell as the home-page hero-visual (home.css), different aspect.
+   No backdrop-filter: this is a large surface that also carries a pointer tilt
+   and a glow inside it, and a backdrop-filter re-samples everything behind it
+   on every frame any of that moves. */
 .features-demo-frame {
   position: relative;
   isolation: isolate;
@@ -26,19 +29,19 @@
   border-radius: var(--radius-xl);
   background: var(--surface);
   border: 1px solid var(--surface-border);
-  backdrop-filter: blur(14px);
   box-shadow:
     var(--shadow-lg),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
+/* The glow behind the window, drawn with soft gradient stops instead of a 70px
+   blur over a frame-sized element. */
 .features-demo-frame::before {
   content: "";
   position: absolute;
   inset: 6%;
   z-index: -1;
-  filter: blur(70px);
   opacity: 0.5;
-  background: radial-gradient(60% 70% at 50% 20%, var(--accent), transparent 70%);
+  background: radial-gradient(65% 75% at 50% 18%, color-mix(in srgb, var(--accent) 65%, transparent), transparent 74%);
 }
 /* Conic light orbiting the frame, same treatment as the hero device. */
 .frame-ring {
@@ -65,7 +68,13 @@
   pointer-events: none;
 }
 
-/* Auto-advancing walkthrough: slides stack and cross-fade inside the frame. */
+/* Auto-advancing walkthrough: slides stack and cross-fade inside the frame.
+
+   Inactive slides are visibility:hidden, not just opacity:0. Seven <picture>s
+   stacked in one frame at opacity 0 are still seven layers the compositor keeps
+   and re-rasters whenever the theme swaps the screenshots; visibility takes them
+   out of the picture entirely. The transition delays it by the fade-out time so
+   the cross-fade still completes. */
 .slideshow {
   position: relative;
   width: 100%;
@@ -79,10 +88,12 @@
   height: 100%;
   border-radius: 18px;
   opacity: 0;
+  visibility: hidden;
   transform: scale(1.02);
   transition:
     opacity 0.7s var(--ease),
-    transform 0.9s var(--ease);
+    transform 0.9s var(--ease),
+    visibility 0s linear 0.7s;
 }
 /* Each slide holds one <picture> that carries both themes behind
    media="(prefers-color-scheme: dark)" sources: the browser picks the matching
@@ -104,7 +115,12 @@ picture.shot img {
 }
 .slideshow-slide.is-active {
   opacity: 1;
+  visibility: visible;
   transform: scale(1);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.9s var(--ease),
+    visibility 0s;
 }
 
 /* One segment per slide. The active segment fills over the pause, so the frame
@@ -187,6 +203,17 @@ picture.shot img {
   .frame-progress {
     bottom: 1.1rem;
   }
+}
+
+/* ============================================================
+   Off-screen loops (see base.css → Off-screen loops)
+   The walkthrough's own timer is paused the same way, in Install.astro's
+   script: a paused fill animation and an unpaused slide timer would drift out
+   of step with each other while the frame was off screen.
+   ============================================================ */
+html.loops-managed .section:not(.is-live) .frame-ring,
+html.loops-managed .section:not(.is-live) .frame-seg.is-active {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {

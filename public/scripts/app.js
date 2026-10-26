@@ -7,31 +7,44 @@
 //   1. Floating-nav scroll state + mobile menu + reading progress.
 //   2. Scroll reveal for `.reveal` elements, staggered inside [data-stagger].
 //   3. Copy-to-clipboard controls.
-//   4. Pointer-tracked glow on interactive cards, card tilt, ambient spotlight.
+//   4. Pointer effects — card glow, card tilt, ambient spotlight — in one loop.
 //   5. Count-up on stat numbers.
+//   6. Which sections are on screen, so the loops inside them can pause.
 //
 // Everything below is decoration: with JavaScript off the page is complete and
 // readable, and every one of these respects prefers-reduced-motion.
+//
+// Two rules run through all of it, because they are what the site's GPU bill
+// actually came from:
+//   - A custom property is written on the element that reads it. Writing one on
+//     :root changes an inherited value, which invalidates inherited style for
+//     every node in the document — on every pointer move, or every scroll.
+//   - One requestAnimationFrame per frame, shared by everything that follows the
+//     pointer, and no layout read (getBoundingClientRect) per pointer event.
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ---------------------------------------------------------------------------
 // Floating nav: deepen the bar on scroll, and drive the mobile menu.
+// The reading-progress bar is updated in the same rAF: --scroll is read by
+// .scroll-progress-bar's own transform, so it is written on that element.
 // ---------------------------------------------------------------------------
 (() => {
   const nav = document.querySelector("[data-nav]");
-  if (!nav) return;
+  const bar = document.querySelector(".scroll-progress-bar");
+  if (!nav && !bar) return;
 
   const root = document.documentElement;
   let ticking = false;
 
   const update = () => {
     ticking = false;
-    nav.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (nav) nav.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (!bar) return;
 
-    // Reading progress for the nav's progress bar (0…1).
+    // Reading progress for the current document (0…1).
     const max = root.scrollHeight - window.innerHeight;
-    root.style.setProperty("--scroll", max > 0 ? (window.scrollY / max).toFixed(4) : "0");
+    bar.style.setProperty("--scroll", max > 0 ? (window.scrollY / max).toFixed(4) : "0");
   };
 
   const onScroll = () => {
@@ -43,6 +56,8 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
   update();
+
+  if (!nav) return;
 
   const burger = nav.querySelector("[data-nav-toggle]");
   if (!burger) return;
@@ -208,43 +223,52 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 })();
 
 // ---------------------------------------------------------------------------
-// Pointer-tracked glow on interactive cards (sets --mx / --my).
-// ---------------------------------------------------------------------------
-document.addEventListener("pointermove", (event) => {
-  const card = event.target.closest(".card--interactive");
-  if (!card) return;
-  const rect = card.getBoundingClientRect();
-  card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-  card.style.setProperty("--my", `${event.clientY - rect.top}px`);
-});
-
-// ---------------------------------------------------------------------------
-// Ambient spotlight + card tilt.
+// Pointer effects — one loop for all three.
 //
-// Both write numbers only; the CSS decides what those numbers look like. The
-// spotlight is written on the document (inherited by .bg-spot), the tilt on the
-// element that asked for it. A single rAF-coalesced handler serves every pointer
-// move on the page.
+//   card glow   --mx / --my on the card the pointer is inside
+//   card tilt   --tilt-x / --tilt-y on whatever asked for [data-tilt]
+//   spotlight   --spot-x / --spot-y on .bg-spot itself
+//
+// Pointer events arrive coalesced: a 120 Hz device fires several between two
+// frames, and each one used to do its own getBoundingClientRect and its own
+// style writes. Here the events only record the latest position, and a single
+// rAF applies it once. Layout is read at most once per frame, and only while a
+// card is actually under the pointer — the cached rect is dropped whenever the
+// page moves underneath the pointer instead.
 // ---------------------------------------------------------------------------
 (() => {
-  if (reducedMotion) return;
-
-  const root = document.documentElement;
-  const spot = root.querySelector(".bg-spot");
+  const spot = document.querySelector(".bg-spot");
   const tiltables = Array.from(document.querySelectorAll("[data-tilt]"));
-  if (!spot && !tiltables.length) return;
 
+  const pointer = { x: 0, y: 0, seen: false };
+  let glowCard = null;
+  let glowRect = null;
   let pending = null;
 
   const apply = () => {
     pending = null;
+    if (!pointer.seen) return;
+
+    if (glowCard) {
+      if (!glowRect) glowRect = glowCard.getBoundingClientRect();
+      glowCard.style.setProperty("--mx", `${pointer.x - glowRect.left}px`);
+      glowCard.style.setProperty("--my", `${pointer.y - glowRect.top}px`);
+    }
+
+    // Tilt and spotlight are motion; the glow is a hover affordance, so only
+    // these two bow out under prefers-reduced-motion.
+    if (reducedMotion) return;
+
     if (spot) {
       // Offset from the viewport centre. The multipliers are what make the
       // effect legible: at 0.1 the spotlight moved ~80px across a 1440px window
       // and read as nothing at all.
-      root.style.setProperty("--spot-x", `${(window.innerWidth / 2 - pointer.x) * -0.3}px`);
-      root.style.setProperty("--spot-y", `${(window.innerHeight / 2 - pointer.y) * -0.22}px`);
+      const spotX = (window.innerWidth / 2 - pointer.x) * -0.3;
+      const spotY = (window.innerHeight / 2 - pointer.y) * -0.22;
+      spot.style.setProperty("--spot-x", `${spotX}px`);
+      spot.style.setProperty("--spot-y", `${spotY}px`);
     }
+
     for (const el of tiltables) {
       if (!el.dataset.tiltActive) continue;
       const rect = el.getBoundingClientRect();
@@ -255,14 +279,32 @@ document.addEventListener("pointermove", (event) => {
     }
   };
 
-  const pointer = { x: 0, y: 0 };
+  const schedule = () => {
+    if (!pending) pending = requestAnimationFrame(apply);
+  };
 
   document.addEventListener("pointermove", (event) => {
     if (event.pointerType === "touch") return;
     pointer.x = event.clientX;
     pointer.y = event.clientY;
-    if (!pending) pending = requestAnimationFrame(apply);
+    pointer.seen = true;
+
+    const card = event.target.closest(".card--interactive");
+    if (card !== glowCard) {
+      glowCard = card;
+      glowRect = null;
+    }
+
+    schedule();
   });
+
+  // A cached rect is only valid until the page moves under the pointer.
+  const invalidate = () => {
+    glowRect = null;
+    schedule();
+  };
+  window.addEventListener("scroll", invalidate, { passive: true });
+  window.addEventListener("resize", invalidate, { passive: true });
 
   for (const el of tiltables) {
     el.addEventListener("pointerenter", () => {
@@ -274,6 +316,48 @@ document.addEventListener("pointermove", (event) => {
       el.style.removeProperty("--tilt-y");
     });
   }
+})();
+
+// ---------------------------------------------------------------------------
+// Which sections you can actually see.
+//
+// Every decorative loop on the site is infinite, and CSS has no way to know
+// whether what it animates is on screen: the features page ran 17 card rims, a
+// 56-chip marquee and a blinking terminal cursor at full cost while you were
+// reading something else entirely. Each `.section` is marked .is-live while it
+// intersects the viewport, and the stylesheets pause the loops inside any
+// section that is not (see base.css → Off-screen loops).
+//
+// Every section, not `main .section`: the CTA band is site chrome rendered by
+// Layout after </main>, and a selector that skipped it would leave its orbiting
+// rim paused forever, on every page, with nothing ever asking for that.
+//
+// .loops-managed is added to <html> inside the FIRST callback, by which point
+// every section has been classified. That ordering matters twice: it means no
+// section is ever paused before it has been measured, and it means a page whose
+// script never runs keeps every loop running — paused is something the script
+// asks for, never the default.
+// ---------------------------------------------------------------------------
+(() => {
+  const sections = document.querySelectorAll(".section");
+  if (!sections.length || !("IntersectionObserver" in window)) return;
+
+  let first = true;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) entry.target.classList.toggle("is-live", entry.isIntersecting);
+      if (first) {
+        first = false;
+        document.documentElement.classList.add("loops-managed");
+      }
+    },
+    // A section 200px below the fold is about to be read: waiting until the last
+    // moment makes its decoration visibly switch on as you scroll into it.
+    { rootMargin: "200px 0px 200px 0px", threshold: 0 },
+  );
+
+  sections.forEach((section) => io.observe(section));
 })();
 
 // ---------------------------------------------------------------------------

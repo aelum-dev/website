@@ -74,6 +74,11 @@
   display: flex;
   gap: var(--space-3);
   width: max-content;
+  /* The marquee is 28 chips × 2 duplicated rows translating for 60s. Without a
+     layer of its own that is a repaint of the whole row on every frame, under a
+     mask the compositor has to re-apply. will-change makes it one rasterised
+     strip that is shifted instead. */
+  will-change: transform;
   animation: lang-scroll 60s linear infinite;
 }
 .lang-track--reverse {
@@ -241,6 +246,18 @@
   .cli-code {
     font-size: 0.8rem;
   }
+}
+
+/* ============================================================
+   Off-screen loops (see base.css → Off-screen loops)
+   This page is the long one: the language marquee and the CLI window are both
+   near the bottom, and both used to run at full cost while you were still
+   reading the feature grid at the top.
+   ============================================================ */
+html.loops-managed .section:not(.is-live) .lang-track,
+html.loops-managed .section:not(.is-live) .cli-card::before,
+html.loops-managed .section:not(.is-live) .cli-code::after {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {

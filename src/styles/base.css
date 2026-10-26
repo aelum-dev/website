@@ -273,12 +273,19 @@
   box-sizing: border-box;
 }
 
-/* Smooth light/dark color morph. Longhands (not the shorthand) are used so this
-   merges with any per-element transitions already defined — hover states and
-   other effects keep their own timing. */
-*,
-*::before,
-*::after {
+/* Smooth light/dark color morph — but only *during* a theme change.
+   theme.js puts .theme-anim on <html> for exactly the length of the morph and
+   takes it off again. Written as a permanent rule on `*`, this same declaration
+   gave every element on every page a 650ms transition on four properties: the
+   browser keeps transition machinery for all of them, and every hover turns
+   into a slow colour fade instead of feedback.
+
+   :where() is what makes this safe to change: it contributes no specificity,
+   so this rule sits at exactly the same level as the bare `*` it replaces and a
+   component's own `transition:` shorthand still wins over it. */
+:where(.theme-anim *),
+:where(.theme-anim *)::before,
+:where(.theme-anim *)::after {
   transition-property: background-color, border-color, color, box-shadow, opacity;
   transition-duration: var(--theme-duration);
   transition-timing-function: var(--theme-ease);
@@ -340,11 +347,19 @@ body {
      1-2. two accent auroras drifting on long transform loops
      3.   a hairline grid, masked away at the edges
      4.   film grain over the whole field (kills banding on large washes)
-     5.   a pointer spotlight that follows the cursor (--px/--py from app.js)
+     5.   a pointer spotlight that follows the cursor (--spot-x/--spot-y, written
+          by app.js on this element, never on :root)
 
    Every animated layer moves with transform only. The auroras are plain
    radial gradients on their own elements: animating a gradient's position
    repaints the whole viewport, animating the element does not.
+
+   They also never scale. A blurred layer is rasterised once at a given scale
+   and reused; a scale() in the keyframes makes the compositor re-rasterise the
+   blur at a new scale as the loop runs, which is the whole cost of these two
+   layers. The two auroras are therefore sized differently up front — the size
+   difference is what the old scale() was standing in for, and the drift of one
+   against the other is what reads as “alive”.
    ============================================================ */
 .bg-field {
   position: fixed;
@@ -388,23 +403,26 @@ body {
 .bg-aurora--b {
   bottom: -18vmax;
   right: -8vmax;
+  /* Deliberately a different size from --a rather than the same one scaled. */
+  width: min(80vmax, 1120px);
+  height: min(80vmax, 1120px);
   background: radial-gradient(circle at 55% 55%, color-mix(in srgb, var(--accent-3) 34%, transparent), transparent 64%);
   animation: aurora-b calc(var(--t-aurora) * 1.35) ease-in-out infinite alternate;
 }
 @keyframes aurora-a {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translate3d(9vmax, 5vmax, 0) scale(1.15);
+    transform: translate3d(9vmax, 5vmax, 0);
   }
 }
 @keyframes aurora-b {
   0% {
-    transform: translate3d(0, 0, 0) scale(1.1);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translate3d(-8vmax, -6vmax, 0) scale(0.9);
+    transform: translate3d(-8vmax, -6vmax, 0);
   }
 }
 
@@ -424,20 +442,24 @@ body {
   opacity: 0.75;
 }
 
+/* Grain over the field. No blend mode: `overlay` here made the compositor read
+   back and re-blend the whole viewport on every frame the auroras moved, to
+   carry a texture that is visible at 5% opacity either way. */
 .bg-grain {
   position: absolute;
   inset: 0;
   background-image: var(--grain);
   background-repeat: repeat;
   opacity: 0.05;
-  mix-blend-mode: overlay;
 }
 
 /* Pointer spotlight: a light source in the upper half of the page that trails
    the cursor. app.js writes --spot-x/--spot-y (offsets from the viewport
-   centre); the long transition is what makes it trail rather than follow. With
-   JavaScript off it sits at the top centre, which is also where the static wash
-   in .bg-field puts its light. */
+   centre) on THIS element: a custom property set on :root is inherited by every
+   node on the page, so writing it on every pointer move invalidates inherited
+   style for the whole document. The long transition is what makes it trail
+   rather than follow. With JavaScript off it sits at the top centre, which is
+   also where the static wash in .bg-field puts its light. */
 .bg-spot {
   position: absolute;
   top: 16%;
@@ -550,34 +572,38 @@ code {
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-pill);
   background: var(--surface);
-  backdrop-filter: blur(12px);
   box-shadow: 0 10px 26px -20px var(--accent-shadow-strong);
   margin: 0;
   overflow: hidden;
 }
-/* A light travelling along the pill. Small element, so repainting its gradient
-   position is cheap — this is the only place on the site that animates a
-   background-position. */
+/* A light travelling along the pill.
+   It travels as a transform, not as a background-position: a background-position
+   animation repaints the pill every frame of a 7s loop, and there is one of
+   these per section on every page. The pseudo-element is wider than the pill and
+   clipped by its overflow: hidden, so moving it is a pure compositor shift. */
 .eyebrow::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: -75%;
+  right: -75%;
   background: linear-gradient(
     100deg,
-    transparent 32%,
+    transparent 30%,
     color-mix(in srgb, var(--accent) 30%, transparent) 48%,
-    transparent 64%
+    transparent 66%
   );
-  background-size: 260% 100%;
+  transform: translateX(-42%);
   animation: eyebrow-sheen 7s linear infinite;
   pointer-events: none;
 }
 @keyframes eyebrow-sheen {
   from {
-    background-position: 220% 0;
+    transform: translateX(-42%);
   }
   to {
-    background-position: -120% 0;
+    transform: translateX(42%);
   }
 }
 /* Small numbered/icon chip that leads an eyebrow. */
@@ -814,7 +840,6 @@ code {
   background: var(--surface);
   border-color: var(--surface-border);
   color: var(--text);
-  backdrop-filter: blur(12px);
 }
 .btn-ghost:hover {
   border-color: var(--accent-line);
@@ -879,13 +904,20 @@ code {
    Cards
    ============================================================ */
 
+/* No backdrop-filter here, and that is deliberate.
+   A backdrop-filter is not a one-off cost: it snapshots and re-blurs whatever
+   is behind the element, on every frame that backdrop changes. Behind every card
+   on this site is the drifting aurora field, so a blurred card is re-blurred
+   continuously — and a features grid is up to 17 of them at once, which is
+   where the site's GPU bill actually came from. `--surface` is already 72% of a
+   solid colour over a field that is itself soft gradients, so what the blur was
+   contributing was almost nothing you could point at. */
 /* biome-ignore lint/style/noDescendingSpecificity: the [data-theme] button rules above set a higher specificity ceiling that every component rule below legitimately sits under */
 .card {
   position: relative;
   background: var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
-  backdrop-filter: blur(14px);
   overflow: hidden;
 }
 
@@ -921,7 +953,13 @@ code {
 }
 /* A conic light orbiting the card rim on hover. The mask pair (content-box XOR
    full box) keeps only the 1px padding ring visible, so it reads as a border
-   that catches light rather than a glow bleeding over the content. */
+   that catches light rather than a glow bleeding over the content.
+
+   The orbit is installed paused and only runs while the card is hovered or
+   focused. --spin is a registered custom property used *inside* a gradient, so
+   animating it is not a compositor effect: it ticks a style recalculation and a
+   repaint of the whole conic gradient plus its mask, every frame. Left running,
+   a features grid paid that for 17 rings that were at opacity 0. */
 .card--interactive::before {
   content: "";
   position: absolute;
@@ -944,9 +982,13 @@ code {
     linear-gradient(#000 0 0);
   mask-composite: exclude;
   opacity: 0;
-  animation: card-ring var(--t-spin) linear infinite;
+  animation: card-ring var(--t-spin) linear infinite paused;
   transition: opacity 0.45s var(--ease);
   pointer-events: none;
+}
+.card--interactive:hover::before,
+.card--interactive:focus-within::before {
+  animation-play-state: running;
 }
 @keyframes card-ring {
   to {
@@ -1053,20 +1095,23 @@ code {
    Groups stagger: app.js writes --i (0,1,2…) onto the children of any
    [data-stagger] container, and the delay below reads it. Nothing about the
    order is decided in JavaScript beyond that index.
+
+   Opacity and transform only — deliberately no blur. A filter animation cannot
+   be composited: the browser re-rasterises the element at a new blur radius on
+   every frame of the 700ms. That is the worst possible thing to do to a page
+   while the user is scrolling it, and it is exactly what a grid of cards
+   arriving at once used to cost.
    ============================================================ */
 html.js .reveal {
   opacity: 0;
   transform: translateY(22px);
-  filter: blur(6px);
 }
 html.js .reveal.in {
   opacity: 1;
   transform: none;
-  filter: none;
   transition:
     opacity 0.7s var(--ease) calc(var(--i, 0) * 70ms),
-    transform 0.7s var(--ease) calc(var(--i, 0) * 70ms),
-    filter 0.7s var(--ease) calc(var(--i, 0) * 70ms);
+    transform 0.7s var(--ease) calc(var(--i, 0) * 70ms);
 }
 
 /* ============================================================
@@ -1148,8 +1193,10 @@ html.js .nav {
 /* Reading progress, pinned to the top edge of the window. Fixed rather than
    part of the floating bar: the bar has rounded ends and a 0.7rem inset, so a
    progress line inside it reads as a decoration of the bar instead of a
-   measurement of the page. --scroll (0…1) is set by app.js; with JS off it
-   stays 0 and nothing is drawn. */
+   measurement of the page. --scroll (0…1) is written by app.js on the bar
+   itself — it is the only reader of it, and a scroll-time write on :root would
+   invalidate inherited style for the whole document on every frame. With JS off
+   it stays 0 and nothing is drawn. */
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -1327,17 +1374,19 @@ html.js .nav-links.is-ready a.active {
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-xl);
   background: var(--grad-wash), var(--surface);
-  backdrop-filter: blur(14px);
   box-shadow: var(--shadow-md);
 }
+/* The panel's light source. Soft stops rather than a blurred solid: a 90px
+   filter over a panel-wide element is a large blurred surface kept alive for the
+   whole page, and a gradient that fades out to nothing is the same picture for
+   free. */
 .cta-panel::before {
   content: "";
   position: absolute;
-  inset: -40% 20% auto;
-  height: 320px;
-  filter: blur(90px);
-  opacity: 0.4;
-  background: radial-gradient(circle, var(--accent), transparent 70%);
+  inset: -30% 12% auto;
+  height: 340px;
+  opacity: 0.38;
+  background: radial-gradient(60% 100% at 50% 0%, color-mix(in srgb, var(--accent) 60%, transparent), transparent 72%);
   pointer-events: none;
 }
 /* Slow conic light orbiting the panel rim — the same rim treatment as the
@@ -1510,7 +1559,17 @@ html.js .nav-links.is-ready a.active {
     border-color 0.3s;
 }
 /* A light circling the control on hover — the same rim treatment the cards and
-   the CTA panel use, at 42px. */
+   the CTA panel use, at 42px. Paused until the pointer is on it, for the same
+   reason the card rims are: --spin is a gradient, so orbiting it is a repaint,
+   not a compositor shift, and this one would run for the whole life of every
+   page to decorate a button you are not looking at.
+
+   `paused` is written inside the animation shorthand rather than as a following
+   animation-play-state longhand. Astro's CSS minifier folds a longhand that
+   trails a fully-literal `animation:` shorthand into it, and in doing so it was
+   dropping the play state entirely — which then made the hover rule below look
+   like a no-op and dropped that too. (The card rim survives the same fold only
+   because its duration is a var() the minifier cannot parse.) */
 .theme-toggle::before {
   content: "";
   position: absolute;
@@ -1532,9 +1591,13 @@ html.js .nav-links.is-ready a.active {
     linear-gradient(#000 0 0);
   mask-composite: exclude;
   opacity: 0;
-  animation: card-ring 6s linear infinite;
+  animation: card-ring 6s linear infinite paused;
   transition: opacity 0.3s var(--ease);
   pointer-events: none;
+}
+.theme-toggle:hover::before,
+.theme-toggle:focus-visible::before {
+  animation-play-state: running;
 }
 .theme-toggle:hover::before {
   opacity: 1;
@@ -1580,17 +1643,21 @@ html.js .nav-links.is-ready a.active {
   overflow: hidden;
 }
 /* The blob is centered on the top-left corner (translate -50%/-50%) and scaled
-   about its own center, so it grows outward from that corner. Its diameter is
-   far larger than the viewport diagonal, so at full scale it covers the whole
-   screen (clipped by the container's overflow: hidden). */
+   about its own center, so it grows outward from that corner.
+
+   It is 150vmax wide scaled to 2.4× rather than 300vmax wide scaled to 1×. The
+   end state is the same circle — still larger than the viewport diagonal, and
+   clipped by the container either way — but the surface the compositor has to
+   hold is a quarter of it. will-change moves to .active for the same reason:
+   a permanent will-change on a layer this size means the texture is allocated on
+   every page load instead of on the one click that uses it. */
 .theme-morph .blob {
   position: absolute;
   top: 0;
   left: 0;
-  width: 300vmax;
-  height: 300vmax;
+  width: 150vmax;
+  height: 150vmax;
   border-radius: 50%;
-  will-change: transform, opacity;
   transform: translate(-50%, -50%) scale(0);
 }
 /* Destination-origin modifier: the light theme morphs in from the bottom-right
@@ -1603,9 +1670,11 @@ html.js .nav-links.is-ready a.active {
   transform: translate(50%, 50%) scale(0);
 }
 .theme-morph.active .blob {
+  will-change: transform, opacity;
   animation: theme-morph-tl var(--theme-duration) var(--theme-ease) forwards;
 }
 .theme-morph.active .blob--br {
+  will-change: transform, opacity;
   animation: theme-morph-br var(--theme-duration) var(--theme-ease) forwards;
 }
 @keyframes theme-morph-tl {
@@ -1617,7 +1686,7 @@ html.js .nav-links.is-ready a.active {
     opacity: 0.55;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(2.4);
     opacity: 0;
   }
 }
@@ -1630,7 +1699,7 @@ html.js .nav-links.is-ready a.active {
     opacity: 0.55;
   }
   100% {
-    transform: translate(50%, 50%) scale(1);
+    transform: translate(50%, 50%) scale(2.4);
     opacity: 0;
   }
 }
@@ -1763,6 +1832,28 @@ html.js .nav-links.is-ready a.active {
 }
 
 /* ============================================================
+   Off-screen loops
+
+   An infinite animation costs while it runs, and nothing in CSS knows whether
+   the thing it animates is on the screen you are looking at. app.js observes
+   every `.section` and marks the ones inside the viewport with .is-live; every
+   looping decoration in a section that is not live is paused here.
+
+   app.js adds .loops-managed to <html> only once that observer has reported its
+   first state, so a page whose script never runs keeps every loop exactly as it
+   was: paused is always the exception the script asks for, never the default.
+
+   The rules for each section's own loops live with that section's stylesheet.
+   These are the ones base.css owns — the section heading group and the CTA
+   band, both of which are site chrome.
+   ============================================================ */
+html.loops-managed .section:not(.is-live) .eyebrow::after,
+html.loops-managed .section:not(.is-live) .eyebrow-chip::after,
+html.loops-managed .section:not(.is-live) .cta-panel::after {
+  animation-play-state: paused;
+}
+
+/* ============================================================
    Reduced motion
    ============================================================ */
 
@@ -1786,7 +1877,6 @@ html.js .nav-links.is-ready a.active {
   html.js .reveal {
     opacity: 1;
     transform: none;
-    filter: none;
   }
   /* The ambient field keeps its static wash and grid (they carry depth on
      their own) but drops the drifting auroras and the cursor spotlight. */

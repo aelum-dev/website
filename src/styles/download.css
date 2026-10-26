@@ -424,3 +424,10 @@
     padding: var(--space-4);
   }
 }
+
+/* ============================================================
+   Off-screen loops (see base.css → Off-screen loops)
+   ============================================================ */
+html.loops-managed .section:not(.is-live) .dl-iso-card::before {
+  animation-play-state: paused;
+}
