@@ -606,7 +606,14 @@ code {
     transform: translateX(42%);
   }
 }
-/* Small numbered/icon chip that leads an eyebrow. */
+/* Small numbered/icon chip that leads an eyebrow.
+   letter-spacing is reset here on purpose. `.eyebrow` tracks its label at
+   --track-wide (0.16em) and that value inherits into the glyph; CSS adds
+   letter-spacing *after* each character, so the glyph's run box is 0.16em wider
+   than the glyph itself and the glyph sits at its left edge — `place-items:
+   center` then centres the box and the glyph lands half of 0.16em to the left of
+   the circle. At the chip's 13px icon that is a visible ~1px off a 24px disc.
+   The tracking belongs to the label, not to the icon. */
 .eyebrow-chip {
   position: relative;
   display: grid;
@@ -614,6 +621,7 @@ code {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
+  letter-spacing: normal;
   font-size: 0.85rem;
   color: var(--on-accent);
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
