@@ -232,7 +232,6 @@ html.js .hero-accent {
   box-sizing: border-box;
   width: 100%;
   max-width: 780px;
-  aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
   padding: 0.75rem;
@@ -277,7 +276,13 @@ html.js .hero-accent {
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 100%;
+  /* The aspect ratio belongs on the image box, not on the padded shell. A shell
+     that is 16:9 *outside* is ~1.83:1 *inside* once its padding and border come
+     off, and object-fit: cover then trims ~6px off the top and bottom of every
+     screenshot. Matching the frame to the ratio the sources are cropped to
+     (assets/hero-*.png are 2560x1440) means cover has nothing left to cut.
+     The shell's height follows from the frame, so the bezel stays even. */
+  aspect-ratio: 16 / 9;
   border-radius: 18px;
   overflow: hidden;
 }
