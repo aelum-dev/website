@@ -9,7 +9,7 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 Four real routes, one Astro page each.
 
 - **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1.5 min install, 3.2 GB installed, 28
-  languages — inline value props, and the desktop preview in a lit device frame with floating chips),
+  languages — inline value props, and the desktop preview in a lit device frame),
   **Flow** (the three moves: flash it, answer four questions, reboot), and **Showcase** (a bento of
   real installer screenshots, hard numbers and the two choices that matter).
 - **`/install/` — Install**: the auto-advancing 7-shot walkthrough with a progress rail, and the

@@ -132,8 +132,8 @@ npm run format                # the generated manifest is committed biome-format
     pseudo-elements that translate under an `overflow: hidden` parent. Same picture, no repaint.
   - **`backdrop-filter` is the expensive one.** It re-samples and re-blurs everything behind the
     element on every frame that backdrop changes — and behind everything here is the drifting field.
-    It is kept where it genuinely reads through *content* (`.nav-inner`, the mobile menu, the chips
-    floating over the hero screenshot) and gone from anything that only sat on the page background:
+    It is kept where it genuinely reads through *content* (`.nav-inner`, the mobile menu) and gone
+    from anything that only sat on the page background:
     `.card`, `.stat`, `.flow-step`, `.cta-panel`, `.eyebrow`, `.btn-ghost`, `.hero-visual`,
     `.features-demo-frame`. `--surface` is already 72% of a solid colour over a field that is itself
     soft gradients, so the blur was contributing nothing visible — the before/after renders are
