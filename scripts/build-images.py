@@ -7,6 +7,10 @@ Build the website's served image set from the source screenshots.
       -> public/images/<key>-<width>w.<hash>.webp
       -> src/lib/images.ts      generated manifest the components read
 
+A capture off a display is not a source: it is a whole desktop with the installer
+window in it. scripts/prepare-sources.py crops those captures into assets/ (see
+that file); this one turns sources into what the site serves.
+
 Why a manifest: the served filenames are content-hashed so they can be cached
 forever (GitHub Pages has no header control). Hashes change when a screenshot is
 re-shot, and components must not be edited to follow them — they look a key up
@@ -43,8 +47,27 @@ MANIFEST = ROOT / "src" / "lib" / "images.ts"
 WIDTHS = (800, 1280, 1920)
 # The single WebP fallback is encoded at the widest ladder width at or below this.
 FALLBACK_MAX_WIDTH = 1280
-AVIF_QCOLOR = 38
-WEBP_QUALITY = 74
+
+# Encode quality, chosen by what the screenshot is *of*.
+#   ui      — a window whose subject is text, and which the page renders close to
+#             1:1. A low qcolor puts ringing on every glyph edge, and that is the
+#             first thing a visitor sees, so these pay ~1.5x the bytes.
+#   desktop — a whole-desktop shot used as a decorative frame (the hero): it is
+#             shown small relative to its pixels, so the old profile is invisible.
+PROFILES = {
+    "ui": {"avif_qcolor": 55, "webp_quality": 82},
+    "desktop": {"avif_qcolor": 38, "webp_quality": 74},
+}
+# Sources keep the "ui" profile unless named here. The hero stays on "desktop"
+# until the landing page's own screenshots are re-shot.
+PROFILE_BY_PREFIX = {"hero-": "desktop"}
+
+
+def profile_for(key: str) -> dict:
+    for prefix, name in PROFILE_BY_PREFIX.items():
+        if key.startswith(prefix):
+            return PROFILES[name]
+    return PROFILES["ui"]
 
 
 def target_widths(src_w: int) -> list[int]:
@@ -60,6 +83,7 @@ def digest(path: Path) -> str:
 
 def encode(src: Path, key: str, width: int, height: int, is_fallback: bool, written: set) -> dict:
     """Encode one derivative. AVIF always; WebP only at the fallback width."""
+    quality = profile_for(key)
     with Image.open(src) as im:
         im.load()
         if im.mode not in ("RGB", "L"):
@@ -76,12 +100,12 @@ def encode(src: Path, key: str, width: int, height: int, is_fallback: bool, writ
             out = OUT_DIR / f"{key}-{width}w.placeholder.{kind}"
             if kind == "avif":
                 subprocess.run(
-                    ["avifenc", "--qcolor", str(AVIF_QCOLOR), "--qalpha", "0",
+                    ["avifenc", "--qcolor", str(quality["avif_qcolor"]), "--qalpha", "0",
                      "--jobs", "4", str(tmp), str(out)],
                     check=True, capture_output=True,
                 )
             else:
-                im.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+                im.save(out, "WEBP", quality=quality["webp_quality"], method=6)
 
             name = f"{key}-{width}w.{digest(out)}.{kind}"
             final = OUT_DIR / name

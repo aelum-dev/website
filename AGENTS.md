@@ -24,7 +24,9 @@ npm run lint       # biome lint . (optional; Prettier never linted)
 npm run check      # biome format . && astro check   # run before committing
 
 # Generated assets (run manually, commit the output — see Assets → Screenshots)
+python3 scripts/prepare-sources.py --light <dir> --dark <dir>  # crop desktop captures into assets/
 python3 scripts/build-images.py  # rebuild public/images + src/lib/images.ts from assets/
+npm run format                # the generated manifest is committed biome-formatted
 ```
 
 ## Layout & Conventions
@@ -171,15 +173,25 @@ changes if that email ever changes.
 ### Screenshots (generated)
 
 ```
-assets/<key>.png                    the screenshots themselves — the only copy, never served
+<Pictures>/installer-{light,dark}/N.png   a desktop capture with the installer window in it
+  -> assets/<key>.png                     scripts/prepare-sources.py crops the window out
+assets/<key>.png                          the screenshots themselves — the only copy, never served
   -> public/images/<key>-<w>w.<hash>.avif          the responsive ladder (AVIF only)
   -> public/images/<key>-<w>w.<hash>.webp          ONE WebP, at the fallback width
   -> src/lib/images.ts              generated manifest: key -> variants + fallback
 ```
 
-- `python3 scripts/build-images.py` (needs Pillow + `avifenc`) rebuilds all of it. Widths are derived
+- A capture off a display is **not** a source: it is the whole desktop with the installer window in it
+  (1200x800 inside 2560x1440). `scripts/prepare-sources.py` finds the window — the largest block of
+  pixels that differ from the capture's corner colour — and crops it, so the geometry is written down
+  instead of hand-guessed at each re-shoot. It refuses to write a crop it is not confident about.
+- `python3 scripts/build-images.py` (needs Pillow + numpy + `avifenc`) rebuilds all of it. Widths are derived
   per source and a source is never upscaled, so a 1200 px screenshot gets 800 px and 1200 px variants,
   not 1920 px. Stale derivatives are deleted, so re-shooting a screenshot does not leave orphans.
+- **Encode quality follows the subject** (`PROFILES` in build-images.py). A window full of UI text is
+  rendered close to 1:1, and a low `qcolor` puts ringing on every glyph edge — the thing a visitor
+  actually sees — so those encode at `qcolor 55` / WebP 82. Whole-desktop shots (the hero) are shown
+  small relative to their pixels and stay on the smaller `qcolor 38` profile.
 - **One format serves the page.** The `<source>` ladder is AVIF; the single WebP per source is the
   `<img src>`, which is what a browser that supports `<picture>` but cannot decode AVIF ends up using.
   Shipping a full WebP ladder as well cost ~530 KB of repo for a format almost nobody fetched — AVIF
@@ -189,7 +201,9 @@ assets/<key>.png                    the screenshots themselves — the only copy
 - The hashes exist because GitHub Pages has no header control: a filename that changes with its
   content can be cached forever.
 - Cost, for reference: the hero went from 804 KB (PNG) to 30 KB AVIF at 1920 px, and the old markup
-  fetched light **and** dark. The installer steps are 2–5 KB each.
+  fetched light **and** dark. An installer step is 4–27 KB per file at the `ui` profile (the same
+  screenshots were 2.7–23 KB at the `desktop` one); the whole served set — 16 screenshots in two themes,
+  50 files — is ~700 KB.
 
 ### Other assets
 
