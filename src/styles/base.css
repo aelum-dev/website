@@ -89,9 +89,9 @@
 
 :root {
   /* ----------------------------------------------------------
-     Palette — exported DankMaterialShell (DMS) light scheme.
-     Light uses the DMS light export; the dark block below uses
-     the DMS dark export, so the site matches the desktop.
+     Palette — exported Dux Shell (DMS) light scheme.
+     Light uses the Dux Shell light export; the dark block below uses
+     the Dux Shell dark export, so the site matches the desktop.
      ---------------------------------------------------------- */
   color-scheme: light;
 
@@ -107,7 +107,7 @@
   --text-dim: #4f444a;
   --text-faint: #81737b;
 
-  /* Accents (primary / secondary / tertiary from the DMS scheme) */
+  /* Accents (primary / secondary / tertiary from the Dux Shell scheme) */
   --accent: #834c74;
   --accent-2: #6f5767;
   --accent-3: #815341;
@@ -128,7 +128,7 @@
      Sora is the display voice (page + section titles only), Nunito is the
      reading voice (everything else, including card titles), JetBrains Mono is
      the engineering voice (commands, filenames, versions, checksums).
-     The palette above is the exported DankMaterialShell scheme and is frozen:
+     The palette above is the exported Dux Shell scheme and is frozen:
      it is the desktop's palette, not a website design choice.
      ---------------------------------------------------------- */
   --font-display: "Sora", "Nunito", system-ui, sans-serif;
@@ -183,7 +183,7 @@
   --t-spin: 14s;
 
   /* --- Gradient layers ---
-     The palette itself is frozen (it is the DMS export); these are the only
+     The palette itself is frozen (it is the Dux Shell export); these are the only
      gradients the site draws from it, so "the Aelum gradient" is one value. */
   --grad-brand: linear-gradient(104deg, var(--accent) 0%, var(--accent-3) 52%, var(--accent-2) 100%);
   --grad-brand-soft: linear-gradient(
@@ -242,7 +242,7 @@
   --dot-green: #27c93f;
 }
 
-/* Dark palette — exported DMS dark scheme.
+/* Dark palette — exported Dux Shell dark scheme.
    Near-black surfaces with a lavender primary. */
 [data-theme="dark"] {
   color-scheme: dark;

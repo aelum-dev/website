@@ -22,7 +22,7 @@ export const mainRepo = "https://github.com/aelum-dev/live-iso";
 export const githubUrl = "https://github.com/aelum-dev";
 export const installerRepo = "https://github.com/aelum-dev/installer";
 export const hyprlandUrl = "https://hyprland.org/";
-export const dmsUrl = "https://github.com/AvengeMedia/DankMaterialShell";
+export const duxShellUrl = "https://github.com/duxlabs-dev/dux-shell";
 export const wailsUrl = "https://wails.io/";
 export const ventoyUrl = "https://www.ventoy.net/en/download.html";
 export const balenaEtcherUrl = "https://etcher.balena.io/#download-etcher";
@@ -142,12 +142,12 @@ export const software: Software[] = [
   },
   {
     icon: "f108", // nerd-fonts: desktop
-    title: "DankMaterialShell",
+    title: "Dux Shell",
     description: "A complete Quickshell-based desktop shell.",
   },
   {
     icon: "f0342", // nerd-fonts: login
-    title: "DMS Greeter",
+    title: "Dux Greeter",
     description: "A fast login screen that matches the desktop theme.",
   },
   {
@@ -397,7 +397,7 @@ export const installSteps: Step[] = [
     num: "06",
     icon: "f0379", // nerd-fonts: monitor
     title: "Boot into it",
-    description: "Reboot, log in at the greeter, and the Hyprland + DankMaterialShell desktop is ready.",
+    description: "Reboot, log in at the greeter, and the Hyprland + Dux Shell desktop is ready.",
   },
 ];
 

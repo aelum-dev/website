@@ -91,10 +91,10 @@ npm run format                # the generated manifest is committed biome-format
 
 ## Design Guidance
 
-- Material-You / glassy aelum mirroring the Aelum desktop (Hyprland + DankMaterialShell).
-- **The palette is frozen.** `--bg`, `--accent`, … in `base.css` are the exported DankMaterialShell
+- Material-You / glassy aelum mirroring the Aelum desktop (Hyprland + Dux Shell).
+- **The palette is frozen.** `--bg`, `--accent`, … in `base.css` are the exported Dux Shell
   light/dark scheme and must stay identical to the desktop's. Do not "improve" the colours here —
-  change them in DMS. Overhauls change type, layout and motion, not the scheme.
+  change them in Dux Shell. Overhauls change type, layout and motion, not the scheme.
 - **Motion is a system, not per-component improvisation.** Everything decorative in `base.css`:
   the ambient field (`.bg-aurora` / `.bg-grid` / `.bg-grain` / `.bg-spot`), the conic rim used by
   cards, the CTA panel, the CLI window and the theme toggle, the button spotlight, `.eyebrow` sheen +

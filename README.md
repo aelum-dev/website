@@ -2,7 +2,7 @@
 
 This is the official landing site for [Aelum](https://github.com/aelum-dev/live-iso) and the [Aelum Installer](https://github.com/aelum-dev/installer), built with [Astro](https://astro.build/).
 
-Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer four questions and end up with a Hyprland + DankMaterialShell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
+Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer four questions and end up with a Hyprland + Dux Shell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
 
 ## What's on the site
 
@@ -16,7 +16,7 @@ Four real routes, one Astro page each.
   6-step wizard grid.
 - **`/features/` — Features**: why Aelum (offline install, auto-launching installer, optional LUKS2,
   dual-boot-safe manual partitioning, ext4/btrfs, silent boot, auto monitor scaling, GUI or CLI),
-  **What you install** (Hyprland, DankMaterialShell, DMS greeter, matugen, GTK/Qt theming, Kitty,
+  **What you install** (Hyprland, Dux Shell, Dux Greeter, matugen, GTK/Qt theming, Kitty,
   Firefox, Aelum splash), the 28-language marquee, and **CLI** headless install examples.
 - **`/download/` — Download**: the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing
   key fetched via WKD, copyable verification commands, and flashing tools (Ventoy, BalenaEtcher, dd).
@@ -100,7 +100,7 @@ Run `npm run check` (Biome + `astro check`) before committing.
   state and its active pill, scroll reveal, copy buttons, pointer effects, count-up numbers) and
   `theme.js` owns the theme plus the theme-matched screenshots. Everything in them is enhancement.
 - The palette and glassy cards echo the **Material-You** look of the desktop the installer ships. The
-  scheme itself is the exported DankMaterialShell light/dark palette and is not a website choice.
+  scheme itself is the exported Dux Shell light/dark palette and is not a website choice.
 - The site is a static site — no backend, no API calls, no network requests to serve it. Fonts are
   self-hosted woff2 files under `src/styles/fonts/`; screenshots are served from `public/images/` as
   content-hashed AVIF with a single WebP fallback each.
