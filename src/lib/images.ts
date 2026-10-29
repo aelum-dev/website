@@ -20,26 +20,158 @@ export interface ShotSource {
 }
 
 export const images: Record<string, ShotSource> = {
+  "desktop-control-dark": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-control-dark-800w.aecae41a.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-control-dark-1280w.66c19aa1.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-control-dark-1920w.c69a83c3.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-control-dark-1280w.c4fd19ba.webp",
+    },
+  },
+  "desktop-control-light": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-control-light-800w.b395951d.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-control-light-1280w.4ca40973.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-control-light-1920w.c85e369e.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-control-light-1280w.c552f772.webp",
+    },
+  },
+  "desktop-launcher-dark": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-launcher-dark-800w.48b9569e.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-launcher-dark-1280w.e9975403.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-launcher-dark-1920w.5165a2ed.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-launcher-dark-1280w.ae569259.webp",
+    },
+  },
+  "desktop-launcher-light": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-launcher-light-800w.d8ddc36e.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-launcher-light-1280w.0bfed6b4.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-launcher-light-1920w.8a1f5afc.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-launcher-light-1280w.9c932065.webp",
+    },
+  },
+  "desktop-terminal-dark": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-terminal-dark-800w.d6a290b7.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-terminal-dark-1280w.7465648b.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-terminal-dark-1920w.9b6b6c7f.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-terminal-dark-1280w.a581989d.webp",
+    },
+  },
+  "desktop-terminal-light": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-terminal-light-800w.6ec39e39.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-terminal-light-1280w.6e29669d.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-terminal-light-1920w.b4386e83.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-terminal-light-1280w.10f466ee.webp",
+    },
+  },
   "hero-dark": {
     width: 2560,
     height: 1440,
     variants: [
       {
         width: 800,
-        avif: "/images/hero-dark-800w.25caef55.avif",
+        avif: "/images/hero-dark-800w.1037578e.avif",
       },
       {
         width: 1280,
-        avif: "/images/hero-dark-1280w.2e214101.avif",
+        avif: "/images/hero-dark-1280w.3338348e.avif",
       },
       {
         width: 1920,
-        avif: "/images/hero-dark-1920w.6d01375e.avif",
+        avif: "/images/hero-dark-1920w.556914d4.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/hero-dark-1280w.f6f82186.webp",
+      webp: "/images/hero-dark-1280w.087a322f.webp",
     },
   },
   "hero-light": {
@@ -48,20 +180,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/hero-light-800w.5ac6cbd7.avif",
+        avif: "/images/hero-light-800w.2c0927e5.avif",
       },
       {
         width: 1280,
-        avif: "/images/hero-light-1280w.e9154896.avif",
+        avif: "/images/hero-light-1280w.7992239d.avif",
       },
       {
         width: 1920,
-        avif: "/images/hero-light-1920w.0947a471.avif",
+        avif: "/images/hero-light-1920w.9170c39e.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/hero-light-1280w.249aab37.webp",
+      webp: "/images/hero-light-1280w.e4a8cf48.webp",
     },
   },
   "installer-step-1-dark": {

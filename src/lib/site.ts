@@ -74,57 +74,34 @@ export interface Feature {
 
 export const features: Feature[] = [
   {
-    icon: "f05aa", // nerd-fonts: wifi-off
-    title: "Fully offline install",
+    icon: "f02da", // nerd-fonts: history
+    title: "Roll back whenever you want",
     description:
-      "Every package the installer needs is inside the ISO, served from a mirror embedded in it. Nothing is downloaded during the install.",
+      "On a btrfs install, every pacman transaction takes a snapshot before and after it. Boot an older state from the Aelum menu in rEFInd, or make it the system again with snapper rollback.",
   },
   {
-    icon: "f06a9", // nerd-fonts: robot
-    title: "Starts on its own",
+    icon: "f03d8", // nerd-fonts: palette
+    title: "Colors from your wallpaper",
     description:
-      "Boot the ISO and the installer is already opening — the live session logs in and starts it for you. You never touch a terminal.",
+      "matugen reads your wallpaper and re-themes the shell, GTK and Qt apps around it. Dark, light or automatic — pick a wallpaper and the whole desktop follows.",
   },
   {
     icon: "eb11", // nerd-fonts: key
-    title: "Optional LUKS2 encryption",
-    description: "Encrypt the root partition with LUKS2 and unlock it with a passphrase at boot.",
-  },
-  {
-    icon: "f02ca", // nerd-fonts: harddisk
-    title: "Dual-boot safe",
+    title: "Encrypted, still just a passphrase",
     description:
-      "Automatic mode erases the whole disk, so use it only on a disk that's Aelum's alone. Next to another OS, use Manual: it formats only the Boot and System partitions you assign, leaves everything else alone, and Aelum writes its own Boot partition instead of reusing another OS's.",
-  },
-  {
-    icon: "f0570", // nerd-fonts: view_grid
-    title: "ext4 or btrfs",
-    description:
-      "Pick ext4 or btrfs. With btrfs, the subvolume layout is set up for you and every subvolume shares one free-space pool.",
+      "Choose LUKS2 during the install and the only thing you ever do differently is type your passphrase into the boot splash.",
   },
   {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
-    title: "Silent boot",
+    title: "A boot that looks like Aelum",
     description:
-      "Boot entries carry quiet splash loglevel=3, so you see the Aelum splash instead of boot logs — on encrypted installs, even the passphrase prompt is part of the splash.",
+      "A branded rEFInd menu and Plymouth splash instead of boot spam. Each Aelum on the disk gets its own boot entry and its own snapshot submenu, so installs never overwrite each other.",
   },
   {
-    icon: "f037a", // nerd-fonts: monitor-multiple
-    title: "Auto monitor scaling",
+    icon: "f012c", // nerd-fonts: check
+    title: "Sensible defaults, already applied",
     description:
-      "Plug a monitor into the live session and it picks a scale for it (1.0 / 1.33 / 2.0 for 1080p / 1440p / 4K). The installed desktop leaves scaling to Hyprland itself.",
-  },
-  {
-    icon: "f051b", // nerd-fonts: timer
-    title: "About a minute and a half",
-    description:
-      "Nothing is downloaded, so the whole install — partitioning, package runs, bootloader, verification — takes under 95 seconds end to end in our QEMU test installs (20 GB virtual disk). The finished system uses about 3.2 GB on btrfs (compressed) or 4.7 GB on ext4.",
-  },
-  {
-    icon: "f120", // nerd-fonts: terminal
-    title: "GUI or CLI",
-    description:
-      "Use the graphical wizard, or run the install headless with aelum-installer-cli, which ships in the same ISO. Passwords are read from stdin, never from a flag.",
+      "PipeWire for audio, zram instead of a swap file, Firefox themed to match the desktop. There is no post-install setup list to work through.",
   },
 ];
 
@@ -174,6 +151,40 @@ export const software: Software[] = [
     icon: "f02e9", // nerd-fonts: image (branded boot splash)
     title: "Aelum splash",
     description: "Branded Plymouth boot screen with LUKS passphrase unlock.",
+  },
+];
+
+/** Whole-desktop screenshots the features page shows. The subject of these is
+    the desktop itself, so they are imported whole (see prepare-sources.py
+    --pair) and keyed desktop-*. */
+export interface DistroShot {
+  light: string;
+  dark: string;
+  alt: string;
+  caption: string;
+}
+
+export const desktopControlShot: DistroShot = {
+  light: "desktop-control-light",
+  dark: "desktop-control-dark",
+  alt: "The Aelum desktop with the Dux Shell control center open",
+  caption:
+    "One panel runs the desktop: dark or light, dynamic color, night light, do not disturb. No config files involved.",
+};
+
+export const lookShots: DistroShot[] = [
+  {
+    light: "desktop-launcher-light",
+    dark: "desktop-launcher-dark",
+    alt: "The Aelum app launcher with the apps that ship installed",
+    caption:
+      "The app launcher on a fresh install — files, browser, terminal, editor, media player, system tools, settings. Nothing to install first.",
+  },
+  {
+    light: "desktop-terminal-light",
+    dark: "desktop-terminal-dark",
+    alt: "fastfetch output in the Kitty terminal on the Aelum desktop",
+    caption: "Kitty on the same install — themed to the same palette as everything else.",
   },
 ];
 

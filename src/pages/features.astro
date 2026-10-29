@@ -1,20 +1,18 @@
 ---
 import "../styles/base.css";
 import "../styles/features.css";
-import CLI from "../components/CLI.astro";
 import Desktop from "../components/Desktop.astro";
 import Features from "../components/Features.astro";
-import Languages from "../components/Languages.astro";
 import Layout from "../layouts/Layout.astro";
+import Look from "../components/Look.astro";
 
-const title = "Features — an install that needs no network";
+const title = "Features — the desktop, already configured";
 const description =
-  "What ships with Aelum: Hyprland with Dux Shell, a themed login screen, automatic monitor scaling, optional LUKS2 and btrfs, 28 languages, and a headless CLI installer.";
+  "What ships with Aelum: Hyprland with Dux Shell, wallpaper-driven Material You theming, bootable snapshots with rollback, optional LUKS2, a branded boot, PipeWire and zram.";
 ---
 
 <Layout title={title} description={description} active="features">
   <Desktop />
+  <Look />
   <Features />
-  <Languages />
-  <CLI />
 </Layout>

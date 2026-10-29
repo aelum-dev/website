@@ -1,0 +1,43 @@
+---
+// Whole-desktop screenshots, shown as they are: framed figure + caption bar.
+// The images are real captures of a fresh install, so the section makes no
+// claims the pictures do not show.
+import { lookShots } from "../lib/site";
+import Shot from "./Shot.astro";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf02e9;</span>
+        </span>
+        A look at it
+      </span>
+      <h2 class="section-title">Screenshots of the desktop.</h2>
+      <p class="section-sub">
+        The desktop as it runs on a real install — the same palette across the
+        settings, the terminal and everything else, nothing staged.
+      </p>
+    </div>
+
+    <div class="look-grid" data-stagger>
+      {
+        lookShots.map((shot) => (
+          <figure class="look-shot reveal">
+            <div class="look-shot-inner">
+              <Shot
+                light={shot.light}
+                dark={shot.dark}
+                alt={shot.alt}
+                sizes="(max-width: 1024px) 92vw, 620px"
+              />
+            </div>
+            <figcaption class="look-caption">{shot.caption}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,6 +1,7 @@
 ---
-import { software } from "../lib/site";
+import { desktopControlShot, software } from "../lib/site";
 import Card from "./Card.astro";
+import Shot from "./Shot.astro";
 ---
 
 <section id="desktop" class="section">
@@ -19,6 +20,18 @@ import Card from "./Card.astro";
         your wallpaper. No theming to do afterwards.
       </p>
     </div>
+
+    <figure class="look-shot desktop-demo reveal">
+      <div class="look-shot-inner">
+        <Shot
+          light={desktopControlShot.light}
+          dark={desktopControlShot.dark}
+          alt={desktopControlShot.alt}
+          sizes="(max-width: 1160px) 92vw, 1100px"
+        />
+      </div>
+      <figcaption class="look-caption">{desktopControlShot.caption}</figcaption>
+    </figure>
 
     <div class="card-grid grid-software">
       {

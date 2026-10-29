@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Crop full-desktop installer captures into the screenshot sources the site uses.
+Turn desktop captures into the screenshot sources the site uses.
+
+Window-crop mode (the installer walkthrough):
 
     <dir>/1.png … N.png   a desktop screenshot with the installer window in it
       -> assets/<prefix>-<n>-<light|dark>.png
@@ -19,6 +21,15 @@ corner colour or is a few rows tall) and needs no hardcoded offsets. The result
 is printed and sanity-checked; the script refuses to write a crop it is not
 confident about.
 
+Whole-frame mode (the desktop and hero shots):
+
+    --pair <key>=<light.png>:<dark.png> …
+      -> assets/<key>-<light|dark>.png
+
+For a shot whose subject IS the whole desktop — the hero, the desktop features —
+there is no window to find and nothing to crop. Each pair is written lossless
+under an explicit manifest key; both files must be the same size.
+
 Sources are written lossless (PNG). Everything after this point — the responsive
 ladder and src/lib/images.ts — is scripts/build-images.py's job.
 
@@ -27,6 +38,9 @@ Requires: python3 + Pillow + numpy.
     python3 scripts/prepare-sources.py \
         --light ~/Pictures/Screenshots/installer-light \
         --dark  ~/Pictures/Screenshots/installer-dark
+
+    python3 scripts/prepare-sources.py \
+        --pair hero=…/shot-light.png:…/shot-dark.png
 """
 
 import argparse
@@ -128,20 +142,63 @@ def prepare(src_dir: Path, theme: str, prefix: str, first: int, last: int) -> in
     return written
 
 
+def import_pair(key: str, light: Path, dark: Path) -> int:
+    """Whole-frame mode: write one light/dark pair under an explicit key.
+
+    The desktop shots ARE their subject — bar, wallpaper and all — so there is
+    no window to find and nothing to crop. Both files must be the same size.
+    """
+    sizes = set()
+    written = 0
+    for theme, src in (("light", light), ("dark", dark)):
+        if not src.is_file():
+            raise SystemExit(f"no such file: {src}")
+        with Image.open(src) as im:
+            if im.mode != "RGB":
+                im = im.convert("RGB")
+            sizes.add(im.size)
+            out = OUT_DIR / f"{key}-{theme}.png"
+            im.save(out, "PNG", optimize=True)
+            written += 1
+            print(f"  {src.name} {im.size[0]}x{im.size[1]} -> {out.relative_to(ROOT)} (whole frame)")
+    if len(sizes) != 1:
+        raise SystemExit(f"pair {key}: light and dark captures differ in size {sizes}")
+    return written
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--light", required=True, help="directory of light-theme captures (1.png, 2.png, …)")
-    ap.add_argument("--dark", required=True, help="directory of dark-theme captures (1.png, 2.png, …)")
+    ap.add_argument("--light", help="directory of light-theme captures (1.png, 2.png, …)")
+    ap.add_argument("--dark", help="directory of dark-theme captures (1.png, 2.png, …)")
     ap.add_argument("--prefix", default="installer-step", help="manifest key prefix (default: installer-step)")
     ap.add_argument("--from", dest="first", type=int, default=1, help="first capture number")
     ap.add_argument("--to", dest="last", type=int, default=7, help="last capture number")
+    ap.add_argument(
+        "--pair",
+        action="append",
+        metavar="KEY=LIGHT:DARK",
+        help="whole-frame import of one light/dark capture pair under an explicit key",
+    )
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    total = prepare(Path(args.light).expanduser(), "light", args.prefix, args.first, args.last)
-    total += prepare(Path(args.dark).expanduser(), "dark", args.prefix, args.first, args.last)
+    total = 0
+
+    if args.light or args.dark:
+        if not (args.light and args.dark):
+            raise SystemExit("window-crop mode needs both --light and --dark")
+        total += prepare(Path(args.light).expanduser(), "light", args.prefix, args.first, args.last)
+        total += prepare(Path(args.dark).expanduser(), "dark", args.prefix, args.first, args.last)
+
+    for spec in args.pair or []:
+        key, _, files = spec.partition("=")
+        light_s, _, dark_s = files.partition(":")
+        if not key or not light_s or not dark_s:
+            raise SystemExit(f"bad --pair {spec!r} (want KEY=LIGHT:DARK)")
+        total += import_pair(key, Path(light_s).expanduser(), Path(dark_s).expanduser())
+
     if not total:
-        print("nothing written", file=sys.stderr)
+        print("nothing written (pass --light/--dark or --pair)", file=sys.stderr)
         return 1
     print(f"wrote {total} sources to {OUT_DIR.relative_to(ROOT)}; now run scripts/build-images.py")
     return 0

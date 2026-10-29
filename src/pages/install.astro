@@ -1,8 +1,10 @@
 ---
 import "../styles/base.css";
 import "../styles/install.css";
-import InstallPage from "../components/Install.astro";
+import CLI from "../components/CLI.astro";
 import DiskModes from "../components/DiskModes.astro";
+import InstallPage from "../components/Install.astro";
+import Languages from "../components/Languages.astro";
 import Layout from "../layouts/Layout.astro";
 
 const title = "Install Aelum — four screens, then it installs.";
@@ -13,4 +15,6 @@ const description =
 <Layout title={title} description={description} active="install">
   <InstallPage />
   <DiskModes />
+  <Languages />
+  <CLI />
 </Layout>

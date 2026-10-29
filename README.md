@@ -11,12 +11,12 @@ Four real routes, one Astro page each.
 - **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1.5 min install, 3.2 GB installed, 28
   languages — inline value props, and the desktop preview in a lit device frame) and
   **Flow** (the three moves: flash it, answer four questions, reboot).
-- **`/install/` — Install**: the auto-advancing 7-shot walkthrough with a progress rail, and the
-  6-step wizard grid.
-- **`/features/` — Features**: why Aelum (offline install, auto-launching installer, optional LUKS2,
-  dual-boot-safe manual partitioning, ext4/btrfs, silent boot, auto monitor scaling, GUI or CLI),
-  **What you install** (Hyprland, Dux Shell, Dux Greeter, matugen, GTK/Qt theming, Kitty,
-  Firefox, Aelum splash), the 28-language marquee, and **CLI** headless install examples.
+- **`/install/` — Install**: the auto-advancing 7-shot walkthrough with a progress rail, the 6-step
+  wizard grid, the two disk-mode cards, the 28-language marquee, and **CLI** headless install examples.
+- **`/features/` — Features**: **What you install** (Hyprland, Dux Shell, Dux Greeter, matugen,
+  GTK/Qt theming, Kitty, Firefox, Aelum splash) with a real launcher screenshot, whole-desktop
+  screenshots (settings, terminal), and what the installed system does on its own (snapshot rollback,
+  wallpaper-driven theming, encrypted boot, branded boot, sensible defaults).
 - **`/download/` — Download**: the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing
   key fetched via WKD, copyable verification commands, and flashing tools (Ventoy, BalenaEtcher, dd).
 - **Call to action** and **Footer** are site chrome, rendered by the layout. The CTA band is off on
@@ -41,6 +41,7 @@ src/
     Features.astro     # features section
     Desktop.astro      # finished desktop section
     Install.astro      # installer walkthrough + step grid
+    Look.astro         # whole-desktop screenshot gallery
     Languages.astro    # installer languages marquee
     CLI.astro          # headless install examples
     CTA.astro          # closing call-to-action band

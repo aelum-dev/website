@@ -51,8 +51,8 @@ npm run format                # the generated manifest is committed biome-format
   titles are fine; running prose is not a feature log. Facts, numbers, sizes and commands are never
   softened or dropped for style.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
-  `/` → `Hero` + `Flow` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` ·
-  `/features/` → `Desktop` + `Features` + `Languages` + `CLI`.
+  `/` → `Hero` + `Flow` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` + `Languages` + `CLI` ·
+  `/features/` → `Desktop` + `Look` + `Features`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
   the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard
   button with copy/check icons) are reusable building blocks. `Flow.astro` (the three-move strip) is
@@ -123,8 +123,8 @@ npm run format                # the generated manifest is committed biome-format
   - **Nothing loops off screen.** `app.js` observes every `.section` and marks the visible ones
     `.is-live`; each stylesheet pauses the loops inside any section that is not
     (`html.loops-managed .section:not(.is-live) … { animation-play-state: paused }`). Without it the
-    features page ran 17 card rims, a 56-chip marquee and a blinking terminal cursor while you were
-    reading something else. `.loops-managed` is added only after the observer has classified every
+    features page ran 17 card rims and the install page ran a 56-chip marquee and a blinking terminal
+    cursor while you were reading something else. `.loops-managed` is added only after the observer has classified every
     section, so a page with no JS keeps every loop. The walkthrough's own timer pauses the same way,
     in `Install.astro` — a paused progress bar and an unpaused slide timer drift apart.
   - **A loop you are not looking at is not running.** The conic rims on cards and on the theme toggle
@@ -262,6 +262,9 @@ assets/<key>.png                          the screenshots themselves — the onl
   (1200x800 inside 2560x1440). `scripts/prepare-sources.py` finds the window — the largest block of
   pixels that differ from the capture's corner colour — and crops it, so the geometry is written down
   instead of hand-guessed at each re-shoot. It refuses to write a crop it is not confident about.
+- Whole-desktop shots (the hero, the desktop features) are the exception — their subject **is** the
+  whole desktop, so there is nothing to crop: `prepare-sources.py --pair <key>=<light.png>:<dark.png>`
+  imports a pair as-is under an explicit manifest key (`hero`, `desktop-*`).
 - `python3 scripts/build-images.py` (needs Pillow + numpy + `avifenc`) rebuilds all of it. Widths are derived
   per source and a source is never upscaled, so a 1200 px screenshot gets 800 px and 1200 px variants,
   not 1920 px. Stale derivatives are deleted, so re-shooting a screenshot does not leave orphans.
