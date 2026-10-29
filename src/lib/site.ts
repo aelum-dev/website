@@ -77,13 +77,13 @@ export const features: Feature[] = [
     icon: "f05aa", // nerd-fonts: wifi-off
     title: "Fully offline install",
     description:
-      "Every package is baked into the ISO and served from an embedded local mirror. The install never touches the network.",
+      "Every package the installer needs is inside the ISO, served from a mirror embedded in it. Nothing is downloaded during the install.",
   },
   {
     icon: "f06a9", // nerd-fonts: robot
     title: "Starts on its own",
     description:
-      "On the live ISO, greetd logs in as the live user and starts a minimal Hyprland, and that session launches the installer. No terminal, no commands.",
+      "Boot the ISO and the installer is already opening — the live session logs in and starts it for you. You never touch a terminal.",
   },
   {
     icon: "eb11", // nerd-fonts: key
@@ -94,37 +94,37 @@ export const features: Feature[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Dual-boot safe",
     description:
-      "Automatic mode erases the whole disk. Manual mode formats only the Boot and System partitions you assign; every other partition is left as it is, and Aelum writes its own Boot partition instead of reusing another OS's ESP.",
+      "Automatic mode erases the whole disk, so use it only on a disk that's Aelum's alone. Next to another OS, use Manual: it formats only the Boot and System partitions you assign, leaves everything else alone, and Aelum writes its own Boot partition instead of reusing another OS's.",
   },
   {
     icon: "f0570", // nerd-fonts: view_grid
     title: "ext4 or btrfs",
     description:
-      "Pick ext4 or btrfs — btrfs gets an automatic subvolume layout so every subvolume shares one free-space pool.",
+      "Pick ext4 or btrfs. With btrfs, the subvolume layout is set up for you and every subvolume shares one free-space pool.",
   },
   {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
     title: "Silent boot",
     description:
-      "The boot entries carry quiet splash loglevel=3, so the Aelum Plymouth splash covers the boot — including the passphrase prompt on encrypted installs.",
+      "Boot entries carry quiet splash loglevel=3, so you see the Aelum splash instead of boot logs — on encrypted installs, even the passphrase prompt is part of the splash.",
   },
   {
     icon: "f037a", // nerd-fonts: monitor-multiple
     title: "Auto monitor scaling",
     description:
-      "The live session reads each connected monitor and sets a Hyprland scale for it (1.0 / 1.33 / 2.0 for 1080p / 1440p / 4K). The installed desktop uses Hyprland's own automatic scale.",
+      "Plug a monitor into the live session and it picks a scale for it (1.0 / 1.33 / 2.0 for 1080p / 1440p / 4K). The installed desktop leaves scaling to Hyprland itself.",
   },
   {
     icon: "f051b", // nerd-fonts: timer
     title: "About a minute and a half",
     description:
-      "Nothing is downloaded during install. Partitioning, both package runs, the bootloader and verification take under 95 seconds end to end in our QEMU test installs (20 GB virtual disk). The finished system uses about 3.2 GB on btrfs (compressed) or 4.7 GB on ext4.",
+      "Nothing is downloaded, so the whole install — partitioning, package runs, bootloader, verification — takes under 95 seconds end to end in our QEMU test installs (20 GB virtual disk). The finished system uses about 3.2 GB on btrfs (compressed) or 4.7 GB on ext4.",
   },
   {
     icon: "f120", // nerd-fonts: terminal
     title: "GUI or CLI",
     description:
-      "Use the graphical wizard, or run a headless install with the aelum-installer-cli binary that ships in the same ISO. Passwords are read from stdin, never from a flag.",
+      "Use the graphical wizard, or run the install headless with aelum-installer-cli, which ships in the same ISO. Passwords are read from stdin, never from a flag.",
   },
 ];
 
@@ -207,14 +207,14 @@ export const flow: FlowStep[] = [
     icon: "ede9", // nerd-fonts: USB stick
     title: "Flash it and boot it",
     description:
-      "Write the ISO to a USB drive and boot it on a UEFI machine. The live session logs itself in and opens the installer.",
+      "Write the ISO to a USB stick and boot it on a UEFI machine. The live session logs in and opens the installer for you.",
   },
   {
     num: "02",
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Answer four questions",
     description:
-      "Language, user, disk, confirm. Filesystem, encryption and partitioning are all inside the disk question — and automatic mode erases the whole disk.",
+      "Language, user, disk, confirm — that's the whole wizard. Filesystem, encryption and partitioning are all on the disk screen, and automatic mode erases the whole disk.",
   },
   {
     num: "03",
@@ -274,7 +274,7 @@ export const showcase: ShowcaseTile[] = [
     span: "",
     icon: "eb11", // nerd-fonts: key
     title: "Encrypted if you want it",
-    description: "LUKS2 under the root filesystem, unlocked with a passphrase on the boot splash.",
+    description: "Put LUKS2 under the root filesystem and you unlock it with a passphrase, right on the boot splash.",
   },
   {
     kind: "feature",
@@ -335,7 +335,7 @@ export interface DiskMode {
 export const diskModesPanel = {
   eyebrow: "Disk selection step",
   title: "Automatic erases the disk. Manual doesn't.",
-  sub: "Automatic and Manual are a switch on the disk screen, not a separate step, and only one of the two destroys data. The installer says the same thing on its own confirm dialog before anything is written.",
+  sub: "Automatic and Manual are the same screen with a switch between them. Only Automatic destroys data, and you're asked to confirm before anything is written.",
 };
 
 export const diskModes: DiskMode[] = [
@@ -343,18 +343,18 @@ export const diskModes: DiskMode[] = [
     icon: "f0029", // nerd-fonts: alert-octagon
     badge: "Automatic mode",
     title: "Erases the whole disk",
-    body: "Automatic wipes the disk's partition table and writes a new layout from scratch: one 512 MB Boot partition and one System partition using the rest of the drive. Every partition that was on that disk — another OS, your files — is gone, and the installer says so in those words before it starts.",
-    points: ["Right when the disk is Aelum's alone", "Not right on a disk that still holds data you want"],
+    body: "Your whole disk is erased and partitioned from scratch: 512 MB for Boot, the rest for System. Anything that was on it — another OS, your files — is gone.",
+    points: ["Best when the disk is Aelum's alone", "Avoid it on a disk that still has data you want"],
   },
   {
     icon: "f0498", // nerd-fonts: shield
     badge: "Manual mode",
     title: "Formats only what you assign",
-    body: "Manual lists the partitions already on the disk and formats only the two you mark — one Boot, one System. Everything else stays exactly as it is, and Aelum writes its own Boot partition rather than reusing another OS's ESP.",
+    body: "You choose which partitions Aelum uses — one Boot, one System — and only those two are formatted. Everything else on the disk stays untouched, and Aelum makes its own Boot partition instead of reusing another OS's.",
     points: [
-      "Other partitions and their data are left untouched",
+      "Your other partitions and files are left alone",
       "Needs a 512 MB Boot and a 7680 MB System partition",
-      "Needs a GPT partition table — automatic mode rewrites an older MBR one",
+      "The disk needs a GPT partition table; on an older MBR disk, use Automatic",
     ],
   },
 ];
@@ -365,7 +365,7 @@ export const installSteps: Step[] = [
     icon: "f0ac", // nerd-fonts: globe
     title: "Pick a language",
     description:
-      "Choose from 28 languages. This sets the installer UI and your system locale, and writes a regional Arch mirror list for the installed system (worldwide mirrors where Arch lists none).",
+      "Pick from 28 languages. The installer UI and your system locale follow your choice, and the installed system gets a regional Arch mirror list (worldwide mirrors where Arch lists none).",
   },
   {
     num: "02",
@@ -378,7 +378,7 @@ export const installSteps: Step[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
     description:
-      "Pick the drive, ext4 or btrfs, and optionally LUKS2 encryption. Automatic mode wipes the disk's partition table and takes the whole drive; switch the same screen to Manual to keep your other partitions.",
+      "Pick the drive, ext4 or btrfs, and LUKS2 encryption if you want it. Automatic mode takes the whole drive; flip the same screen to Manual to keep your other partitions.",
   },
   {
     num: "04",
