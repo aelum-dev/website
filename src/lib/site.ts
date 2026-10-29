@@ -188,10 +188,8 @@ export interface Step {
 // Home page
 //
 // The landing page tells the whole story in three moves (boot → answer →
-// reboot) and then shows what that looks like. Both are data like every other
-// section. The numbers here are the same facts the Install and Features pages
-// state; the ISO size is derived from release.ts so it can never drift from the
-// file actually published.
+// reboot). The copy here states those facts once; the Install and Features
+// pages say the same thing in more detail.
 // ---------------------------------------------------------------------------
 
 export interface FlowStep {
@@ -222,89 +220,6 @@ export const flow: FlowStep[] = [
     title: "Reboot into your desktop",
     description:
       "The installer writes the system from the ISO in about a minute and a half. Reboot, log in at the Aelum greeter, and the desktop is already themed.",
-  },
-];
-
-/** One tile of the landing-page showcase grid. `span: "wide"` takes the wider
-    column of the bento row; the grid itself is laid out in home.css. */
-export type ShowcaseTile =
-  | {
-      kind: "shot";
-      span: "wide" | "";
-      light: string;
-      dark: string;
-      alt: string;
-      caption: string;
-    }
-  | {
-      kind: "stat";
-      span: "";
-      value: string;
-      unit: string;
-      label: string;
-      note: string;
-    }
-  | {
-      kind: "feature";
-      span: "wide" | "";
-      icon: string;
-      title: string;
-      description: string;
-    };
-
-export const showcase: ShowcaseTile[] = [
-  {
-    kind: "shot",
-    span: "wide",
-    light: "installer-step-5-light",
-    dark: "installer-step-5-dark",
-    alt: "Aelum installer confirming the installation",
-    caption: "The summary before it starts. Everything above it is already decided.",
-  },
-  {
-    kind: "stat",
-    span: "",
-    value: "0",
-    unit: "fetches",
-    label: "Network calls during install",
-    note: "The package mirror lives inside the ISO, so the installer never asks for a connection.",
-  },
-  {
-    kind: "feature",
-    span: "",
-    icon: "eb11", // nerd-fonts: key
-    title: "Encrypted if you want it",
-    description: "Put LUKS2 under the root filesystem and you unlock it with a passphrase, right on the boot splash.",
-  },
-  {
-    kind: "feature",
-    span: "",
-    icon: "f0570", // nerd-fonts: view_grid
-    title: "btrfs layout, ready made",
-    description: "@home, @srv, @cache, @tmp and @log on one free-space pool — or plain ext4.",
-  },
-  {
-    kind: "stat",
-    span: "",
-    value: "4",
-    unit: "questions",
-    label: "What the wizard asks",
-    note: "Language, user, disk, confirm. Manual partitioning is on the disk page, not an extra step.",
-  },
-  {
-    kind: "shot",
-    span: "wide",
-    light: "installer-step-7-light",
-    dark: "installer-step-7-dark",
-    alt: "Aelum installer finishing the installation",
-    caption: "Reboot, log in, and the desktop is there.",
-  },
-  {
-    kind: "feature",
-    span: "",
-    icon: "f0581", // nerd-fonts: volume_off (silent boot)
-    title: "A splash, not console spam",
-    description: "A branded Plymouth boot screen — with the passphrase prompt built into it on encrypted installs.",
   },
 ];
 

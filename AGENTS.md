@@ -51,17 +51,17 @@ npm run format                # the generated manifest is committed biome-format
   titles are fine; running prose is not a feature log. Facts, numbers, sizes and commands are never
   softened or dropped for style.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
-  `/` → `Hero` + `Flow` + `Showcase` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` ·
+  `/` → `Hero` + `Flow` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` ·
   `/features/` → `Desktop` + `Features` + `Languages` + `CLI`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
   the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard
-  button with copy/check icons) are reusable building blocks. `Flow.astro` (the three-move strip) and
-  `Showcase.astro` (the landing-page bento) are home-only and read `flow` / `showcase` from `site.ts`.
+  button with copy/check icons) are reusable building blocks. `Flow.astro` (the three-move strip) is
+  home-only and reads `flow` from `site.ts`.
 - **Layout & chrome** in `src/layouts/Layout.astro`: the `<head>` boilerplate (meta, OG/Twitter,
   favicon, theme script) **and** the site chrome (skip link, the ambient background layers, the
   reading-progress bar, `Nav`, `<main>`, `CTA`, `Footer`). A page supplies only its title/description,
   an `active` page id, its own CSS imports and its sections. `showCta={false}` suppresses the
-  call-to-action where it would be redundant (the Download page).
+  call-to-action where the page already carries its own download buttons (Home, Download).
 - **Reference `public/` assets from the site root** (`/logo.svg`, `/images/…`, `/scripts/…`).
   Relative paths (`logo.svg`) break on nested routes: from `/download/` they resolve to
   `/download/logo.svg` and 404. Canonical/absolute URLs (OG images) still come from `Astro.url`.

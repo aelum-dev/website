@@ -19,7 +19,7 @@ interface Props {
   description: string;
   /** Which nav item represents this page. Drives the active state server-side. */
   active: PageId;
-  /** Set false where a call-to-action would be redundant (the Download page). */
+  /** Set false where the page already carries its own download buttons (Home, Download). */
   showCta?: boolean;
 }
 

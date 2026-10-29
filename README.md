@@ -9,9 +9,8 @@ Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live 
 Four real routes, one Astro page each.
 
 - **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1.5 min install, 3.2 GB installed, 28
-  languages — inline value props, and the desktop preview in a lit device frame),
-  **Flow** (the three moves: flash it, answer four questions, reboot), and **Showcase** (a bento of
-  real installer screenshots, hard numbers and the two choices that matter).
+  languages — inline value props, and the desktop preview in a lit device frame) and
+  **Flow** (the three moves: flash it, answer four questions, reboot).
 - **`/install/` — Install**: the auto-advancing 7-shot walkthrough with a progress rail, and the
   6-step wizard grid.
 - **`/features/` — Features**: why Aelum (offline install, auto-launching installer, optional LUKS2,
@@ -20,15 +19,15 @@ Four real routes, one Astro page each.
   Firefox, Aelum splash), the 28-language marquee, and **CLI** headless install examples.
 - **`/download/` — Download**: the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing
   key fetched via WKD, copyable verification commands, and flashing tools (Ventoy, BalenaEtcher, dd).
-- **Call to action** and **Footer** are site chrome, rendered by the layout on every page but the
-  Download page.
+- **Call to action** and **Footer** are site chrome, rendered by the layout. The CTA band is off on
+  Home and Download, whose own buttons already carry the download.
 
 ## Project Structure
 
 ```
 src/
   pages/
-    index.astro        # / (Hero + Flow + Showcase)
+    index.astro        # / (Hero + Flow)
     download.astro     # /download/
     install.astro      # /install/
     features.astro     # /features/
@@ -39,7 +38,6 @@ src/
     Nav.astro          # floating glass header + sliding active pill
     Hero.astro         # hero
     Flow.astro         # the three moves
-    Showcase.astro     # landing-page bento
     Features.astro     # features section
     Desktop.astro      # finished desktop section
     Install.astro      # installer walkthrough + step grid
@@ -57,7 +55,7 @@ src/
     images.ts          # generated screenshot manifest — never hand-edited
   styles/
     base.css           # design system (tokens, ambient field, cards, buttons, nav, motion)
-    home.css           # hero / flow / showcase
+    home.css           # hero / flow
     download.css       # download page
     features.css       # features section
     install.css        # installer section

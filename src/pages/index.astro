@@ -4,14 +4,13 @@ import "../styles/home.css";
 import Flow from "../components/Flow.astro";
 import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
-import Showcase from "../components/Showcase.astro";
 
 const title = "Aelum — an Arch Linux distro with an offline installer";
 const description =
   "Aelum — an Arch Linux distro whose installer works fully offline. Boot it, run the installer, and end up with a Hyprland + Dux Shell desktop. The install needs no internet; the installed system uses the internet like any other Arch machine.";
 ---
 
-<Layout title={title} description={description} active="home">
+<Layout title={title} description={description} active="home" showCta={false}>
   <Fragment slot="head">
     <script type="application/ld+json" is:inline>
       {
@@ -39,5 +38,4 @@ const description =
   </Hero>
 
   <Flow />
-  <Showcase />
 </Layout>

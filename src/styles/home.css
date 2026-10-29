@@ -1,6 +1,6 @@
 /* ============================================================
    Aelum-Web — Home page (home.css)
-   Hero, the three-move flow, and the showcase bento.
+   Hero and the three-move flow.
    Imports base.css for tokens, reset and shared UI.
    ============================================================ */
 
@@ -510,144 +510,10 @@ html.js .hero-accent {
 }
 
 /* ============================================================
-   Showcase bento
-   ============================================================ */
-
-.bento {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-.bento-tile {
-  grid-column: span 4;
-  min-width: 0;
-}
-.bento-wide {
-  grid-column: span 8;
-}
-
-/* Screenshot tiles: the image fills the tile and the caption is a bar under it.
-   Overlaying the caption on the picture looked good in a mock and read badly on
-   a real screenshot — the text landed on top of the installer's own UI. */
-.bento-shot {
-  position: relative;
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: var(--shadow-md);
-  transition:
-    transform 0.45s var(--ease),
-    border-color 0.45s var(--ease),
-    box-shadow 0.45s var(--ease);
-}
-.bento-shot:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent-line);
-  box-shadow: var(--shadow-pop);
-}
-.bento-shot-inner {
-  position: relative;
-  aspect-ratio: 3 / 2;
-  overflow: hidden;
-}
-.bento-shot-inner picture,
-.bento-shot-inner img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease);
-}
-.bento-shot:hover .bento-shot-inner img {
-  transform: scale(1.04);
-}
-.bento-caption {
-  padding: var(--space-3) var(--space-4);
-  border-top: 1px solid var(--surface-border);
-  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-dim);
-}
-
-/* Stat tiles */
-.bento-stat {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  background: var(--grad-wash), var(--surface);
-}
-.bento-value {
-  font-family: var(--font-display);
-  font-size: clamp(2.6rem, 5.5vw, 3.8rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  background: linear-gradient(160deg, var(--text) 25%, color-mix(in srgb, var(--accent) 75%, var(--text)) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bento-unit {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: var(--track-wide);
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.bento-stat h3 {
-  font-size: 1.05rem;
-  margin-top: var(--space-2);
-}
-.bento-stat p {
-  color: var(--text-dim);
-  font-size: 0.9rem;
-}
-
-/* Feature tiles */
-.bento-feature {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-.bento-feature h3 {
-  font-size: 1.05rem;
-}
-.bento-feature p {
-  color: var(--text-dim);
-  font-size: 0.9rem;
-}
-
-@media (max-width: 1024px) {
-  .bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .bento-tile {
-    grid-column: span 1;
-  }
-  .bento-wide {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 620px) {
-  .bento {
-    grid-template-columns: 1fr;
-  }
-  .bento-tile,
-  .bento-wide {
-    grid-column: span 1;
-  }
-}
-
-/* ============================================================
    Off-screen loops (see base.css → Off-screen loops)
    The hero is the loudest decoration on the site, and it is also the first
    thing you scroll past: the halo, the sheen crossing the device and the
-   orbiting rim all kept running while you were reading the bento three
-   screens down.
+   orbiting rim all kept running while you were three screens down.
    ============================================================ */
 html.loops-managed .section:not(.is-live) .hero-halo,
 html.loops-managed .section:not(.is-live) .hero-ring,
@@ -682,8 +548,5 @@ html.loops-managed .section:not(.is-live) .flow-line::after {
   }
   html.js .hero-accent {
     background-size: 100% 3px;
-  }
-  .bento-shot:hover .bento-shot-inner img {
-    transform: none;
   }
 }
