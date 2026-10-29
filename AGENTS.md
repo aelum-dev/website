@@ -42,6 +42,14 @@ npm run format                # the generated manifest is committed biome-format
 - **Content lives in `src/lib/site.ts`.** Keep all copy (languages, links, nav, feature text) as
   exported data here and consume it from components — don't hardcode strings in templates. This makes
   reviews and edits easy.
+- **Copy is written from the reader's side, never the software's.** The subject of a sentence is the
+  user or their machine — "Boot the ISO and the installer is already opening", "Your whole disk is
+  erased", "Plug a monitor in and it picks a scale" — not the product narrating its own verbs:
+  "Launches the installer. Wipes the partition table. Sets a scale." Stacked subject-less verb
+  fragments ("Wipes X. Builds Y. No terminal, no commands.") are the tell of machine-written copy;
+  humans describe outcomes and give advice ("use it only on a disk that's yours alone"). Punchy
+  titles are fine; running prose is not a feature log. Facts, numbers, sizes and commands are never
+  softened or dropped for style.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
   `/` → `Hero` + `Flow` + `Showcase` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` ·
   `/features/` → `Desktop` + `Features` + `Languages` + `CLI`.
