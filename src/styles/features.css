@@ -48,7 +48,10 @@
    no inner zoom. */
 .look-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  /* Two columns, fixed. A 16:9 capture is only legible at a real width, and
+     auto-fit puts three on a row at this container's 1160px and drops the
+     fourth alone underneath them. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-5);
   margin-top: var(--head-margin);
 }
@@ -88,6 +91,15 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-dim);
+}
+
+/* Below the width where a half-column capture stops being readable (a menu bar
+   in 300px of pixels is texture, not text), the figures go full width. Same
+   breakpoint the footer grid uses. */
+@media (max-width: 760px) {
+  .look-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* The Desktop section's demo figure sits under the section head (whose

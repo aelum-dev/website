@@ -60,19 +60,19 @@ const verifySteps = [
   {
     num: "01",
     title: "Get the signing key",
-    body: "WKD lets GPG pull the release key straight from aelum.dev by email — no keyserver, no manual import.",
+    body: "GPG can fetch the release key directly from aelum.dev by email (WKD), so you don't need a keyserver or a manual import.",
     command: verifyCommands.fetchKey,
   },
   {
     num: "02",
     title: "Check the checksum",
-    body: "Run this in the folder with your downloads. It re-hashes the ISO and compares it with the published value.",
+    body: "Run this in the folder your downloads are in. It re-hashes the ISO and compares it with the published value.",
     command: verifyCommands.checksum,
   },
   {
     num: "03",
     title: "Verify the signature",
-    body: "Confirms the ISO was signed by the Aelum release key and hasn't been altered since.",
+    body: "This confirms the ISO was signed with the Aelum release key and has not been changed since.",
     command: verifyCommands.signature,
   },
 ];
@@ -124,11 +124,11 @@ const flashTools = [
           </span>
           Aelum {releaseVersion} · {releaseArch}
         </span>
-        <h2 class="section-title">Download Aelum.</h2>
+        <h2 class="section-title">Download the Aelum ISO</h2>
         <p class="dl-hero-lead">
-          The bootable installer ISO. Flash it to a USB drive and boot from it —
-          the installer starts automatically and sets up Aelum fully offline, no
-          internet needed.
+          This is the installer ISO. Write it to a USB drive and boot from it:
+          the installer opens on its own and installs Aelum without needing
+          internet.
         </p>
 
         <div class="dl-req">
@@ -188,10 +188,10 @@ const flashTools = [
         </span>
         Verify
       </span>
-      <h2 class="section-title">Check your download.</h2>
+      <h2 class="section-title">Check that the download is intact</h2>
       <p class="section-sub">
-        Every Aelum release is signed with the Aelum release key. Check the
-        checksum, then verify the signature before you flash anything.
+        Every Aelum release is signed with the Aelum release key. It is worth
+        checking the checksum and the signature before you flash the ISO.
       </p>
     </div>
 
@@ -254,11 +254,11 @@ const flashTools = [
           </span>
         </div>
         <p class="dl-key-wkd">
-          Get this key over <strong>WKD</strong> — GPG fetches it straight from{" "}
+          You can get this key over <strong>WKD</strong>: GPG fetches it from{" "}
           <a href={wkdKeyUrl} target="_blank" rel="noopener">
             aelum.dev
           </a>{" "}
-          by email, so there's no keyserver and nothing to import by hand.
+          by email, so there is no keyserver and nothing to import by hand.
         </p>
       </div>
     </div>
@@ -266,10 +266,10 @@ const flashTools = [
     <div class="dl-steps reveal">
       <h3 class="dl-steps-title">
         <span class="nf-icon" aria-hidden="true">{glyph("f120")}</span>
-        Verify in three commands
+        Three commands to check it
       </h3>
       <p class="dl-steps-note">
-        Download the files above into one folder, then run these there — one line
+        Put the files above in one folder and run these commands in it, one line
         each.
       </p>
       <ol class="dl-step-list">
@@ -300,13 +300,13 @@ const flashTools = [
         <span class="eyebrow-chip" aria-hidden="true">
           <span class="nf-icon">&#xf02ca;</span>
         </span>
-        Before you boot
+        Writing it to a USB stick
       </span>
-      <h2 class="section-title">Flash it to a USB drive.</h2>
+      <h2 class="section-title">Write the ISO to a USB drive</h2>
       <p class="section-sub">
-        Any of these puts the {isoSizeLabel} ISO on a USB stick. Ventoy keeps the
-        stick usable for other files; BalenaEtcher does a single-image flash; dd
-        is a built-in command line tool.
+        Any of these three puts the {isoSizeLabel} ISO on a USB stick. Ventoy
+        leaves the stick usable for other files, BalenaEtcher writes a single
+        image, and dd is already available on Linux and macOS.
       </p>
     </div>
 

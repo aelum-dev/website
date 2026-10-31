@@ -31,6 +31,17 @@ desktop features — there is no window to find and nothing to crop. Each pair i
 written lossless under an explicit manifest key; both files must be the same
 size.
 
+Single-capture mode (a subject captured in one theme only):
+
+    --single <key>=<file>
+      -> assets/<key>.png
+
+Not every subject exists in both themes: a settings page is often only ever
+photographed in dark. The key names the theme the capture actually holds
+(`desktop-bar-dark`), so nothing in the manifest claims a scheme it does not
+have; components pass it as their primary set, and Shot emits no swap
+attributes for it — both themes show the capture as it was taken.
+
 Sources are written lossless (PNG). Everything after this point — the responsive
 ladder and src/lib/images.ts — is scripts/build-images.py's job.
 
@@ -42,6 +53,9 @@ Requires: python3 + Pillow + numpy.
 
     python3 scripts/prepare-sources.py \
         --pair desktop-settings=…/shot-light.png:…/shot-dark.png
+
+    python3 scripts/prepare-sources.py \
+        --single desktop-bar-dark=…/shot.png
 """
 
 import argparse
@@ -167,6 +181,24 @@ def import_pair(key: str, light: Path, dark: Path) -> int:
     return written
 
 
+def import_single(key: str, src: Path) -> int:
+    """Single-capture mode: write one whole-frame source under an explicit key.
+
+    The key carries the theme the capture holds, because a one-theme subject has
+    no counterpart to be confused with. Nothing is cropped and nothing is resized:
+    build-images.py is the only thing that derives sizes from here on.
+    """
+    if not src.is_file():
+        raise SystemExit(f"no such file: {src}")
+    with Image.open(src) as im:
+        if im.mode != "RGB":
+            im = im.convert("RGB")
+        out = OUT_DIR / f"{key}.png"
+        im.save(out, "PNG", optimize=True)
+        print(f"  {src.name} {im.size[0]}x{im.size[1]} -> {out.relative_to(ROOT)} (whole frame, one theme)")
+    return 1
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--light", help="directory of light-theme captures (1.png, 2.png, …)")
@@ -179,6 +211,12 @@ def main() -> int:
         action="append",
         metavar="KEY=LIGHT:DARK",
         help="whole-frame import of one light/dark capture pair under an explicit key",
+    )
+    ap.add_argument(
+        "--single",
+        action="append",
+        metavar="KEY-THEME=FILE",
+        help="whole-frame import of one capture; the key names the theme it holds (…-light or …-dark)",
     )
     args = ap.parse_args()
 
@@ -198,8 +236,16 @@ def main() -> int:
             raise SystemExit(f"bad --pair {spec!r} (want KEY=LIGHT:DARK)")
         total += import_pair(key, Path(light_s).expanduser(), Path(dark_s).expanduser())
 
+    for spec in args.single or []:
+        key, _, file = spec.partition("=")
+        if not key or not file:
+            raise SystemExit(f"bad --single {spec!r} (want KEY=FILE)")
+        if not key.endswith(("-light", "-dark")):
+            raise SystemExit(f"bad key {key!r}: a one-theme source says which theme it holds")
+        total += import_single(key, Path(file).expanduser())
+
     if not total:
-        print("nothing written (pass --light/--dark or --pair)", file=sys.stderr)
+        print("nothing written (pass --light/--dark, --pair or --single)", file=sys.stderr)
         return 1
     print(f"wrote {total} sources to {OUT_DIR.relative_to(ROOT)}; now run scripts/build-images.py")
     return 0

@@ -20,6 +20,28 @@ export interface ShotSource {
 }
 
 export const images: Record<string, ShotSource> = {
+  "desktop-bar-dark": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-bar-dark-800w.8a100ab5.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-bar-dark-1280w.b85be305.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-bar-dark-1920w.4e7211fe.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-bar-dark-1280w.8df466d6.webp",
+    },
+  },
   "desktop-control-dark": {
     width: 2560,
     height: 1440,
@@ -194,6 +216,28 @@ export const images: Record<string, ShotSource> = {
     fallback: {
       width: 1280,
       webp: "/images/desktop-terminal-light-1280w.10f466ee.webp",
+    },
+  },
+  "desktop-weather-dark": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-weather-dark-800w.fc2db591.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-weather-dark-1280w.be98cffa.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-weather-dark-1920w.2a0c1eff.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-weather-dark-1280w.0b5b8d31.webp",
     },
   },
   "installer-step-1-dark": {

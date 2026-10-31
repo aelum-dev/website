@@ -75,33 +75,33 @@ export interface Feature {
 export const features: Feature[] = [
   {
     icon: "f02da", // nerd-fonts: history
-    title: "Roll back whenever you want",
+    title: "Snapshots you can go back to",
     description:
-      "On a btrfs install, every pacman transaction takes a snapshot before and after it. Boot an older state from the Aelum menu in rEFInd, or make it the system again with snapper rollback.",
+      "On a btrfs install, every pacman transaction takes a snapshot before and after it. From the Aelum entry in the rEFInd menu you can start an older state, and snapper rollback makes it the system again.",
   },
   {
     icon: "f03d8", // nerd-fonts: palette
-    title: "Colors from your wallpaper",
+    title: "Colors taken from your wallpaper",
     description:
-      "matugen reads your wallpaper and re-themes the shell, GTK and Qt apps around it. Dark, light or automatic — pick a wallpaper and the whole desktop follows.",
+      "matugen reads your wallpaper and re-themes the shell and your GTK and Qt apps to match it. Dark, light or automatic — choose a wallpaper and the rest of the desktop follows.",
   },
   {
     icon: "eb11", // nerd-fonts: key
-    title: "Encrypted, still just a passphrase",
+    title: "Disk encryption with one passphrase",
     description:
-      "Choose LUKS2 during the install and the only thing you ever do differently is type your passphrase into the boot splash.",
+      "If you choose LUKS2 during the install, the only thing you do differently afterwards is type your passphrase into the boot splash.",
   },
   {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
-    title: "A boot that looks like Aelum",
+    title: "A branded boot menu and splash",
     description:
-      "A branded rEFInd menu and Plymouth splash instead of boot spam. Each Aelum on the disk gets its own boot entry and its own snapshot submenu, so installs never overwrite each other.",
+      "You get an Aelum rEFInd menu and Plymouth splash instead of boot messages. Each Aelum install on the disk keeps its own boot entry and its own snapshot submenu, so they don't overwrite each other.",
   },
   {
     icon: "f012c", // nerd-fonts: check
-    title: "Sensible defaults, already applied",
+    title: "Defaults that are already set",
     description:
-      "PipeWire for audio, zram instead of a swap file, Firefox themed to match the desktop. There is no post-install setup list to work through.",
+      "PipeWire for audio, zram instead of a swap file, and Firefox themed to match the desktop. There is no list of setup steps left for you to do.",
   },
 ];
 
@@ -135,7 +135,7 @@ export const software: Software[] = [
   {
     icon: "ee26", // nerd-fonts: brush
     title: "GTK + Qt theming",
-    description: "Apps are re-themed automatically — no manual theming.",
+    description: "Your apps pick up the current palette without you configuring them.",
   },
   {
     icon: "f120", // nerd-fonts: terminal
@@ -145,21 +145,27 @@ export const software: Software[] = [
   {
     icon: "f0239", // nerd-fonts: firefox
     title: "Firefox",
-    description: "The shipped browser, themed to match the desktop.",
+    description: "The browser that ships here, themed to match the desktop.",
   },
   {
     icon: "f02e9", // nerd-fonts: image (branded boot splash)
     title: "Aelum splash",
-    description: "Branded Plymouth boot screen with LUKS passphrase unlock.",
+    description: "The branded Plymouth boot screen, which also asks for your LUKS passphrase.",
   },
 ];
 
 /** Whole-desktop screenshots the site renders framed — the landing hero and
     the Features page. The subject of these is the desktop itself, so they are
     imported whole (see prepare-sources.py --pair) and keyed desktop-*. */
+/** A shot is one or two sets from the manifest. `light` is the primary one — the
+    set the document serves before any theme swap — and `dark` the set theme.js
+    swaps to in the dark scheme. A subject captured in one theme only has no
+    counterpart: its key goes in `light`, the shot carries no swap attributes, and
+    both themes show the capture as it was taken (see components/Shot.astro). */
 export interface DistroShot {
   light: string;
-  dark: string;
+  /** the dark counterpart, when the subject exists in both themes */
+  dark?: string;
   alt: string;
   /** shown as a caption bar under a framed Features shot; the hero renders none */
   caption?: string;
@@ -176,7 +182,7 @@ export const wallpaperSettingsShot: DistroShot = {
   dark: "desktop-settings-dark",
   alt: "The Aelum wallpaper and colors settings on the Aelum desktop",
   caption:
-    "Wallpaper & colors settings on a fresh install — the wallpaper and its fill mode, light or dark theme mode, dynamic colors driven by the wallpaper. Nothing to configure first.",
+    "The wallpaper and colors settings on a fresh install: the wallpaper and its fill mode, light or dark theme mode, and dynamic colors driven by the wallpaper. This is already set up before your first login.",
 };
 
 export const lookShots: DistroShot[] = [
@@ -185,13 +191,27 @@ export const lookShots: DistroShot[] = [
     dark: "desktop-launcher-dark",
     alt: "The Aelum app launcher with the apps that ship installed",
     caption:
-      "The app launcher on a fresh install — files, browser, terminal, editor, media player, system tools, settings. Nothing to install first.",
+      "The app launcher: press Super + Space and start typing. A handful of apps come preinstalled — files, browser, editor, media player, terminal.",
   },
   {
     light: "desktop-terminal-light",
     dark: "desktop-terminal-dark",
-    alt: "fastfetch output in the Kitty terminal on the Aelum desktop",
-    caption: "Kitty on the same install — themed to the same palette as everything else.",
+    alt: "fastfetch output in the kitty terminal on the Aelum desktop",
+    caption:
+      "fastfetch in kitty: one command that prints what the machine is — OS, kernel, package count, CPU, GPU, memory and disk usage.",
+  },
+  {
+    // Captured in dark only: it is the primary set, so the light theme shows it too.
+    light: "desktop-weather-dark",
+    alt: "The Dux Shell control center on the Aelum desktop, open on its weather page",
+    caption:
+      "The control center — one window with tabs for overview, media, wallpapers, weather and digital wellbeing. This one is open on the weather tab.",
+  },
+  {
+    // Captured in dark only, same as the shot above.
+    light: "desktop-bar-dark",
+    alt: "The Aelum settings window, open on its bar settings",
+    caption: "The settings window, where you can customize the look and feel however you want.",
   },
 ];
 
@@ -221,23 +241,22 @@ export const flow: FlowStep[] = [
   {
     num: "01",
     icon: "ede9", // nerd-fonts: USB stick
-    title: "Flash it and boot it",
-    description:
-      "Write the ISO to a USB stick and boot it on a UEFI machine. The live session logs in and opens the installer for you.",
+    title: "Write the ISO to a USB stick",
+    description: "Boot it on a UEFI machine. The live session logs in as usual and opens the installer for you.",
   },
   {
     num: "02",
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Answer four questions",
     description:
-      "Language, user, disk, confirm — that's the whole wizard. Filesystem, encryption and partitioning are all on the disk screen, and automatic mode erases the whole disk.",
+      "The wizard asks for a language, a user, a disk, and a confirmation. Filesystem, encryption and partitioning are all on the disk screen, and automatic mode erases the whole disk.",
   },
   {
     num: "03",
     icon: "f0379", // nerd-fonts: monitor
-    title: "Reboot into your desktop",
+    title: "Reboot into the desktop",
     description:
-      "The installer writes the system from the ISO in about a minute and a half. Reboot, log in at the Aelum greeter, and the desktop is already themed.",
+      "The installer writes the system from the ISO itself, which takes about a minute and a half. After a reboot you log in at the Aelum greeter, and the desktop is already themed.",
   },
 ];
 
@@ -266,28 +285,28 @@ export interface DiskMode {
 }
 
 export const diskModesPanel = {
-  eyebrow: "Disk selection step",
-  title: "Automatic erases the disk. Manual doesn't.",
-  sub: "Automatic and Manual are the same screen with a switch between them. Only Automatic destroys data, and you're asked to confirm before anything is written.",
+  eyebrow: "The disk step",
+  title: "Automatic mode erases the disk; manual mode doesn't",
+  sub: "Automatic and manual are the same screen with a switch between them. Only automatic mode destroys data, and it asks you to confirm before anything is written.",
 };
 
 export const diskModes: DiskMode[] = [
   {
     icon: "f0029", // nerd-fonts: alert-octagon
     badge: "Automatic mode",
-    title: "Erases the whole disk",
+    title: "The whole disk is erased",
     body: "Your whole disk is erased and partitioned from scratch: 512 MB for Boot, the rest for System. Anything that was on it — another OS, your files — is gone.",
-    points: ["Best when the disk is Aelum's alone", "Avoid it on a disk that still has data you want"],
+    points: ["Use it when the disk is Aelum's alone", "Avoid it on a disk that still holds data you want to keep"],
   },
   {
     icon: "f0498", // nerd-fonts: shield
     badge: "Manual mode",
-    title: "Formats only what you assign",
-    body: "You choose which partitions Aelum uses — one Boot, one System — and only those two are formatted. Everything else on the disk stays untouched, and Aelum makes its own Boot partition instead of reusing another OS's.",
+    title: "Only the partitions you pick are formatted",
+    body: "You choose which partitions Aelum uses — one Boot and one System — and only those two are formatted. Everything else on the disk is left as it is, and Aelum writes its own Boot partition instead of reusing another system's.",
     points: [
       "Your other partitions and files are left alone",
       "Needs a 512 MB Boot and a 7680 MB System partition",
-      "The disk needs a GPT partition table; on an older MBR disk, use Automatic",
+      "The disk needs a GPT partition table; on an older MBR disk, use automatic mode",
     ],
   },
 ];
@@ -298,39 +317,40 @@ export const installSteps: Step[] = [
     icon: "f0ac", // nerd-fonts: globe
     title: "Pick a language",
     description:
-      "Pick from 28 languages. The installer UI and your system locale follow your choice, and the installed system gets a regional Arch mirror list (worldwide mirrors where Arch lists none).",
+      "Choose from 28 languages. The installer and your new system's locale follow that choice, and the installed system gets an Arch mirror list for your region (the worldwide list where Arch has no section for it).",
   },
   {
     num: "02",
     icon: "eb99", // nerd-fonts: account
     title: "Create your user",
-    description: "Set up your username and password in a couple of fields.",
+    description: "Enter a username and a password. There is nothing else on this screen.",
   },
   {
     num: "03",
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
     description:
-      "Pick the drive, ext4 or btrfs, and LUKS2 encryption if you want it. Automatic mode takes the whole drive; flip the same screen to Manual to keep your other partitions.",
+      "Pick the drive, choose ext4 or btrfs, and turn on LUKS2 encryption if you want it. Automatic mode uses the whole drive; switch the same screen to manual mode to keep your other partitions.",
   },
   {
     num: "04",
     icon: "f012c", // nerd-fonts: check
     title: "Confirm",
     description:
-      "Review the summary, then hit install. On automatic mode the dialog spells out what it is about to do: all data on this disk will be permanently erased.",
+      "Check the summary and start the install. In automatic mode the dialog says plainly what is about to happen: all data on this disk will be permanently erased.",
   },
   {
     num: "05",
     icon: "f120", // nerd-fonts: terminal
-    title: "Watch it go",
-    description: "The installer runs entirely from the live ISO — no internet needed.",
+    title: "The install runs",
+    description:
+      "Everything the installer needs is on the live ISO, so the install works without internet, and you can follow the eight steps as they run.",
   },
   {
     num: "06",
     icon: "f0379", // nerd-fonts: monitor
-    title: "Boot into it",
-    description: "Reboot, log in at the greeter, and the Hyprland + Dux Shell desktop is ready.",
+    title: "Reboot and log in",
+    description: "Reboot, log in at the greeter, and the Hyprland + Dux Shell desktop is there.",
   },
 ];
 

@@ -264,7 +264,10 @@ assets/<key>.png                          the screenshots themselves — the onl
   instead of hand-guessed at each re-shoot. It refuses to write a crop it is not confident about.
 - Whole-desktop shots (the hero, the desktop features) are the exception — their subject **is** the
   whole desktop, so there is nothing to crop: `prepare-sources.py --pair <key>=<light.png>:<dark.png>`
-  imports a pair as-is under an explicit manifest key (`hero`, `desktop-*`).
+  imports a pair as-is under an explicit manifest key (`hero`, `desktop-*`). A subject only ever
+  captured in one theme uses `--single <key>-<light|dark>=<file>`: the key names the theme it holds,
+  `DistroShot` carries it in `light` with no `dark`, and `Shot` emits no swap attributes — both themes
+  show that capture as it was taken.
 - `python3 scripts/build-images.py` (needs Pillow + numpy + `avifenc`) rebuilds all of it. Widths are derived
   per source and a source is never upscaled, so a 1200 px screenshot gets 800 px and 1200 px variants,
   not 1920 px. Stale derivatives are deleted, so re-shooting a screenshot does not leave orphans.

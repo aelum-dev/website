@@ -5,16 +5,16 @@ import Shot from "./Shot.astro";
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const points = [
-  { icon: "f05aa", label: "No internet needed to install" },
-  { icon: "f012c", label: "Verified, signed release" },
+  { icon: "f05aa", label: "Works without an internet connection" },
+  { icon: "f012c", label: "Signed ISO with published checksums" },
 ];
 
 // Headline lines. Each one is masked and rises into place on load (see
 // home.css → hero-title): with JavaScript off the `js` class is never added and
 // the lines are simply there.
 const lines = [
-  { text: "Arch power.", accent: false },
-  { text: "Material elegance.", accent: true },
+  { text: "Arch power", accent: false },
+  { text: "with material elegance", accent: true },
 ];
 
 // The three numbers a first-time visitor actually compares. "Install time" is
@@ -38,7 +38,7 @@ const stats = [
           <span class="eyebrow-chip" aria-hidden="true">
             <span class="nf-icon">{glyph("f0ed")}</span>
           </span>
-          Fully offline installer
+          Beautiful out of the box
         </span>
 
         <h1 class="hero-title">
@@ -52,9 +52,10 @@ const stats = [
         </h1>
 
         <p class="hero-lead">
-          Boot it and you land in a minimal Hyprland session that just runs the
-          installer. Answer four questions and you get a themed Hyprland +
-          Dux Shell desktop — no internet needed for the install.
+          The ISO boots into a plain live session that opens the installer for
+          you. It asks four questions and then writes the system from the ISO
+          itself, so the install needs no internet. Afterwards you have
+          Hyprland with Dux Shell, already themed.
         </p>
 
         <div class="hero-actions">
@@ -116,7 +117,7 @@ const stats = [
 
     <div class="hero-scroll" aria-hidden="true">
       <span class="hero-scroll-line"></span>
-      <span class="hero-scroll-label">Keep going</span>
+      <span class="hero-scroll-label">Scroll down</span>
     </div>
   </div>
 </section>
