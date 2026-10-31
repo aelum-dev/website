@@ -54,22 +54,22 @@ scripts/
   og-image.html  export-og-image.sh      # the OG share image and its headless-Chromium export
   fetch-release.mjs                      # refresh src/lib/release.ts from latest.json
 src/
-  pages/                  # index · download · install · features · 404 — one document per route
+  pages/                  # index · download · install · features · faq · 404 — one document per route
   layouts/Layout.astro    # head + site chrome: ambient field, progress bar, Nav, CTA, Footer
-  components/             # Hero Flow Desktop Look Install DiskModes Languages CLI Download
+  components/             # Hero Flow Desktop Look Install DiskModes Languages CLI Download FAQ
                           # CTA Footer Nav Card CopyButton Shot
-  lib/site.ts             # all copy: nav, features, steps, disk modes, languages, links
+  lib/site.ts             # all copy: nav, features, steps, disk modes, languages, links, faqGroups
   lib/release.ts          # generated per release (release-type.ts is the hand-written typing)
   lib/images.ts           # generated screenshot manifest
   styles/base.css         # design tokens + shared UI — the palette is the exported Dux Shell scheme
-  styles/{home,install,features,download}.css   # per-section styles
+  styles/{home,install,features,download,faq}.css   # per-section styles
   styles/fonts/           # self-hosted woff2 subsets + their OFL licenses
 ```
 
 ## Layout & Conventions
 
 - **Real routes, one Astro page each.** `src/pages/` → `/` (`index.astro`), `/download/`,
-  `/install/`, `/features/`; `404.astro` is the fallback. `astro.config.mjs` uses
+  `/install/`, `/features/`, `/faq/`; `404.astro` is the fallback. `astro.config.mjs` uses
   `build.format: "directory"` + `trailingSlash: "always"` so a route is built as
   `download/index.html` and served at `/download/` — GitHub Pages serves directory indexes but
   **not** extensionless paths, so this is the combination that works there. The nav is
@@ -96,11 +96,19 @@ src/
   softened or dropped for style.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
   `/` → `Hero` + `Flow` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` + `Languages` + `CLI` ·
-  `/features/` → `Desktop` + `Look` + `Features`.
+  `/features/` → `Desktop` + `Look` + `Features` · `/faq/` → `FAQ`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
   the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard
   button with copy/check icons) are reusable building blocks. `Flow.astro` (the three-move strip) is
   home-only and reads `flow` from `site.ts`.
+- **The FAQ is a data-driven accordion.** `FAQ.astro` renders `faqGroups` (in `site.ts`) as native
+  `<details>`/`<summary>` — openable with no JavaScript, keyboard-operable, no accordion script — grouped
+  by topic under a jump row of fragment links. Answer copy may carry `<code>` / `<strong>` and is rendered
+  with `set:html` (the Download page's flash steps do the same); command blocks use `set:html` **on the
+  `<pre>` itself**, because any text node a template leaves inside a `<pre>` is rendered — a formatted
+  newline + indent before the `<code>` shows up as a blank line and an indent. `faq.astro` mirrors the same
+  copy into `FAQPage` JSON-LD with the tags stripped. Answers restate what the repos actually do; a claim
+  that is not in the installer or the profile does not belong on this page.
 - **Layout & chrome** in `src/layouts/Layout.astro`: the `<head>` boilerplate (meta, OG/Twitter,
   favicon, theme script) **and** the site chrome (skip link, the ambient background layers, the
   reading-progress bar, `Nav`, `<main>`, `CTA`, `Footer`). A page supplies only its title/description,
@@ -111,7 +119,7 @@ src/
   `/download/logo.svg` and 404. Canonical/absolute URLs (OG images) still come from `Astro.url`.
 - **Styling** is split across `src/styles/`: `base.css` holds the design system tokens (colors, type,
   layout, glassy cards, ambient background); per-section files (`home.css`, `download.css`,
-  `features.css`, `install.css`) hold the rest. Each page imports `base.css` plus only its own
+  `features.css`, `install.css`, `faq.css`) hold the rest. Each page imports `base.css` plus only its own
   section CSS, so Astro emits a shared chunk for `base.css` and per-page CSS for the rest — keep
   section styles in their own file and the payload stays small. Add tokens/classes here rather than
   inline styles.

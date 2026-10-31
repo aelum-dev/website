@@ -1,0 +1,221 @@
+/* ============================================================
+   Aelum-Web — FAQ page (faq.css)
+   Question groups, each one a native <details> accordion.
+   Imports base.css for tokens, reset and shared UI.
+
+   Nothing here loops: an FAQ is read, not watched. The only motion is the
+   chevron turning and the card edge lighting up, both direct responses to the
+   person opening a question.
+   ============================================================ */
+
+/* The group sections are jump targets and the nav is a floating bar, so without
+   this an anchor lands with the section title hidden under it. */
+.faq-group {
+  scroll-margin-top: calc(var(--nav-h) + var(--space-8));
+}
+
+/* ---- Jump row ----
+   An FAQ is read by topic, not top to bottom, so the topics come first. */
+.faq-index {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--head-margin);
+}
+.faq-index-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--bg-elevated) 55%, transparent);
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition:
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease);
+}
+.faq-index-link .nf-icon {
+  font-size: 15px;
+  color: var(--accent);
+}
+.faq-index-link:hover,
+.faq-index-link:focus-visible {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* ---- Question list ---- */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--head-margin);
+}
+.faq-item {
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--t-base) var(--ease),
+    box-shadow var(--t-base) var(--ease),
+    background var(--t-base) var(--ease);
+}
+.faq-item:hover {
+  border-color: var(--accent-line);
+}
+/* An open question is the one being read: it lifts slightly out of the list and
+   takes the more readable solid backdrop. */
+.faq-item[open] {
+  border-color: var(--accent-line);
+  background: color-mix(in srgb, var(--bg-elevated) 90%, transparent);
+  box-shadow: var(--shadow-md);
+}
+
+/* The question row is the control. list-style is dropped because the chevron on
+  the right is the disclosure indicator, and WebKit adds its own marker on top of
+  whatever the CSS draws. */
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius);
+  cursor: pointer;
+  list-style: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: var(--track-tight);
+  line-height: 1.35;
+}
+.faq-q::-webkit-details-marker {
+  display: none;
+}
+.faq-q:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.faq-q-text {
+  /* The question carries the reading face and the tightest tracking the body
+     face has: it is a heading you can open, not a button. */
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.faq-chevron {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition:
+    transform var(--t-fast) var(--ease-spring),
+    background var(--t-base) var(--ease);
+}
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+/* ---- Answer ---- */
+.faq-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-6) var(--space-6);
+  color: var(--text-dim);
+}
+/* Answers are read in one column: the measure is capped so a wide container
+   never turns an answer into two full-width lines of text. */
+.faq-body p {
+  max-width: 76ch;
+}
+.faq-body strong {
+  color: var(--text);
+}
+.faq-points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 78ch;
+  padding-left: var(--space-6);
+}
+.faq-points li::marker {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+/* Commands are the engineering voice, in a block of their own that can be
+   copied in one click — these are the lines a person will paste. */
+.faq-code {
+  position: relative;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--bg-elevated) 82%, transparent);
+}
+.faq-code-lines {
+  margin: 0;
+  padding: var(--space-5) var(--space-6);
+  overflow-x: auto;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.75;
+  white-space: pre;
+}
+.faq-code-copy {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+}
+
+.faq-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.faq-link {
+  font-size: 0.9rem;
+}
+
+/* ---- Narrow screens ----
+   The question row is the part that has to stay readable: at phone width the
+   chevron sits at the end of the first line and the answer loses the indent. */
+@media (max-width: 760px) {
+  .faq-q,
+  .faq-body {
+    padding-inline: var(--space-5);
+  }
+  .faq-q {
+    gap: var(--space-3);
+    font-size: 1rem;
+  }
+  .faq-chevron {
+    width: 30px;
+    height: 30px;
+  }
+  .faq-points {
+    padding-left: var(--space-4);
+  }
+  .faq-code-lines {
+    padding: var(--space-4);
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-chevron {
+    transition: none;
+  }
+}

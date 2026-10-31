@@ -1,0 +1,144 @@
+---
+// The FAQ page body: one section per question group, each question a native
+// <details>. Native on purpose — an accordion that works with JavaScript off is
+// the whole point of an FAQ, and <summary>/<details> is already the accessible,
+// keyboard-operable version of it. Copy lives in faqGroups (src/lib/site.ts).
+import CopyButton from "./CopyButton.astro";
+import { faqGroups } from "../lib/site";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
+
+// Command blocks are written into a <pre> with set:html on purpose: any text node
+// the template leaves inside a <pre> is rendered, so a formatted newline + indent
+// before the code would show up as a blank line and an indent. set:html puts the
+// string there and nothing else.
+const escapeText = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">&#xf02da;</span>
+        </span>
+        Questions
+      </span>
+      <h2 class="section-title">Everything people ask before they boot it</h2>
+      <p class="section-sub">
+        What Aelum is, what the installer does to your disk, how a snapshot is
+        restored, and what happens after the install. Every answer here is the
+        installer's actual behaviour, not a summary of intentions — open one and
+        ask your machine to disagree.
+      </p>
+    </div>
+
+    <!-- Jump row: an FAQ is read by topic, not top to bottom. Plain fragment
+      links, so they work without JavaScript and cost nothing to render. -->
+    <nav class="faq-index reveal" aria-label="Question groups">
+      {
+        faqGroups.map((group) => (
+          <a class="faq-index-link" href={`#${group.id}`}>
+            <span class="nf-icon" aria-hidden="true">
+              {glyph(group.icon)}
+            </span>
+            {group.title}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</section>
+
+{
+  faqGroups.map((group) => (
+    <section class="section faq-group" id={group.id}>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">
+            <span class="eyebrow-chip" aria-hidden="true">
+              <span class="nf-icon">{glyph(group.icon)}</span>
+            </span>
+            {group.eyebrow}
+          </span>
+          <h2 class="section-title">{group.title}</h2>
+          <p class="section-sub">{group.blurb}</p>
+        </div>
+
+        <div class="faq-list" data-stagger>
+          {group.items.map((item, itemIndex) => {
+            const codeId = `faq-code-${group.id}-${itemIndex}`;
+            return (
+              <details class="faq-item reveal">
+                <summary class="faq-q">
+                  <span class="faq-q-text">{item.q}</span>
+                  <span class="faq-chevron" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </span>
+                </summary>
+
+                <div class="faq-body">
+                  <p set:html={item.a} />
+
+                  {item.points && (
+                    <ul class="faq-points">
+                      {item.points.map((point) => (
+                        <li set:html={point} />
+                      ))}
+                    </ul>
+                  )}
+
+                  {item.commands && (
+                    <div class="faq-code">
+                      <pre
+                        class="faq-code-lines"
+                        id={codeId}
+                        set:html={item.commands.map(escapeText).join("\n")}
+                      />
+                      <CopyButton
+                        target={`#${codeId}`}
+                        label="Copy commands"
+                        className="faq-code-copy"
+                      />
+                    </div>
+                  )}
+
+                  {item.links && (
+                    <div class="faq-links">
+                      {item.links.map((link) => (
+                        <a
+                          class="btn btn-ghost faq-link"
+                          href={link.href}
+                          target={link.external ? "_blank" : undefined}
+                          rel={link.external ? "noopener" : undefined}
+                        >
+                          {link.label}
+                          {link.external && (
+                            <span class="nf-icon" aria-hidden="true">
+                              {glyph("f08e")}
+                            </span>
+                          )}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </details>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ))
+}

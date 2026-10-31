@@ -1,0 +1,37 @@
+---
+import "../styles/base.css";
+import "../styles/faq.css";
+import FAQ from "../components/FAQ.astro";
+import Layout from "../layouts/Layout.astro";
+import { faqGroups } from "../lib/site";
+
+const title = "Aelum FAQ — what the distro and the installer actually do";
+const description =
+  "Answers about Aelum: what the distro is, why the installer needs no internet, what automatic and manual disk modes do to your data, btrfs snapshots and rollback, LUKS and LVM, the boot menu, and how the installed system updates.";
+
+// The same questions, in the vocabulary search engines understand. The answers
+// are flattened to text: schema.org wants the answer, not the markup around it.
+const plain = (text: string) => text.replace(/<[^>]+>/g, "");
+const faqJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqGroups.flatMap((group) =>
+    group.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: [item.a, ...(item.points ?? [])].map(plain).join("\n"),
+      },
+    })),
+  ),
+});
+---
+
+<Layout title={title} description={description} active="faq">
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={faqJsonLd}></script>
+  </Fragment>
+
+  <FAQ />
+</Layout>
