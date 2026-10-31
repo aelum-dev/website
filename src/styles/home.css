@@ -481,22 +481,8 @@ html.js .hero-accent {
   border-color: var(--accent-line);
   box-shadow: var(--shadow-pop);
 }
-/* Oversized outline numeral: the step order is the loudest thing in the row.
-   It sits in the card's top-right corner, across from the icon tile, so the
-   card reads as one line — what to do on the left, which step it is on the
-   right — and the copy keeps the full width under it. */
-.flow-num {
-  position: absolute;
-  top: var(--space-7);
-  right: var(--space-7);
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
-  color: transparent;
-}
+/* Oversized outline numeral: see base.css → Cards (shared with the install
+   page's step grid). The card is position:relative so it can hold it. */
 .flow-step h3 {
   font-size: 1.2rem;
 }

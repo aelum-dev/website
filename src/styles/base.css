@@ -1123,6 +1123,23 @@ code {
   color: var(--text-dim);
 }
 
+/* The oversized outline numeral that numbers a card in a sequence — home's flow
+   row and the install page's step grid both use it, so they read as one system:
+   same face, same size, same corner opposite the icon tile, inset by the card's
+   own --space-7 padding. The step order is the loudest thing in the row. */
+.step-num {
+  position: absolute;
+  top: var(--space-7);
+  right: var(--space-7);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 55%, transparent);
+  color: transparent;
+}
+
 /* ============================================================
    Scroll reveal (progressive enhancement)
    Content is visible by default; JS adds .reveal, and `.in`

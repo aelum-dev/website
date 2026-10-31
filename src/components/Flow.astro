@@ -27,7 +27,7 @@ const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
       {
         flow.map((step) => (
           <li class="flow-step reveal">
-            <span class="flow-num nums">{step.num}</span>
+            <span class="step-num nums">{step.num}</span>
             <span class="icon-tile" style="--c:var(--accent)" aria-hidden="true">
               <span class="nf-icon">{glyph(step.icon)}</span>
             </span>
