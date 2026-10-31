@@ -20,6 +20,7 @@ export const navLinks: NavLink[] = [
 
 export const mainRepo = "https://github.com/aelum-dev/live-iso";
 export const githubUrl = "https://github.com/aelum-dev";
+export const discordUrl = "https://discord.gg/EURWsba25";
 export const installerRepo = "https://github.com/aelum-dev/installer";
 export const dockerRepo = "https://github.com/aelum-dev/docker";
 export const hyprlandUrl = "https://hyprland.org/";

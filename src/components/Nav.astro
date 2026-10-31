@@ -1,5 +1,5 @@
 ---
-import { githubUrl, navLinks, type PageId } from "../lib/site";
+import { discordUrl, githubUrl, navLinks, type PageId } from "../lib/site";
 
 interface Props {
   /** The page being rendered; marks the matching link server-side so the
@@ -75,6 +75,19 @@ const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
       <a class="btn btn-ghost nav-gl" href={githubUrl} target="_blank" rel="noopener">
         <span class="nf-icon" aria-hidden="true">{glyph("f09b")}</span>
         GitHub
+      </a>
+      <!-- Icon-only: the Discord mark is the whole affordance, so the name lives
+        in the accessible label instead of the header's width. It carries .nav-gl
+        too, which is what hides it at the compact breakpoint. -->
+      <a
+        class="btn btn-ghost nav-gl nav-social"
+        href={discordUrl}
+        target="_blank"
+        rel="noopener"
+        aria-label="Aelum on Discord"
+        title="Aelum on Discord"
+      >
+        <span class="nf-icon" aria-hidden="true">{glyph("f1ff")}</span>
       </a>
       <button
         type="button"

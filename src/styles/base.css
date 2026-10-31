@@ -1367,6 +1367,12 @@ html.js .nav-links.is-ready a.active {
   padding: 0.6rem 1.05rem;
   font-size: 0.9rem;
 }
+/* The icon-only social link (Discord): the same button as GitHub with the label
+   dropped, so it costs a square instead of a word. The name is in its
+   aria-label, and it hides with .nav-gl on the compact nav. */
+.nav-social {
+  padding: 0.6rem;
+}
 
 /* Burger — hidden until the compact breakpoint. */
 .nav-burger {

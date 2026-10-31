@@ -79,6 +79,13 @@ src/
 - **Content lives in `src/lib/site.ts`.** Keep all copy (languages, links, nav, feature text) as
   exported data here and consume it from components — don't hardcode strings in templates. This makes
   reviews and edits easy.
+- **The community links** (GitHub, Discord) live in `site.ts` (`githubUrl`, `discordUrl`) and are plain
+  `<a>` in two places: `Nav.astro`'s `.nav-actions` (header) and the footer's Project column. In the
+  header they are icon-first: the mark is a Nerd Fonts glyph from the self-hosted subset (`f09b`,
+  `f1ff`), so a new one is `scripts/icons.py add <cp>` plus a commit of the rebuilt
+  `src/styles/fonts/NerdFontsSymbols.woff2` — never a second icon set or an inline SVG. The icon-only
+  form is `.nav-social`, and it hides together with `.nav-gl` at the compact breakpoint, where the name
+  belongs in `aria-label`/`title` because there is no room for it. In the footer they are text links.
 - **Copy is written from the reader's side, never the software's.** The subject of a sentence is the
   user or their machine — "Boot the ISO and the installer is already opening", "Your whole disk is
   erased", "Plug a monitor in and it picks a scale" — not the product narrating its own verbs:
