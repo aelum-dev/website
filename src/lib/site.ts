@@ -21,9 +21,11 @@ export const navLinks: NavLink[] = [
 export const mainRepo = "https://github.com/aelum-dev/live-iso";
 export const githubUrl = "https://github.com/aelum-dev";
 export const installerRepo = "https://github.com/aelum-dev/installer";
+export const dockerRepo = "https://github.com/aelum-dev/docker";
 export const hyprlandUrl = "https://hyprland.org/";
-export const duxShellUrl = "https://github.com/duxlabs-dev/dux-shell";
+export const duxShellUrl = "https://duxlabs.dev/";
 export const wailsUrl = "https://wails.io/";
+export const goUrl = "https://go.dev/";
 export const ventoyUrl = "https://www.ventoy.net/en/download.html";
 export const balenaEtcherUrl = "https://etcher.balena.io/#download-etcher";
 

@@ -1,5 +1,15 @@
 ---
-import { duxShellUrl, githubUrl, hyprlandUrl, installerRepo, mainRepo, navLinks, wailsUrl } from "../lib/site";
+import {
+  dockerRepo,
+  duxShellUrl,
+  githubUrl,
+  goUrl,
+  hyprlandUrl,
+  installerRepo,
+  mainRepo,
+  navLinks,
+  wailsUrl,
+} from "../lib/site";
 ---
 
 <footer class="footer">
@@ -37,10 +47,13 @@ import { duxShellUrl, githubUrl, hyprlandUrl, installerRepo, mainRepo, navLinks,
         <h4>Project</h4>
         <ul>
           <li>
-            <a href={mainRepo} target="_blank" rel="noopener">Aelum (live-iso)</a>
+            <a href={mainRepo} target="_blank" rel="noopener">Live-ISO</a>
           </li>
           <li>
             <a href={installerRepo} target="_blank" rel="noopener">Installer</a>
+          </li>
+          <li>
+            <a href={dockerRepo} target="_blank" rel="noopener">Docker</a>
           </li>
           <li><a href={githubUrl} target="_blank" rel="noopener">GitHub</a></li>
         </ul>
@@ -58,6 +71,7 @@ import { duxShellUrl, githubUrl, hyprlandUrl, installerRepo, mainRepo, navLinks,
             </a>
           </li>
           <li><a href={wailsUrl} target="_blank" rel="noopener">Wails v2</a></li>
+          <li><a href={goUrl} target="_blank" rel="noopener">Go</a></li>
         </ul>
       </div>
     </div>
