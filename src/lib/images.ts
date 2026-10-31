@@ -26,20 +26,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-control-dark-800w.aecae41a.avif",
+        avif: "/images/desktop-control-dark-800w.e865d35a.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-control-dark-1280w.66c19aa1.avif",
+        avif: "/images/desktop-control-dark-1280w.824050b0.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-control-dark-1920w.c69a83c3.avif",
+        avif: "/images/desktop-control-dark-1920w.0f637baf.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-control-dark-1280w.c4fd19ba.webp",
+      webp: "/images/desktop-control-dark-1280w.f53c4e75.webp",
     },
   },
   "desktop-control-light": {
@@ -48,20 +48,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-control-light-800w.b395951d.avif",
+        avif: "/images/desktop-control-light-800w.fbf3eba0.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-control-light-1280w.4ca40973.avif",
+        avif: "/images/desktop-control-light-1280w.21d792a8.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-control-light-1920w.c85e369e.avif",
+        avif: "/images/desktop-control-light-1920w.7fadafa6.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-control-light-1280w.c552f772.webp",
+      webp: "/images/desktop-control-light-1280w.d9397af0.webp",
     },
   },
   "desktop-launcher-dark": {
@@ -108,6 +108,50 @@ export const images: Record<string, ShotSource> = {
       webp: "/images/desktop-launcher-light-1280w.9c932065.webp",
     },
   },
+  "desktop-settings-dark": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-settings-dark-800w.8a5c9a48.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-settings-dark-1280w.200bab3c.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-settings-dark-1920w.62cf9ed9.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-settings-dark-1280w.1921718b.webp",
+    },
+  },
+  "desktop-settings-light": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-settings-light-800w.11752f36.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-settings-light-1280w.0acdef7a.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-settings-light-1920w.a6f73373.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-settings-light-1280w.fd14c050.webp",
+    },
+  },
   "desktop-terminal-dark": {
     width: 2560,
     height: 1440,
@@ -150,50 +194,6 @@ export const images: Record<string, ShotSource> = {
     fallback: {
       width: 1280,
       webp: "/images/desktop-terminal-light-1280w.10f466ee.webp",
-    },
-  },
-  "hero-dark": {
-    width: 2560,
-    height: 1440,
-    variants: [
-      {
-        width: 800,
-        avif: "/images/hero-dark-800w.1037578e.avif",
-      },
-      {
-        width: 1280,
-        avif: "/images/hero-dark-1280w.3338348e.avif",
-      },
-      {
-        width: 1920,
-        avif: "/images/hero-dark-1920w.556914d4.avif",
-      },
-    ],
-    fallback: {
-      width: 1280,
-      webp: "/images/hero-dark-1280w.087a322f.webp",
-    },
-  },
-  "hero-light": {
-    width: 2560,
-    height: 1440,
-    variants: [
-      {
-        width: 800,
-        avif: "/images/hero-light-800w.2c0927e5.avif",
-      },
-      {
-        width: 1280,
-        avif: "/images/hero-light-1280w.7992239d.avif",
-      },
-      {
-        width: 1920,
-        avif: "/images/hero-light-1920w.9170c39e.avif",
-      },
-    ],
-    fallback: {
-      width: 1280,
-      webp: "/images/hero-light-1280w.e4a8cf48.webp",
     },
   },
   "installer-step-1-dark": {

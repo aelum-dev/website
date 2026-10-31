@@ -154,22 +154,29 @@ export const software: Software[] = [
   },
 ];
 
-/** Whole-desktop screenshots the features page shows. The subject of these is
-    the desktop itself, so they are imported whole (see prepare-sources.py
-    --pair) and keyed desktop-*. */
+/** Whole-desktop screenshots the site renders framed — the landing hero and
+    the Features page. The subject of these is the desktop itself, so they are
+    imported whole (see prepare-sources.py --pair) and keyed desktop-*. */
 export interface DistroShot {
   light: string;
   dark: string;
   alt: string;
-  caption: string;
+  /** shown as a caption bar under a framed Features shot; the hero renders none */
+  caption?: string;
 }
 
-export const desktopControlShot: DistroShot = {
+export const controlCenterShot: DistroShot = {
   light: "desktop-control-light",
   dark: "desktop-control-dark",
   alt: "The Aelum desktop with the Dux Shell control center open",
+};
+
+export const wallpaperSettingsShot: DistroShot = {
+  light: "desktop-settings-light",
+  dark: "desktop-settings-dark",
+  alt: "The Aelum wallpaper and colors settings on the Aelum desktop",
   caption:
-    "One panel runs the desktop: dark or light, dynamic color, night light, do not disturb. No config files involved.",
+    "Wallpaper & colors settings on a fresh install — the wallpaper and its fill mode, light or dark theme mode, dynamic colors driven by the wallpaper. Nothing to configure first.",
 };
 
 export const lookShots: DistroShot[] = [

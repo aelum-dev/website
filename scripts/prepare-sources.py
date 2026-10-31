@@ -21,14 +21,15 @@ corner colour or is a few rows tall) and needs no hardcoded offsets. The result
 is printed and sanity-checked; the script refuses to write a crop it is not
 confident about.
 
-Whole-frame mode (the desktop and hero shots):
+Whole-frame mode (the whole-desktop shots):
 
     --pair <key>=<light.png>:<dark.png> …
       -> assets/<key>-<light|dark>.png
 
-For a shot whose subject IS the whole desktop — the hero, the desktop features —
-there is no window to find and nothing to crop. Each pair is written lossless
-under an explicit manifest key; both files must be the same size.
+For a shot whose subject IS the whole desktop — the landing hero's frame, the
+desktop features — there is no window to find and nothing to crop. Each pair is
+written lossless under an explicit manifest key; both files must be the same
+size.
 
 Sources are written lossless (PNG). Everything after this point — the responsive
 ladder and src/lib/images.ts — is scripts/build-images.py's job.
@@ -40,7 +41,7 @@ Requires: python3 + Pillow + numpy.
         --dark  ~/Pictures/Screenshots/installer-dark
 
     python3 scripts/prepare-sources.py \
-        --pair hero=…/shot-light.png:…/shot-dark.png
+        --pair desktop-settings=…/shot-light.png:…/shot-dark.png
 """
 
 import argparse

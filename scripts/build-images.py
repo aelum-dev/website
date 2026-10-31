@@ -48,19 +48,20 @@ WIDTHS = (800, 1280, 1920)
 # The single WebP fallback is encoded at the widest ladder width at or below this.
 FALLBACK_MAX_WIDTH = 1280
 
-# Encode quality, chosen by what the screenshot is *of*.
+# Encode quality, chosen by how the page renders the shot.
 #   ui      — a window whose subject is text, and which the page renders close to
 #             1:1. A low qcolor puts ringing on every glyph edge, and that is the
 #             first thing a visitor sees, so these pay ~1.5x the bytes.
-#   desktop — a whole-desktop shot used as a decorative frame (the hero): it is
-#             shown small relative to its pixels, so the old profile is invisible.
+#   desktop — a whole-desktop shot used as a decorative frame (the landing hero):
+#             it is shown small relative to its pixels, so the coarse profile is
+#             invisible.
 PROFILES = {
     "ui": {"avif_qcolor": 55, "webp_quality": 82},
     "desktop": {"avif_qcolor": 38, "webp_quality": 74},
 }
-# Sources keep the "ui" profile unless named here. The hero stays on "desktop"
-# until the landing page's own screenshots are re-shot.
-PROFILE_BY_PREFIX = {"hero-": "desktop"}
+# Sources keep the "ui" profile unless named here. This is the shot the landing
+# hero renders as its frame.
+PROFILE_BY_PREFIX = {"desktop-control-": "desktop"}
 
 
 def profile_for(key: str) -> dict:

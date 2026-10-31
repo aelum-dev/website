@@ -1,5 +1,5 @@
 ---
-import { languages } from "../lib/site";
+import { controlCenterShot, languages } from "../lib/site";
 import Shot from "./Shot.astro";
 
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
@@ -81,9 +81,9 @@ const stats = [
           <span class="hero-ring"></span>
           <div class="hero-frame">
             <Shot
-              light="hero-light"
-              dark="hero-dark"
-              alt="The Aelum wallpaper and colors settings on the Aelum desktop"
+              light={controlCenterShot.light}
+              dark={controlCenterShot.dark}
+              alt={controlCenterShot.alt}
               sizes="(max-width: 640px) 100vw, 640px"
               eager={true}
             />
