@@ -1,6 +1,8 @@
 # AGENTS.md
 
-Developer notes for agents working on **Aelum-Web** — a single-page Astro landing site for Aelum (a fully offline Arch Linux distro) and its installer.
+Developer notes for agents working on **Aelum-Web** — the site at aelum.dev: four real Astro routes for
+Aelum (a fully offline Arch Linux distro) and its installer. `README.md` is for people running the site;
+this file is the working rules.
 
 ## Stack
 
@@ -27,6 +29,41 @@ npm run check      # biome format . && astro check   # run before committing
 python3 scripts/prepare-sources.py --light <dir> --dark <dir>  # crop desktop captures into assets/
 python3 scripts/build-images.py  # rebuild public/images + src/lib/images.ts from assets/
 npm run format                # the generated manifest is committed biome-formatted
+```
+
+## Repo map
+
+```
+astro.config.mjs             # site URL + base, directory output with trailing slashes, sitemap trimming
+biome.json  tsconfig.json    # formatting (Biome) and strict TypeScript
+.github/workflows/pages.yml  # GitHub Pages deploy on push to main
+assets/<key>-<theme>.png     # screenshot sources — the only copy, never served (prepare-sources.py writes them)
+public/
+  CNAME  robots.txt                        # custom domain + the pointer to the deployed sitemap
+  logo.svg  logo.png  favicon-{16,32}.png
+  og-image.png                           # exported from scripts/og-image.html; never hand-edit the PNG
+  images/                                # generated: content-hashed AVIF ladder + one WebP fallback
+  scripts/                               # app.js (enhancements) · theme.js / theme-toggle.js (theme + shot swap)
+  .well-known/openpgpkey/                # the release signing key over WKD (docker/scripts/export-wkd.sh)
+scripts/
+  prepare-sources.py                     # a capture off a display → a cropped source in assets/
+  build-images.py                        # assets/ → public/images + src/lib/images.ts
+  build-fonts.sh                         # the woff2 subsets in src/styles/fonts/
+  icons.py + SymbolsNerdFont-Regular.ttf # the glyph tool and the source font shared with the other repos
+  check-css-coverage.mjs                 # asserts every class in dist/ has CSS behind it (run by npm run check)
+  og-image.html  export-og-image.sh      # the OG share image and its headless-Chromium export
+  fetch-release.mjs                      # refresh src/lib/release.ts from latest.json
+src/
+  pages/                  # index · download · install · features · 404 — one document per route
+  layouts/Layout.astro    # head + site chrome: ambient field, progress bar, Nav, CTA, Footer
+  components/             # Hero Flow Desktop Look Install DiskModes Languages CLI Download
+                          # CTA Footer Nav Card CopyButton Shot
+  lib/site.ts             # all copy: nav, features, steps, disk modes, languages, links
+  lib/release.ts          # generated per release (release-type.ts is the hand-written typing)
+  lib/images.ts           # generated screenshot manifest
+  styles/base.css         # design tokens + shared UI — the palette is the exported Dux Shell scheme
+  styles/{home,install,features,download}.css   # per-section styles
+  styles/fonts/           # self-hosted woff2 subsets + their OFL licenses
 ```
 
 ## Layout & Conventions
@@ -200,7 +237,6 @@ npm run format                # the generated manifest is committed biome-format
 - Deployed as a **GitHub Pages** site via `.github/workflows/pages.yml` (runs on push to `main`), served at the custom domain `https://aelum.dev/`.
 - `astro.config.mjs`: `site` = `https://aelum.dev/` and `base = "/"`. The custom domain is declared by `public/CNAME` (and must match the repo's Pages setting).
 - Routes build as directories (`/download/index.html`) and are linked with a trailing slash.
-  `robots.txt` **must** point at the deployed sitemap: `https://aelum.dev/sitemap-index.xml`. Keep it in sync with `site`.
 - The sitemap already contains clean URLs (`https://aelum.dev/download/`) because of the directory
   output; `extendSitemap` only drops the 404 page. (The old `sitemap.filter` was a no-op — a filter
   decides inclusion, it does not rewrite the URL.)

@@ -1,116 +1,44 @@
-# Aelum — Website
+# Aelum — website
 
-This is the official landing site for [Aelum](https://github.com/aelum-dev/live-iso) and the [Aelum Installer](https://github.com/aelum-dev/installer), built with [Astro](https://astro.build/).
+The source behind [aelum.dev](https://aelum.dev): the landing site for Aelum, an Arch Linux distro whose
+installer needs no internet.
 
-Aelum is an Arch Linux distro with a **fully offline installer**. Boot the live ISO and the installer launches on its own — answer four questions and end up with a Hyprland + Dux Shell desktop. The install needs no internet; once it's installed, your system uses the internet like any other Arch machine.
+It is a static Astro 7 site — four real pages, no backend, no API, no requests needed to serve it. Fonts
+are self-hosted, the screenshots are built into the repo, and it opens dark, because that is the theme a
+visitor has not chosen yet.
 
-## What's on the site
+## Pages
 
-Four real routes, one Astro page each.
+| Route | What's there |
+|---|---|
+| `/` | what Aelum is, and the three moves from a USB stick to a desktop |
+| `/download/` | the ISO with its checksums, its GPG signature, copyable verification commands, flashing tools |
+| `/install/` | the installer walkthrough, the four questions, automatic vs manual disk mode, the 28 languages, headless installs |
+| `/features/` | the desktop that ships, and what the installed system does on its own: snapshots, wallpaper colors, encrypted boot |
 
-- **`/` — Home**: **Hero** (the one-line pitch, key stats — ~1.5 min install, 3.2 GB installed, 28
-  languages — inline value props, and the desktop preview in a lit device frame) and
-  **Flow** (the three moves: flash it, answer four questions, reboot).
-- **`/install/` — Install**: the auto-advancing 7-shot walkthrough with a progress rail, the 6-step
-  wizard grid, the two disk-mode cards, the 28-language marquee, and **CLI** headless install examples.
-- **`/features/` — Features**: **What you install** (Hyprland, Dux Shell, Dux Greeter, matugen,
-  GTK/Qt theming, Kitty, Firefox, Aelum splash) with a real launcher screenshot, whole-desktop
-  screenshots (settings, terminal), and what the installed system does on its own (snapshot rollback,
-  wallpaper-driven theming, encrypted boot, branded boot, sensible defaults).
-- **`/download/` — Download**: the ISO, its SHA-256/SHA-512 checksums, the GPG signature, the signing
-  key fetched via WKD, copyable verification commands, and flashing tools (Ventoy, BalenaEtcher, dd).
-- **Call to action** and **Footer** are site chrome, rendered by the layout. The CTA band is off on
-  Home and Download, whose own buttons already carry the download.
+All copy lives in one file, `src/lib/site.ts`. The download metadata arrives from the release pipeline in
+[aelum/docker](https://github.com/aelum-dev/docker), so publishing a release updates the site without
+anyone editing it.
 
-## Project Structure
+## Run it
 
-```
-src/
-  pages/
-    index.astro        # / (Hero + Flow)
-    download.astro     # /download/
-    install.astro      # /install/
-    features.astro     # /features/
-    404.astro          # fallback page
-  layouts/
-    Layout.astro       # head, theme script, meta + site chrome (ambient field, progress bar)
-  components/
-    Nav.astro          # floating glass header + sliding active pill
-    Hero.astro         # hero
-    Flow.astro         # the three moves
-    Features.astro     # features section
-    Desktop.astro      # finished desktop section
-    Install.astro      # installer walkthrough + step grid
-    Look.astro         # whole-desktop screenshot gallery
-    Languages.astro    # installer languages marquee
-    CLI.astro          # headless install examples
-    CTA.astro          # closing call-to-action band
-    Download.astro     # ISO download + verification section
-    Footer.astro       # footer
-    Card.astro         # reusable glassy card
-    CopyButton.astro   # copy-to-clipboard control
-    Shot.astro         # the only way to place a screenshot
-  lib/
-    site.ts            # all site copy (languages, links, feature text, home data)
-    release.ts         # generated on every release — never hand-edited
-    images.ts          # generated screenshot manifest — never hand-edited
-  styles/
-    base.css           # design system (tokens, ambient field, cards, buttons, nav, motion)
-    home.css           # hero / flow
-    download.css       # download page
-    features.css       # features section
-    install.css        # installer section
-    fonts/             # self-hosted Sora + Nunito + JetBrains Mono + Nerd Fonts symbols
-public/
-  logo.png             # brand mark / large logo
-  favicon-16.png       # small favicon (16×16)
-  favicon-32.png       # small favicon (32×32)
-  og-image.png         # social share image (raster export; see scripts/og-image.html)
-  images/              # content-hashed AVIF derivatives + one WebP fallback each
-  robots.txt           # points at the deployed sitemap
-  scripts/
-    app.js             # nav state, reveals, clipboard, pointer effects, count-up
-    theme.js           # light/dark theme logic (persisted in localStorage)
-    theme-toggle.js    # theme toggle button
-```
-    og-image.html      # OG share image source (edit, then `npm run og-image`)
-    export-og-image.sh # headless-Chromium export -> public/og-image.png
-    theme-toggle.js    # theme toggle button
+```bash
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # → dist/
+npm run preview    # preview the built site
+npm run check      # formatting + types + a CSS-coverage check — run this before committing
 ```
 
-## Commands
+## Deployed
 
-All commands are run from the root of the project, from a terminal:
+A push to `main` runs `.github/workflows/pages.yml`, which publishes to `https://aelum.dev/`.
 
-| Command           | Action                                       |
-| :---------------- | :------------------------------------------- |
-| `npm install`     | Installs dependencies                        |
-| `npm run dev`     | Starts local dev server at `localhost:4321`  |
-| `npm run build`   | Build your production site to `./dist/`      |
-| `npm run preview` | Preview your build locally, before deploying |
+## Working on it
 
-Run `npm run check` (Biome + `astro check`) before committing.
+[AGENTS.md](./AGENTS.md) holds the conventions — routes, components, generated files, the design system,
+the motion budget, the screenshot pipeline — and the things that broke before.
 
-## Tech notes
+## License
 
-- Built on **Astro 7** (static site generation) with real routes: every page is its own server-rendered
-  document, so all content — including which sections exist — is decided at build time and is present
-  with JavaScript off. `public/scripts/app.js` only adds behaviour the browser has to provide (nav
-  state and its active pill, scroll reveal, copy buttons, pointer effects, count-up numbers) and
-  `theme.js` owns the theme plus the theme-matched screenshots. Everything in them is enhancement.
-- The palette and glassy cards echo the **Material-You** look of the desktop the installer ships. The
-  scheme itself is the exported Dux Shell light/dark palette and is not a website choice.
-- The site is a static site — no backend, no API calls, no network requests to serve it. Fonts are
-  self-hosted woff2 files under `src/styles/fonts/`; screenshots are served from `public/images/` as
-  content-hashed AVIF with a single WebP fallback each.
-
-## Content
-
-All copy on the site is sourced from the project READMEs:
-
-- [Aelum/README.md](https://github.com/aelum-dev/live-iso)
-- [Aelum-Installer/README.md](https://github.com/aelum-dev/installer)
-
----
-
-GPL-3.0 — Aelum.
+GPL-3.0 — see [LICENSE](./LICENSE).
