@@ -39,7 +39,7 @@ biome.json  tsconfig.json    # formatting (Biome) and strict TypeScript
 .github/workflows/pages.yml  # GitHub Pages deploy on push to main
 assets/<key>-<theme>.png     # screenshot sources — the only copy, never served (prepare-sources.py writes them)
 public/
-  CNAME  robots.txt                        # custom domain + the pointer to the deployed sitemap
+  CNAME                                    # custom domain (robots.txt moved to src/pages/robots.txt.ts)
   logo.svg  logo.png  favicon-{16,32}.png
   og-image.png                           # exported from scripts/og-image.html; never hand-edit the PNG
   images/                                # generated: content-hashed AVIF ladder + one WebP fallback
@@ -55,6 +55,7 @@ scripts/
   fetch-release.mjs                      # refresh src/lib/release.ts from latest.json
 src/
   pages/                  # index · download · install · features · faq · 404 — one document per route
+                          # robots.txt.ts is the one generated route: the sitemap line comes from `site`
   layouts/Layout.astro    # head + site chrome: ambient field, progress bar, Nav, CTA, Footer
   components/             # Hero Flow Desktop Look Install DiskModes Languages CLI Download FAQ
                           # CTA Footer Nav Card CopyButton Shot
@@ -107,8 +108,10 @@ src/
   with `set:html` (the Download page's flash steps do the same); command blocks use `set:html` **on the
   `<pre>` itself**, because any text node a template leaves inside a `<pre>` is rendered — a formatted
   newline + indent before the `<code>` shows up as a blank line and an indent. `faq.astro` mirrors the same
-  copy into `FAQPage` JSON-LD with the tags stripped. Answers restate what the repos actually do; a claim
-  that is not in the installer or the profile does not belong on this page.
+  copy into `FAQPage` JSON-LD with the tags stripped. `download.astro` emits a `SoftwareApplication`
+  built from `release.ts` (version, publish date, `fileSize`, `downloadUrl`, an `Offer` at 0) — the one
+  page where structured data says something a search engine can act on. Answers restate what the repos
+  actually do; a claim that is not in the installer or the profile does not belong on this page.
 - **Layout & chrome** in `src/layouts/Layout.astro`: the `<head>` boilerplate (meta, OG/Twitter,
   favicon, theme script) **and** the site chrome (skip link, the ambient background layers, the
   reading-progress bar, `Nav`, `<main>`, `CTA`, `Footer`). A page supplies only its title/description,
@@ -132,6 +135,13 @@ src/
     is its own dark-first choice, so an OS-light visitor saw a light screenshot inside the dark site.
   - Two `<img>` tags with one hidden by CSS: hidden images are still downloaded.
   A screenshot with no dark counterpart gets no `data-aelum-*` attributes and is never swapped.
+  Pass `defer` for a screenshot that is **not visible yet** (the install walkthrough's slides 2–7):
+  the `<picture>` carries both sets in `data-aelum-*` and loads nothing, and whatever makes it visible
+  copies the matching pair into `srcset`/`src` and drops the `data-shot-defer` marker (`theme.js`
+  skips deferred pictures; the promoted one is then owned by it like any other). `loading="lazy"` is
+  not enough here — `visibility: hidden` still lays out a box, and a box in the viewport makes a
+  browser fetch a lazy image: seven stacked slides fetched seven images, measured with a Chromium net
+  log against a built page.
 - **Interactivity** is plain JS in `public/scripts/`:
   - `theme.js` / `theme-toggle.js` — light/dark theme + toggle (persisted in `localStorage`, defaults
     to dark). `theme.js` owns persistence, exposes `window.aelumTheme.get/set`, and is the only thing
@@ -242,6 +252,18 @@ src/
   artifacts, like the rEFInd PNGs. OFL texts sit beside them.
 - Reference families through `--font-display` / `--font-body` / `--font-mono`, never by face name in
   a component or section stylesheet. Keep every face self-hosted: no CDN, no hosted `@import`.
+- **The two cuts every page renders text with are preloaded**: `Layout.astro` imports
+  `sora-wght-latin.woff2` and `nunito-wght-latin.woff2` and emits `<link rel="preload" as="font"
+  type="font/woff2" crossorigin>` for them. Importing them is the point — the href is then the build's
+  content-hashed URL, the same string the CSS uses (`src/types/assets.d.ts` types `*.woff2`, which Astro
+  does not). A browser only learns a font's URL after it has fetched *and parsed* the stylesheet, and
+  every face here is `font-display: swap`, so without the preload the fetch is sequenced behind the CSS
+  and the title repaints. Verified against a served `dist/` with a Chromium net log: with the two links
+  the fonts are requested before the stylesheets; without them they come after. One request per asset
+  either way — `crossorigin` is what keeps the preload and the CSS request the same fetch (without it
+  they are two). The `unicode-range`-gated cuts (`nunito-wght-cyrillic`, `JetBrainsMono`,
+  `NerdFontsSymbols`) are deliberately **not** preloaded: preloading them pays bytes for pages that may
+  need none of them.
 - **Theme is dark-first**: `theme.js` applies the persisted choice and falls back to **dark** when
   there is none; the OS `prefers-color-scheme` is deliberately not consulted for the initial value.
   Light is a fully designed scheme, not a degraded fallback.
@@ -255,7 +277,11 @@ src/
 - The sitemap already contains clean URLs (`https://aelum.dev/download/`) because of the directory
   output; `extendSitemap` only drops the 404 page. (The old `sitemap.filter` was a no-op — a filter
   decides inclusion, it does not rewrite the URL.)
-- `public/robots.txt` **must** point at the deployed sitemap: `https://aelum.dev/sitemap-index.xml`. Keep it in sync with `site`.
+- `robots.txt` is a generated route (`src/pages/robots.txt.ts`), not a file in `public/`: its
+  `Sitemap:` line is built from `site`, so it cannot drift from the deployed domain.
+- **The deploy runs the same gate as `npm run check`** — `format:check`, `typecheck`, `build`, then
+  `node scripts/check-css-coverage.mjs` against `dist/`. It is spelled out step by step instead of
+  calling `npm run check` because that script builds a second time for the CSS audit.
 - **Caching:** GitHub Pages ignores custom header config (there is no `_headers`/nginx equivalent). Content-hashed assets under `public/images/` already change filename when their content changes, so long-lived caching is safe without extra config.
 
 ## Content Sources
@@ -345,7 +371,10 @@ assets/<key>.png                          the screenshots themselves — the onl
 - Reference `public/` assets from the site root (`/logo.svg`, `/images/…`): pages are served at
   nested routes, where a relative path resolves inside that route and 404s.
 - For **canonical/absolute URLs** (OG/Twitter images in `Layout.astro`), derive them from Astro's config with `new URL("og-image.png", Astro.url).href` so the site URL stays in one place.
-- Do not hardcode the site URL; keep it in `astro.config.mjs`.
+- Do not hardcode the site URL; keep it in `astro.config.mjs`. Anything absolute is derived from it:
+  `src/lib/site.ts` reads it as `siteOrigin` (`import { site } from "astro:config/server"`) and builds
+  the WKD URLs from that, `index.astro`'s JSON-LD `url` uses it, and `robots.txt.ts` builds its
+  `Sitemap:` line from `Astro.site`. In a page template `Astro.url` / `Astro.site` are the same values.
 - **Favicons:** rounded, optimized PNGs live in `public/` (`favicon-16.png`, `favicon-32.png`) and are referenced in `Layout.astro`. They are derived from the master `public/logo.png` (downscaled with rounded corners). Prefer these small favicons over the large `logo.png` in hot paths like the header.
 - **OG share image (`og-image.png`)** is exported from its editable HTML source `scripts/og-image.html` — never hand-edit the PNG. It drives social/Telegram link previews, so edit the copy/logo/colours/layout in `scripts/og-image.html` and re-export when the site text or logo changes: `npm run og-image` (alias for `bash scripts/export-og-image.sh`). The script renders the 1200×630 wrapper headless with Chromium, which draws the self-hosted Nunito woff2 that `rsvg`/cairo cannot. `scripts/og-image.html` is the single source of truth, so the repo carries no base64-raster bloat (the old `public/og-image.svg` was removed).
 
