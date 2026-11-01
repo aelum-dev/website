@@ -10,13 +10,15 @@
 // This file also owns the theme-dependent screenshots. Shot.astro serves the
 // dark derivatives and stores the light set on the <picture>; syncImages() is
 // the only thing that ever rewrites them, so a screenshot can never disagree
-// with the theme the page is actually in.
+// with the theme the page is actually in. A <picture> marked data-shot-defer is
+// deliberately left alone: it carries the two sets but has nothing loaded yet,
+// and whatever makes it visible promotes it first (see Install.astro).
 
 (() => {
   const ROOT = document.documentElement;
   const STORAGE_KEY = "aelum-theme";
   const META_CONTENT = { dark: "#141218", light: "#fff7f9" };
-  const SHOTS = "picture[data-aelum-avif-light]";
+  const SHOTS = "picture[data-aelum-avif-light]:not([data-shot-defer])";
 
   function stored() {
     try {

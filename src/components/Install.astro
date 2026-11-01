@@ -35,6 +35,7 @@ const slides = [
                     alt={`Aelum installer — ${s.alt}`}
                     sizes="(max-width: 620px) 100vw, 620px"
                     eager={s.n === 1}
+                    defer={s.n !== 1}
                     class="shot"
                   />
                 </div>
@@ -67,13 +68,18 @@ const slides = [
       <script type="text/javascript" is:inline>
         // Auto-advancing installer walkthrough.
         //
-        // The slides are all in the document (every one of them is a real
-        // <picture>), so with JavaScript off the first slide simply stays put
-        // and the progress bar is empty. JS only moves which one you see.
+        // The slides are all in the document, but only the one you are looking at
+        // (and the one about to appear) has an image behind it: slides 2-7 are
+        // built with Shot's `defer`, so their <picture> carries both theme sets
+        // in data-aelum-* and fetches nothing until the walkthrough reaches it.
+        // With JavaScript off the first slide is a normal, loaded screenshot and
+        // the rest stay empty — which is fine, because they are hidden either
+        // way. See Shot.astro → defer for why `loading="lazy"` was not enough.
         //
-        // It stops when the frame is not on screen. install.css pauses the
-        // segment fill animation inside any section app.js has not marked
-        // .is-live (see base.css → Off-screen loops); a timer that kept
+        // It stops on its own when the frame is not on screen, and it never
+        // starts at all when the system says it should not move. install.css
+        // pauses the segment fill animation inside any section app.js has not
+        // marked .is-live (see base.css → Off-screen loops); a timer that kept
         // advancing while its own progress bar was paused would walk out of step
         // with it, and the frame would resume mid-slide.
         //
@@ -84,18 +90,47 @@ const slides = [
         // its hit test until the mouse moves, so scrolling the frame away under a
         // still pointer used to leave it paused with no mouseleave to undo it.
         (function () {
-          var slides = document.querySelectorAll(".slideshow-slide");
-          if (!slides.length) return;
-          var order = Array.prototype.slice.call(slides);
-          var segments = Array.prototype.slice.call(
-            document.querySelectorAll(".frame-seg"),
-          );
           var frame = document.querySelector(".features-demo-frame");
+          if (!frame) return;
+          var order = Array.prototype.slice.call(
+            frame.querySelectorAll(".slideshow-slide"),
+          );
+          if (order.length < 2) return;
+          var segments = Array.prototype.slice.call(
+            frame.querySelectorAll(".frame-seg"),
+          );
           var index = 0;
           var timer = null;
           var PAUSE = 3500;
           var onScreen = true;
           var tracked = false;
+          // Reduced motion means "do not move it for me": the first screen is
+          // shown and nothing advances it.
+          var stopped = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+          // A deferred <picture> is loaded the same way theme.js loads a visible
+          // one: copy the set that matches the theme the page is actually in.
+          // The marker comes off afterwards, so from here on theme.js owns it —
+          // which is what keeps a screenshot from ever disagreeing with a theme.
+          function load(slide) {
+            var picture = slide.querySelector("picture[data-shot-defer]");
+            if (!picture) return;
+            var source = picture.querySelector('source[data-aelum-type="avif"]');
+            var img = picture.querySelector("img");
+            if (!source || !img) return;
+            var light =
+              document.documentElement.getAttribute("data-theme") === "light";
+            var ladder = light
+              ? picture.dataset.aelumAvifLight
+              : picture.dataset.aelumAvifDark;
+            var fallback = light
+              ? picture.dataset.aelumSrcLight
+              : picture.dataset.aelumSrcDark;
+            if (!ladder || !fallback) return;
+            source.setAttribute("srcset", ladder);
+            img.setAttribute("src", fallback);
+            picture.removeAttribute("data-shot-defer");
+          }
 
           function show(i) {
             index = (i + order.length) % order.length;
@@ -111,10 +146,14 @@ const slides = [
                 seg.style.animation = "";
               }
             });
+            load(order[index]);
+            // The next screen is the one about to fade in: warm it while this one
+            // is up, so the cross-fade never has a fetch in the middle of it.
+            load(order[(index + 1) % order.length]);
           }
 
           function start() {
-            if (timer) return;
+            if (timer || stopped) return;
             timer = setInterval(function () {
               show(index + 1);
             }, PAUSE);
@@ -126,13 +165,14 @@ const slides = [
             timer = null;
           }
 
-          // Being off screen is the only thing that stops it.
+          // Off screen, or a reduced-motion request: either one stops it.
           function sync() {
-            if (tracked && !onScreen) stop();
+            if (stopped || (tracked && !onScreen)) stop();
             else start();
           }
 
           show(0);
+          sync();
 
           if (!("IntersectionObserver" in window)) {
             start();

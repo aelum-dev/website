@@ -42,6 +42,18 @@ interface Props {
   maxWidth?: number;
   /** above-the-fold images: fetch eagerly and at high priority */
   eager?: boolean;
+  /**
+   * Not visible yet: emit the <picture> with its two theme sets in data-aelum-*
+   * but with nothing to fetch, and mark it `data-shot-defer`. Whoever makes this
+   * image visible copies the matching pair into srcset/src and drops the marker,
+   * after which theme.js owns it like any other screenshot.
+   *
+   * This exists because `visibility: hidden` is not "not rendered": a hidden
+   * slide still has a box, and a box inside the viewport makes a browser fetch a
+   * `loading="lazy"` image. Seven stacked slides fetched seven images (measured
+   * against a built page with a Chromium net log) no matter how far you scrolled.
+   */
+  defer?: boolean;
   class?: string;
 }
 
@@ -52,6 +64,7 @@ const {
   sizes = "(max-width: 1160px) 100vw, 1160px",
   maxWidth,
   eager = false,
+  defer = false,
   class: className,
 } = Astro.props;
 
@@ -76,6 +89,14 @@ const servedFallback = secondary ? secondary.fallback.webp : primary.fallback.we
 
 // Both sets travel with the <picture> only when a dark set exists; a
 // screenshot with no dark counterpart gets no attributes and is never swapped.
+if (defer && !secondary) {
+  throw new Error(`Shot: "${light}" has no dark counterpart, so a deferred copy would have no theme set to load from`);
+}
+
+// A 1x1 transparent GIF, inline. An <img> without src is invalid markup, and a
+// data: URL is the one value that satisfies it without asking for anything.
+const PLACEHOLDER = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+
 const swap = secondary
   ? {
       avifDark: srcset(darkVariants ?? []),
@@ -88,6 +109,7 @@ const swap = secondary
 
 <picture
   class={className}
+  data-shot-defer={defer ? "" : undefined}
   data-aelum-avif-dark={swap?.avifDark}
   data-aelum-avif-light={swap?.avifLight}
   data-aelum-src-dark={swap?.srcDark}
@@ -96,13 +118,13 @@ const swap = secondary
   <source
     data-aelum-type="avif"
     type="image/avif"
-    srcset={srcset(servedVariants)}
+    srcset={defer ? undefined : srcset(servedVariants)}
     sizes={sizes}
     width={primary.width}
     height={primary.height}
   />
   <img
-    src={servedFallback}
+    src={defer ? PLACEHOLDER : servedFallback}
     alt={alt}
     width={primary.width}
     height={primary.height}

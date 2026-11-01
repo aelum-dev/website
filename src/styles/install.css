@@ -96,11 +96,14 @@
     transform 0.9s var(--ease),
     visibility 0s linear 0.7s;
 }
-/* Each slide holds one <picture> that carries both themes behind
-   media="(prefers-color-scheme: dark)" sources: the browser picks the matching
-   set, so only the active theme's file is ever fetched, and the flip still works
-   with no JS. (The old markup shipped a dark and a light <img> per slide and hid
-   one with CSS - hidden images are still downloaded.) */
+/* Each slide holds one <picture> carrying the dark set inline and the light set
+   in data-aelum-* attributes; theme.js writes the matching pair whenever it
+   applies a theme, so the screenshot always matches the theme the page is in and
+   only one file is ever fetched. Slides 2-7 are built with Shot's `defer`: they
+   carry both sets but load nothing until the walkthrough reaches them, because a
+   visibility:hidden slide still has a box and a box in the viewport makes a
+   browser fetch a loading="lazy" image. (Older markup shipped a dark and a light
+   <img> per slide and hid one with CSS - hidden images are still downloaded.) */
 picture.shot {
   position: absolute;
   inset: 0;
