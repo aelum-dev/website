@@ -76,6 +76,13 @@ const slides = [
         // .is-live (see base.css → Off-screen loops); a timer that kept
         // advancing while its own progress bar was paused would walk out of step
         // with it, and the frame would resume mid-slide.
+        //
+        // Hovering does not stop it. The walkthrough is a preview of a wizard you
+        // have not run yet — holding it under the pointer to read one screen is
+        // not a request to freeze the rest, and a pointer that happens to be over
+        // the frame is indistinguishable from that. Chrome also does not re-run
+        // its hit test until the mouse moves, so scrolling the frame away under a
+        // still pointer used to leave it paused with no mouseleave to undo it.
         (function () {
           var slides = document.querySelectorAll(".slideshow-slide");
           if (!slides.length) return;
@@ -87,7 +94,6 @@ const slides = [
           var index = 0;
           var timer = null;
           var PAUSE = 3500;
-          var hovered = false;
           var onScreen = true;
           var tracked = false;
 
@@ -120,21 +126,11 @@ const slides = [
             timer = null;
           }
 
-          // Hovering the walkthrough is a request to look at it; being off screen
-          // is the same request from the viewport.
+          // Being off screen is the only thing that stops it.
           function sync() {
-            if (hovered || (tracked && !onScreen)) stop();
+            if (tracked && !onScreen) stop();
             else start();
           }
-
-          frame.addEventListener("mouseenter", function () {
-            hovered = true;
-            sync();
-          });
-          frame.addEventListener("mouseleave", function () {
-            hovered = false;
-            sync();
-          });
 
           show(0);
 
