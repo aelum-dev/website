@@ -26,20 +26,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-bar-dark-800w.df713bab.avif",
+        avif: "/images/desktop-bar-dark-800w.58ec1847.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-bar-dark-1280w.52d25b9a.avif",
+        avif: "/images/desktop-bar-dark-1280w.ddae43d2.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-bar-dark-1920w.d8fa3db6.avif",
+        avif: "/images/desktop-bar-dark-1920w.1901771f.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-bar-dark-1280w.5682de5b.webp",
+      webp: "/images/desktop-bar-dark-1280w.48ac6e78.webp",
     },
   },
   "desktop-bar-light": {
@@ -48,20 +48,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-bar-light-800w.45c34d61.avif",
+        avif: "/images/desktop-bar-light-800w.2bd39f66.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-bar-light-1280w.c058ab59.avif",
+        avif: "/images/desktop-bar-light-1280w.5c41b5fe.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-bar-light-1920w.3f6ac22a.avif",
+        avif: "/images/desktop-bar-light-1920w.75fa4b04.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-bar-light-1280w.f8758679.webp",
+      webp: "/images/desktop-bar-light-1280w.b5c4159c.webp",
     },
   },
   "desktop-control-dark": {
@@ -246,20 +246,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-weather-dark-800w.e364f227.avif",
+        avif: "/images/desktop-weather-dark-800w.a27d3dea.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-weather-dark-1280w.89c2eb3f.avif",
+        avif: "/images/desktop-weather-dark-1280w.97393f3f.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-weather-dark-1920w.e9f9063c.avif",
+        avif: "/images/desktop-weather-dark-1920w.f3f45ce3.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-weather-dark-1280w.34ff9ae7.webp",
+      webp: "/images/desktop-weather-dark-1280w.3b00ffb9.webp",
     },
   },
   "desktop-weather-light": {
@@ -268,20 +268,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-weather-light-800w.d47c214b.avif",
+        avif: "/images/desktop-weather-light-800w.4fdadbe0.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-weather-light-1280w.2b9669cd.avif",
+        avif: "/images/desktop-weather-light-1280w.4155ace9.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-weather-light-1920w.23d37602.avif",
+        avif: "/images/desktop-weather-light-1920w.dd7a54b7.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-weather-light-1280w.0d6643f0.webp",
+      webp: "/images/desktop-weather-light-1280w.17941b06.webp",
     },
   },
   "installer-step-1-dark": {
