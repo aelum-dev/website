@@ -3,10 +3,34 @@ import "../styles/base.css";
 import "../styles/download.css";
 import DownloadPage from "../components/Download.astro";
 import Layout from "../layouts/Layout.astro";
+import { downloadUrl, isoSizeLabel, releasePublishedAt, releaseVersion, siteOrigin } from "../lib/site";
 
 const title = "Download the Aelum ISO and check it";
 const description =
   "Download the Aelum installer ISO and verify it: SHA-256 and SHA-512 checksums, a detached GPG signature, and the release key published over WKD so gpg can fetch it from aelum.dev.";
+
+// The release as schema.org reads it, from the same generated metadata the page
+// renders: version, publish date, file size, the download URL. `offers` at zero
+// is what makes a free download eligible as a SoftwareApplication result.
+const releaseJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Aelum",
+  operatingSystem: "Linux",
+  applicationCategory: "System Tool",
+  url: siteOrigin,
+  downloadUrl: downloadUrl.iso,
+  softwareVersion: releaseVersion,
+  datePublished: releasePublishedAt,
+  fileSize: isoSizeLabel,
+  installUrl: new URL("download/", siteOrigin).href,
+  license: "https://www.gnu.org/licenses/gpl-3.0.html",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+});
 ---
 
 <Layout
@@ -15,5 +39,9 @@ const description =
   active="download"
   showCta={false}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline set:html={releaseJsonLd}></script>
+  </Fragment>
+
   <DownloadPage />
 </Layout>
