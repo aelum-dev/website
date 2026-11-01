@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://aelum.dev/sitemap-index.xml
