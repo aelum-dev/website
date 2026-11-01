@@ -125,8 +125,28 @@ picture.shot img {
 }
 
 /* One segment per slide. The active segment fills over the pause, so the frame
-   says how long the current screen has left. */
+   says how long the current screen has left.
+
+   Three fixes, each one checked in a headless render of the built page:
+
+   1. The fill layer was written as `linear-gradient(var(--grad-brand), …)`, i.e. a
+      gradient used as a *colour stop*. That is invalid, so the whole `background`
+      shorthand was invalid at computed-value time and the active segment drew
+      nothing at all — background-image:none over a transparent background.
+      --grad-brand is already an image, so it goes in the layer position directly,
+      as every other brand surface on the site does (base.css → --grad-brand).
+   2. The colours are derived from --text and --accent here, on the element that
+      reads them, so they follow the theme with no per-theme override. At the old
+      `--text` 16% a segment was a hairline: in light mode 16% of near-black text
+      over a near-white frame reads as nothing.
+   3. The current segment is named by an accent ring, not by its fill alone — a
+      segment that has just started is still the current one, and a fill that has
+      not run yet cannot say anything. Its base stays a faint accent tint so the
+      brand gradient sweeping across it still reads as progress. */
 .frame-progress {
+  --seg-track: color-mix(in srgb, var(--text) 28%, transparent);
+  --seg-track-active: color-mix(in srgb, var(--accent) 30%, transparent);
+  --seg-ring-active: color-mix(in srgb, var(--accent) 70%, transparent);
   position: absolute;
   left: 10%;
   right: 10%;
@@ -137,15 +157,16 @@ picture.shot img {
 }
 .frame-seg {
   flex: 1 1 0;
-  height: 3px;
+  height: 4px;
   border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--text) 16%, transparent);
+  background: var(--seg-track);
   overflow: hidden;
 }
 .frame-seg.is-active {
   background:
-    linear-gradient(var(--grad-brand), var(--grad-brand)) 0 0 / var(--fill, 0%) 100% no-repeat,
-    color-mix(in srgb, var(--text) 16%, transparent);
+    var(--grad-brand) 0 0 / var(--fill, 0%) 100% no-repeat,
+    var(--seg-track-active);
+  box-shadow: 0 0 0 1px var(--seg-ring-active);
   animation: frame-fill 3.5s linear forwards;
 }
 @keyframes frame-fill {
@@ -447,7 +468,7 @@ html.loops-managed .section:not(.is-live) .cli-code::after {
     animation: none;
   }
   .frame-seg.is-active {
-    background: var(--accent-line);
+    background: var(--seg-track-active);
   }
   .slideshow-slide {
     transform: none;
