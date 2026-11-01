@@ -530,7 +530,8 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Can I try Aelum without installing it?",
-        a: "Yes. Booting the ISO gives you a full Hyprland + Dux Shell session with the installer already open, and you can use that desktop for as long as you like. Nothing you change there reaches your disk: the live root is a read-only overlay.",
+        a: "No. The ISO is installation media. The live session exists to run the installer: it boots, logs in, and opens the installer window.",
+        links: [{ label: "Installing from the terminal", href: "/install/#cli" }],
       },
       {
         q: "Does it run in a virtual machine?",
@@ -670,7 +671,12 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Can I install Aelum twice on one disk?",
-        a: "Yes. Each install keeps its own directory on the ESP (<code>aelum/&lt;id&gt;/</code>) with its own kernel and initramfs in it, and its own menu fragment, so two installs never overwrite each other. The boot menu lists them as <code>Aelum (sda2)</code> and <code>Aelum (sda3)</code>. In manual mode, give each one its own System partition.",
+        a: "Yes, and each install needs its own pair of partitions. Automatic mode clears the partition table before it writes anything, so the second install has to run in manual mode with the first install's partitions left as <strong>Preserve</strong>. Manual mode always formats the Boot and System partitions you pick, so two installs cannot share one Boot partition — the second install would erase the first one's boot loaders.",
+        points: [
+          "Each install gets its own Boot partition, its own rEFInd on it, and its own firmware boot entry.",
+          "Each keeps its kernel and initramfs in <code>aelum/&lt;id&gt;/</code> on its own ESP, bind-mounted at <code>/boot</code>, and its own menu fragment at <code>EFI/refind/aelum/&lt;id&gt;.conf</code>.",
+          "Menu entries and firmware entries are titled with the root partition, so the two read as <code>Aelum (sda2)</code> and <code>Aelum (sda3)</code>.",
+        ],
       },
       {
         q: "Where is the EFI partition once installed?",
@@ -725,10 +731,6 @@ export const faqGroups: FaqGroup[] = [
       {
         q: "Booting a snapshot feels different. Is something wrong?",
         a: "The root is read-only, and that is deliberate: it lets you log in, compare and copy before deciding. The installer plans for it — a systemd generator puts tmpfs over the state directories a read-only root cannot write, so a snapshot boot reaches the greeter instead of a text login, and <code>/etc/resolv.conf</code> is a symlink to the running resolver, so a snapshot still resolves names. The desktop prompt tells you which state you are in.",
-      },
-      {
-        q: "My boot menu is stretched or the wrong size.",
-        a: "The installer writes your display's native mode as an explicit <code>resolution</code> line in <code>refind.conf</code>. When firmware exposes only non-native VESA modes, rEFInd's <code>max</code> can pick a 4:3 or 1:1 one. Set a mode yourself in <code>/efi/EFI/refind/refind.conf</code> — for example <code>resolution 1920 1080</code>. If rEFInd stops with <code>Error setting graphics mode</code>, that mode is not in your firmware's list: change the line to <code>resolution max</code> and reboot.",
       },
       {
         q: "There is no Aelum entry in my firmware boot menu.",
@@ -803,7 +805,7 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "How do I update the system?",
-        a: "<code>sudo pacman -Syu</code>, like any Arch machine. The mirrorlist in your system already points at Arch mirrors in the region you chose. The mirror inside the ISO is used while installing and nothing after that.",
+        a: "<code>sudo pacman -Syu</code>, like any Arch machine. The mirrorlist in your system already points at Arch mirrors in the region you chose. The mirror inside the ISO is used while installing and nothing after that. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary shell aliases — change or delete them in that file if you would rather type the commands yourself.",
       },
       {
         q: "Is the AUR available?",
