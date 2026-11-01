@@ -205,15 +205,15 @@ export const lookShots: DistroShot[] = [
       "fastfetch in kitty: one command that prints what the machine is — OS, kernel, package count, CPU, GPU, memory and disk usage.",
   },
   {
-    // Captured in dark only: it is the primary set, so the light theme shows it too.
-    light: "desktop-weather-dark",
+    light: "desktop-weather-light",
+    dark: "desktop-weather-dark",
     alt: "The Dux Shell control center on the Aelum desktop, open on its weather page",
     caption:
       "The control center — one window with tabs for overview, media, wallpapers, weather and digital wellbeing. This one is open on the weather tab.",
   },
   {
-    // Captured in dark only, same as the shot above.
-    light: "desktop-bar-dark",
+    light: "desktop-bar-light",
+    dark: "desktop-bar-dark",
     alt: "The Aelum settings window, open on its bar settings",
     caption: "The settings window, where you can customize the look and feel however you want.",
   },

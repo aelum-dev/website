@@ -26,20 +26,42 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-bar-dark-800w.8a100ab5.avif",
+        avif: "/images/desktop-bar-dark-800w.df713bab.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-bar-dark-1280w.b85be305.avif",
+        avif: "/images/desktop-bar-dark-1280w.52d25b9a.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-bar-dark-1920w.4e7211fe.avif",
+        avif: "/images/desktop-bar-dark-1920w.d8fa3db6.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-bar-dark-1280w.8df466d6.webp",
+      webp: "/images/desktop-bar-dark-1280w.5682de5b.webp",
+    },
+  },
+  "desktop-bar-light": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-bar-light-800w.45c34d61.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-bar-light-1280w.c058ab59.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-bar-light-1920w.3f6ac22a.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-bar-light-1280w.f8758679.webp",
     },
   },
   "desktop-control-dark": {
@@ -224,20 +246,42 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-weather-dark-800w.fc2db591.avif",
+        avif: "/images/desktop-weather-dark-800w.e364f227.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-weather-dark-1280w.be98cffa.avif",
+        avif: "/images/desktop-weather-dark-1280w.89c2eb3f.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-weather-dark-1920w.2a0c1eff.avif",
+        avif: "/images/desktop-weather-dark-1920w.e9f9063c.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-weather-dark-1280w.0b5b8d31.webp",
+      webp: "/images/desktop-weather-dark-1280w.34ff9ae7.webp",
+    },
+  },
+  "desktop-weather-light": {
+    width: 2560,
+    height: 1440,
+    variants: [
+      {
+        width: 800,
+        avif: "/images/desktop-weather-light-800w.d47c214b.avif",
+      },
+      {
+        width: 1280,
+        avif: "/images/desktop-weather-light-1280w.2b9669cd.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/desktop-weather-light-1920w.23d37602.avif",
+      },
+    ],
+    fallback: {
+      width: 1280,
+      webp: "/images/desktop-weather-light-1280w.0d6643f0.webp",
     },
   },
   "installer-step-1-dark": {
