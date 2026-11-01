@@ -103,6 +103,12 @@ export const features: Feature[] = [
       "If you choose LUKS2 during the install, the only thing you do differently afterwards is type your passphrase into the boot splash.",
   },
   {
+    icon: "f0328", // nerd-fonts: layers
+    title: "Volumes you can resize later",
+    description:
+      "Turn on LVM on the disk screen and the System partition becomes one volume group holding two logical volumes, root and home, so space between them is yours to move later. Booting is unchanged: the fstab and the boot entries still name filesystem UUIDs, and LUKS still sits below LVM when you choose both.",
+  },
+  {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
     title: "A branded boot menu and splash",
     description:
@@ -341,7 +347,7 @@ export const installSteps: Step[] = [
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Choose a disk",
     description:
-      "Pick the drive, choose ext4 or btrfs, and turn on LUKS2 encryption if you want it. Automatic mode uses the whole drive; switch the same screen to manual mode to keep your other partitions.",
+      "Pick the drive, choose ext4 or btrfs, and turn on LUKS2 encryption or LVM if you want either. Automatic mode uses the whole drive; switch the same screen to manual mode to keep your other partitions.",
   },
   {
     num: "04",
