@@ -13,6 +13,11 @@ import CTA from "../components/CTA.astro";
 import Footer from "../components/Footer.astro";
 import Nav from "../components/Nav.astro";
 import type { PageId } from "../lib/site";
+// The two cuts every page renders text with: Sora for the page and section
+// titles, Nunito for everything else. Importing them is what hands the browser
+// their build-time URLs - see the preload below.
+import nunitoLatin from "../styles/fonts/nunito-wght-latin.woff2";
+import soraLatin from "../styles/fonts/sora-wght-latin.woff2";
 
 interface Props {
   title: string;
@@ -48,6 +53,22 @@ const imageUrl = new URL("og-image.png", Astro.url).href;
     <meta name="color-scheme" content="dark light" />
     <!-- theme-color set dynamically by theme.js to match the active scheme -->
     <meta name="theme-color" content="" />
+
+    <!-- Start the two fonts every page needs alongside the stylesheet, not after
+      it. A browser only learns a font's URL once it has fetched AND parsed the
+      CSS that names it, and these faces are `font-display: swap`: without this
+      the hero title paints in a fallback face and then changes. Preloading is
+      the one thing that makes the fetch concurrent with the stylesheet instead
+      of sequenced behind it.
+
+      Only these two cuts. The Cyrillic cut and JetBrains Mono are gated by
+      `unicode-range`, so preloading them would fetch bytes for a page that may
+      never need them. `crossorigin` is required: a font is fetched as a CORS
+      request even from the same origin, and without it the preload is a second,
+      separate fetch. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={soraLatin} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={nunitoLatin} />
+
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
