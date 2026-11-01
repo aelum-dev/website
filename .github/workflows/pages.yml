@@ -4,6 +4,10 @@
 # https://aelum.dev/ (see public/CNAME); the deployed build makes no network
 # calls, so links are baked in at build time.
 #
+# A push that fails format, types or CSS coverage does not deploy: those are the
+# three things `npm run check` catches locally, and a deploy is not where they
+# should first be noticed.
+#
 # One-time setup: repository Settings -> Pages -> Source = "GitHub Actions",
 # and the custom domain aelum.dev (also declared by public/CNAME).
 
@@ -38,8 +42,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # The same gate `npm run check` runs locally, split so the build happens
+      # once: the CSS-coverage audit reads dist/, so it belongs after the build
+      # rather than inside a script that would build a second time.
+      - name: Format check
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run typecheck
+
       - name: Build
         run: npm run build
+
+      - name: CSS coverage
+        run: node scripts/check-css-coverage.mjs
 
       - uses: actions/configure-pages@v5
 
