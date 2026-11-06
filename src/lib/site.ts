@@ -561,7 +561,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Will it work on my GPU?",
-        a: "The install ships <code>linux-firmware</code> and the open Vulkan drivers — <code>vulkan-radeon</code>, <code>vulkan-intel</code>, <code>vulkan-nouveau</code> — so AMD and Intel are ready as installed, and NVIDIA works through Nouveau. If you want the proprietary NVIDIA driver, install <code>nvidia</code> with pacman afterwards.",
+        a: "The installer reads the PCI bus and installs the driver set that matches your card: <code>vulkan-radeon</code> or <code>vulkan-intel</code> for AMD and Intel, <code>nvidia-open-lts</code> for Turing-and-newer NVIDIA, and <code>vulkan-nouveau</code> for older NVIDIA. The right Vulkan driver is on the system before its first boot, so nothing asks you to choose a provider later.",
       },
     ],
   },
