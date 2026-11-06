@@ -4,19 +4,19 @@
 import type { ReleaseMetadata } from "./release-type";
 
 export const release: ReleaseMetadata = {
-  tag: "v2026.11.01",
-  version: "2026.11.01",
+  tag: "v2026.11.07",
+  version: "2026.11.07",
   arch: "x86_64",
-  filename: "aelum-2026.11.01-x86_64.iso",
-  publishedAt: "2026-11-01T17:10:43Z",
-  sizeBytes: 4027121664,
-  sha256: "b4bdd0d3f8d5eb8a5e016263b0245930efc6cee64ed90310f83dfc2d7d20fa3a",
-  sha512: "671e5efbbdc0e97838de29d7354210c064008f9de498ca4fd418152a0c907e2532d583ebc9b4414140074a98d318da26c8c00f6e06f8683a1bd3afb7c4bb8e34",
+  filename: "aelum-2026.11.07-x86_64.iso",
+  publishedAt: "2026-11-06T23:26:36Z",
+  sizeBytes: 4135616512,
+  sha256: "e2cf8004239188a0f5b1258cfd0b51b9f3024df8b21063cd61e7eb3e3a6458be",
+  sha512: "e3e4794d70af757cf777449d76fafa7b53508455ddd6ce8804bbc5efa6b7ebb2dcb777c17975690b9cd8ab998d2c8428c2e85a86660fbd5527d426a352f64680",
   urls: {
-    iso: "https://cdn.aelum.dev/v2026.11.01/aelum-2026.11.01-x86_64.iso",
-    sha256: "https://cdn.aelum.dev/v2026.11.01/aelum-2026.11.01-x86_64.iso.sha256",
-    sha512: "https://cdn.aelum.dev/v2026.11.01/aelum-2026.11.01-x86_64.iso.sha512",
-    signature: "https://cdn.aelum.dev/v2026.11.01/aelum-2026.11.01-x86_64.iso.asc"
+    iso: "https://cdn.aelum.dev/v2026.11.07/aelum-2026.11.07-x86_64.iso",
+    sha256: "https://cdn.aelum.dev/v2026.11.07/aelum-2026.11.07-x86_64.iso.sha256",
+    sha512: "https://cdn.aelum.dev/v2026.11.07/aelum-2026.11.07-x86_64.iso.sha512",
+    signature: "https://cdn.aelum.dev/v2026.11.07/aelum-2026.11.07-x86_64.iso.asc"
   },
   signingKey: {
     uid: "Aelum Release <release@aelum.dev>",
