@@ -120,6 +120,24 @@ export const features: Feature[] = [
     description:
       "PipeWire for audio, zram instead of a swap file, and Firefox themed to match the desktop. There is no list of setup steps left for you to do.",
   },
+  {
+    icon: "f035b", // nerd-fonts: memory
+    title: "The graphics driver your card needs",
+    description:
+      "Before it installs any graphics package, the installer reads the PCI bus and picks the matching driver set: Mesa and its Vulkan driver for AMD and Intel, the open NVIDIA driver for a Turing-or-newer card, vulkan-nouveau for older NVIDIA, and a software driver for a virtual machine. Every set carries the 32-bit Vulkan driver as well, so nothing on your system stops later to ask which driver you meant.",
+  },
+  {
+    icon: "f0edf", // nerd-fonts: cpu_32_bit
+    title: "32-bit software installs without setup",
+    description:
+      "Arch keeps Steam, Wine and their 32-bit libraries in a repository called multilib, which a stock pacman.conf ships commented out. The installer turns it on, so a fresh system installs those programs with no hand-editing — and the driver set the installer picks for your card already answers the 32-bit Vulkan dependency they pull in.",
+  },
+  {
+    icon: "f0492", // nerd-fonts: server_security
+    title: "Aelum's own apps arrive through pacman",
+    description:
+      "The installer enables the [aelum] repository in pacman.conf and trusts the release key that signs it, so the distro's applications — the media player and the package manager — install and update with the same command as everything else. Everything in that repository is signed with the same key as the ISO and served from the same CDN as the releases.",
+  },
 ];
 
 export interface Software {
@@ -163,6 +181,16 @@ export const software: Software[] = [
     icon: "f0239", // nerd-fonts: firefox
     title: "Firefox",
     description: "The browser that ships here, themed to match the desktop.",
+  },
+  {
+    icon: "f040a", // nerd-fonts: play (the player's own icon glyph)
+    title: "Videos",
+    description: "Aelum's media player: GTK4 and libadwaita over mpv, following the desktop's palette.",
+  },
+  {
+    icon: "f03d6", // nerd-fonts: package_variant (the app's own icon glyph)
+    title: "Packages",
+    description: "Aelum's package manager: browse, install, update and build AUR packages in a window.",
   },
   {
     icon: "f02e9", // nerd-fonts: image (branded boot splash)
@@ -486,11 +514,11 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "What is Aelum, exactly?",
-        a: "An Arch Linux distribution whose installer needs no network. The ISO carries a complete package mirror, so the install reads only from the USB stick you booted it on. What it writes is a normal Arch desktop — Hyprland with Dux Shell — on a disk layout the installer prepares itself, with its own boot entry and its own boot splash.",
+        a: "An Arch Linux distribution whose installer needs no network. The ISO carries a complete package mirror, so the install reads only from the USB stick you booted it on. What it writes is a normal Arch desktop — Hyprland with Dux Shell, a media player and a package manager — on a disk layout the installer prepares itself, with its own boot entry and its own boot splash.",
       },
       {
         q: "Is it Arch Linux? A fork of Arch?",
-        a: "It installs from Arch's official repositories with pacstrap, and after the install it is an Arch system: the same pacman, the same systemd, the same repositories, the same AUR. Aelum is everything built around that base — the live session, the installer, the desktop configuration, the boot theme. It is an independent project, not an official Arch Linux product and not a fork of Arch.",
+        a: "It installs from Arch's official repositories with pacstrap, and after the install it is an Arch system: the same pacman, the same systemd, the same repositories, the same AUR — plus one signed repository of Aelum's own, holding the applications the distro ships, which the installer enables and trusts for you. Everything else Aelum is the parts around that base: the live session, the installer, the desktop configuration, the boot theme. It is an independent project, not an official Arch Linux product and not a fork of Arch.",
       },
       {
         q: "Do I have to reinstall to stay current?",
@@ -543,7 +571,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Can I try Aelum without installing it?",
-        a: "No. The ISO is installation media. The live session exists to run the installer: it boots, logs in, and opens the installer window.",
+        a: "No. The ISO is installation media. The live session exists to run the installer: it boots, logs in, and opens the installer window. The desktop's own apps are in the live session too, so you can open the player or the package manager while you wait — but that session is a read-only overlay, and nothing you change in it survives the reboot.",
         links: [{ label: "Installing from the terminal", href: "/install/#cli" }],
       },
       {
@@ -562,6 +590,10 @@ export const faqGroups: FaqGroup[] = [
       {
         q: "Will it work on my GPU?",
         a: "The installer reads the PCI bus and installs the driver set that matches your card: <code>vulkan-radeon</code> or <code>vulkan-intel</code> for AMD and Intel, <code>nvidia-open-lts</code> for Turing-and-newer NVIDIA, and <code>vulkan-nouveau</code> for older NVIDIA. The right Vulkan driver is on the system before its first boot, so nothing asks you to choose a provider later.",
+      },
+      {
+        q: "Will Steam or other 32-bit software work?",
+        a: "Yes. The installer turns on Arch's <code>[multilib]</code> repository — the one Steam, Wine and their 32-bit libraries live in, which a stock <code>pacman.conf</code> ships commented out — and the GPU driver set it picks always provides <code>lib32-vulkan-driver</code> alongside the 64-bit one. So <code>sudo pacman -S steam</code> has an answer for every dependency instead of stopping to ask which Vulkan driver you want.",
       },
     ],
   },
@@ -600,11 +632,13 @@ export const faqGroups: FaqGroup[] = [
         a: "A desktop, not a base system you have to assemble yourself:",
         points: [
           "Hyprland, Dux Shell and the Dux Greeter login (greetd)",
-          "Kitty, Nautilus, GNOME Text Editor, Firefox, mpv, imv",
+          "Videos (Aelum's media player) and Packages (Aelum's package manager)",
+          "Kitty, Nautilus, GNOME Text Editor, Firefox, imv — and mpv, which the player is built on",
           "PipeWire audio with WirePlumber",
           "matugen and the GTK / Qt theming that follows it",
           "btop, fastfetch, brightnessctl, ddcutil",
           "NetworkManager, bluez, power-profiles-daemon, zram, sudo, vim, nano",
+          "base-devel, so an AUR build has a compiler and make already on the machine",
           "rEFInd with the Aelum theme, and the Aelum Plymouth splash",
           "On a btrfs install: snapper and btrfs-assistant",
         ],
@@ -621,6 +655,7 @@ export const faqGroups: FaqGroup[] = [
           "sudo /usr/local/bin/aelum-installer-cli --install /dev/sda",
           "sudo /usr/local/bin/aelum-installer-cli --install /dev/sda --filesystem ext4",
           "sudo /usr/local/bin/aelum-installer-cli --install /dev/sda --luks --lvm",
+          "sudo /usr/local/bin/aelum-installer-cli --install /dev/sda --gpu-driver nvidia",
           "echo 'your password' | sudo /usr/local/bin/aelum-installer-cli --install /dev/sda",
         ],
       },
@@ -777,7 +812,16 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "How do I start applications?",
-        a: "Press Super + Space and start typing. A handful of apps is already installed — files, browser, editor, media player, terminal — and anything else you add from the repositories shows up there too.",
+        a: "Press Super + Space and start typing. A handful of apps is already installed — files, browser, editor, media player, package manager, terminal — and anything else you add from the repositories shows up there too.",
+      },
+      {
+        q: "How do I install or remove programs?",
+        a: "Open <code>Packages</code> — it is already installed. It has a page for what you installed, one for everything in your repositories, one for Aelum's own applications, one for the AUR, and one for whatever has an update waiting. Installing, removing and updating authenticate once through polkit, the same action the snapshot restore uses, and every transaction shows pacman's real output, so a failure is never silent. Double-clicking a <code>.pkg.tar.zst</code> installs it through the same window, and <code>pacman</code> in a terminal still does exactly what it always did.",
+        points: [
+          "The AUR page searches the AUR when you type, and installing a result brings in its repository dependencies, builds the PKGBUILD on your own machine with <code>makepkg</code>, and installs what the build produced — one log for the whole request.",
+          "Nothing is fetched from the AUR until you ask: the tab carries no badge and the app makes no unasked call to it.",
+          "A dependency that several packages could answer gets one chooser in that window, before the transaction starts, with pacman's own default already selected.",
+        ],
       },
       {
         q: "Is it Wayland only? Will my X11 apps run?",
@@ -789,7 +833,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Do I need a root password?",
-        a: "No. The user you created is in <code>wheel</code> and sudo works with your password. The one privileged action the desktop offers as a button — restoring a snapshot — goes through polkit, so it asks for the same authentication instead of a separate secret.",
+        a: "No. The user you created is in <code>wheel</code> and sudo works with your password. The privileged actions the desktop offers as buttons — restoring a snapshot, and every package transaction in the <code>Packages</code> window — go through polkit, so they ask for that same authentication instead of a separate secret.",
       },
       {
         q: "Can I change the language after installing?",
@@ -818,11 +862,21 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "How do I update the system?",
-        a: "<code>sudo pacman -Syu</code>, like any Arch machine. The mirrorlist in your system already points at Arch mirrors in the region you chose. The mirror inside the ISO is used while installing and nothing after that. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary shell aliases — change or delete them in that file if you would rather type the commands yourself.",
+        a: "<code>sudo pacman -Syu</code>, like any Arch machine. The mirrorlist in your system already points at Arch mirrors in the region you chose, and the <code>[aelum]</code> repository the installer enabled carries updates for the distro's own applications. The mirror inside the ISO is used while installing and nothing after that. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary shell aliases — change or delete them in that file if you would rather type the commands yourself.",
+      },
+      {
+        q: "Where do Aelum's own applications come from?",
+        a: "From the <code>[aelum]</code> repository, which the installer turns on and trusts for you. It is an ordinary signed pacman repository on the same CDN as the ISOs, signed with the Aelum release key, and it holds the distro's applications: the media player, the package manager, and whatever comes next. A fresh install already has those apps from the ISO's own mirror; the repository is what carries their updates into <code>pacman -Syu</code>. Another Arch system can use it too — add the repository block to <code>pacman.conf</code> and import the key once:",
+        commands: [
+          "curl -O https://cdn.aelum.dev/repo/aelum.gpg",
+          "sudo pacman-key --add aelum.gpg",
+          `sudo pacman-key --lsign-key ${signingKey.fingerprint}`,
+        ],
+        links: [{ label: "Verify the release key", href: "/download/" }],
       },
       {
         q: "Is the AUR available?",
-        a: "Yes — it is Arch, so install whichever AUR helper you like. Four of the desktop's own pieces (qtengine, dux-greeter-bin, fluent-icon-theme, nautilus-open-any-terminal) are built from the AUR into the ISO, which is why they are already there when you boot.",
+        a: "Yes — it is Arch. The <code>Packages</code> window has an AUR page: it searches the AUR as you type, and installing a result brings in its repository dependencies, builds the PKGBUILD on your machine with <code>makepkg</code>, and installs what the build produced. The build tools (<code>base-devel</code>) are installed with the base system, so any AUR helper you like works too. Four of the desktop's own pieces (qtengine, dux-greeter-bin, fluent-icon-theme, nautilus-open-any-terminal) are built from the AUR into the ISO, which is why they are already there when you boot.",
       },
       {
         q: "How do I know the ISO I downloaded is genuine?",
@@ -835,8 +889,11 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Where do I report a problem?",
-        a: "On GitHub, against the installer for anything that happens during or right after an install. Include what you expected, what you got, the disk and filesystem you chose, the ISO version, and the install log — it names the step and the command.",
-        links: [{ label: "Installer issues", href: `${installerRepo}/issues`, external: true }],
+        a: "On GitHub, against the repository that owns the behaviour: the installer for anything that happens during or right after an install, the live-ISO profile for the live session and the boot theme, and the separate video-player and package-installer repositories for the desktop's own apps. Include what you expected, what you got, the disk and filesystem you chose, the ISO version, and the install log — it names the step and the command.",
+        links: [
+          { label: "Installer issues", href: `${installerRepo}/issues`, external: true },
+          { label: "aelum-dev on GitHub", href: githubUrl, external: true },
+        ],
       },
       {
         q: "Where do I ask questions?",

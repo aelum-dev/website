@@ -43,7 +43,10 @@ import CopyButton from "./CopyButton.astro";
 <span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --filesystem ext4</span>
 
 <span style="color:var(--accent-green)"># LUKS2 + LVM. Passwords are read from stdin, never from a flag</span>
-<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --luks --lvm</span></code></pre>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --luks --lvm</span>
+
+<span style="color:var(--accent-green)"># Force one graphics driver set instead of detecting it from the PCI bus</span>
+<span style="color:var(--accent-3)">sudo</span> /usr/local/bin/aelum-installer-cli <span style="color:var(--accent-2)">--install /dev/vda --gpu-driver nvidia</span></code></pre>
     </div>
   </div>
 </section>
