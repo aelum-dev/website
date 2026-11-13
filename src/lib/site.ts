@@ -174,8 +174,8 @@ export const software: Software[] = [
   },
   {
     icon: "f120", // nerd-fonts: terminal
-    title: "Kitty",
-    description: "A fast, GPU-accelerated terminal.",
+    title: "Foot",
+    description: "A fast, Wayland-native terminal.",
   },
   {
     icon: "f0239", // nerd-fonts: firefox
@@ -241,9 +241,9 @@ export const lookShots: DistroShot[] = [
   {
     light: "desktop-terminal-light",
     dark: "desktop-terminal-dark",
-    alt: "fastfetch output in the kitty terminal on the Aelum desktop",
+    alt: "fastfetch output in the foot terminal on the Aelum desktop",
     caption:
-      "fastfetch in kitty: one command that prints what the machine is — OS, kernel, package count, CPU, GPU, memory and disk usage.",
+      "fastfetch in foot: one command that prints what the machine is — OS, kernel, package count, CPU, GPU, memory and disk usage.",
   },
   {
     light: "desktop-weather-light",
@@ -633,7 +633,7 @@ export const faqGroups: FaqGroup[] = [
         points: [
           "Hyprland, Dux Shell and the Dux Greeter login (greetd)",
           "Videos (Aelum's media player) and Packages (Aelum's package manager)",
-          "Kitty, Nautilus, GNOME Text Editor, Firefox, imv — and mpv, which the player is built on",
+          "Foot, Nautilus, GNOME Text Editor, Firefox, imv — and mpv, which the player is built on",
           "PipeWire audio with WirePlumber",
           "matugen and the GTK / Qt theming that follows it",
           "btop, fastfetch, brightnessctl, ddcutil",
