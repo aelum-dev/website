@@ -633,7 +633,7 @@ export const faqGroups: FaqGroup[] = [
         points: [
           "Hyprland, Dux Shell and the Dux Greeter login (greetd)",
           "Videos (Aelum's media player) and Packages (Aelum's package manager)",
-          "Foot, Nautilus, GNOME Text Editor, Firefox, imv — and mpv, which the player is built on",
+          "Foot, Nautilus, GNOME Text Editor, Firefox, Loupe, Papers — and mpv, which the player is built on",
           "PipeWire audio with WirePlumber",
           "matugen and the GTK / Qt theming that follows it",
           "btop, fastfetch, brightnessctl, ddcutil",
