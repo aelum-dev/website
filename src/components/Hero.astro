@@ -5,8 +5,8 @@ import Shot from "./Shot.astro";
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const points = [
-  { icon: "f05aa", label: "Works without an internet connection" },
-  { icon: "f012c", label: "Signed ISO with published checksums" },
+  { icon: "f05aa", label: "Offline installer — every package comes from the USB stick" },
+  { icon: "f012c", label: "ISO is signed, and its checksums are published" },
 ];
 
 // Headline lines. Each one is masked and rises into place on load (see
@@ -52,9 +52,9 @@ const stats = [
         </h1>
 
         <p class="hero-lead">
-          Boot the ISO, answer four questions, and reboot into a themed
-          Hyprland with Dux Shell — the whole system written off the USB stick
-          itself, no internet needed.
+          An Arch-based distro with a fully offline installer, focused on
+          stability, beauty and speed: you can roll back any update, and the
+          colors of the whole desktop are set by your wallpaper.
         </p>
 
         <div class="hero-actions">

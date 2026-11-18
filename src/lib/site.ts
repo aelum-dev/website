@@ -286,22 +286,22 @@ export const flow: FlowStep[] = [
   {
     num: "01",
     icon: "ede9", // nerd-fonts: USB stick
-    title: "Write the ISO to a USB stick",
-    description: "Boot it on a UEFI machine. The live session logs in as usual and opens the installer for you.",
+    title: "Put it on a USB stick",
+    description: "Boot it on a UEFI machine. You're logged in already, and the installer is open.",
   },
   {
     num: "02",
     icon: "f02ca", // nerd-fonts: harddisk
     title: "Answer four questions",
     description:
-      "The wizard asks for a language, a user, a disk, and a confirmation. Filesystem, encryption and partitioning are all on the disk screen, and automatic mode erases the whole disk.",
+      "Four questions: a language, a username, a disk, and your OK. Keep in mind that in automatic mode, the whole disk is erased.",
   },
   {
     num: "03",
     icon: "f0379", // nerd-fonts: monitor
     title: "Reboot into the desktop",
     description:
-      "The installer writes the system from the ISO itself, which takes about a minute and a half. After a reboot you log in at the Aelum greeter, and the desktop is already themed.",
+      "Nothing is downloaded during the install, so it takes about a minute and a half. Reboot, log in at the Dux Greeter, and your desktop is already themed and ready.",
   },
 ];
 
