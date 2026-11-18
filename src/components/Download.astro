@@ -14,6 +14,7 @@ import {
   verifyCommands,
   wkdKeyUrl,
 } from "../lib/site";
+import Card from "./Card.astro";
 import CopyButton from "./CopyButton.astro";
 
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
@@ -140,16 +141,7 @@ const flashTools = [
       </div>
 
       <div class="dl-hero-right reveal">
-        <div class="card card-pad-lg dl-iso-card">
-          <div class="card-head">
-            <span class="icon-tile" aria-hidden="true">
-              <span class="nf-icon">{glyph("ede9")}</span>
-            </span>
-            <div class="card-head-text">
-              <h3>Installation media</h3>
-            </div>
-          </div>
-
+        <Card icon="ede9" title="Installation media" size="lg" interactive={false} className="dl-iso-card">
           <div class="copy-field">
             <span class="copy-field-label">File</span>
             <code>{isoFilename}</code>
@@ -173,7 +165,7 @@ const flashTools = [
               How to flash it
             </a>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   </div>
@@ -196,16 +188,14 @@ const flashTools = [
     </div>
 
     <div class="card-grid grid-verify">
-      <div class="card card-pad-lg dl-assets reveal">
-        <div class="card-head">
-          <span class="icon-tile" aria-hidden="true">
-            <span class="nf-icon">{glyph("f0965")}</span>
-          </span>
-          <div class="card-head-text">
-            <span class="card-badge">{isoSizeLabel} · {isoDate}</span>
-            <h3>Release assets</h3>
-          </div>
-        </div>
+      <Card
+        icon="f0965"
+        badge={`${isoSizeLabel} · ${isoDate}`}
+        title="Release assets"
+        size="lg"
+        interactive={false}
+        className="dl-assets reveal"
+      >
         <ul class="dl-asset-list">
           {
             assets.map((asset) => (
@@ -231,20 +221,15 @@ const flashTools = [
             ))
           }
         </ul>
-      </div>
+      </Card>
 
-      <div class="card card-pad-lg dl-key-card reveal">
-        <div class="card-head">
-          <span class="icon-tile" aria-hidden="true">
-            <span class="nf-icon">{glyph("eb11")}</span>
-          </span>
-          <h3>Signing key</h3>
-          <CopyButton
-            value={signingKey.fingerprint}
-            label="Copy full fingerprint"
-            className="dl-key-copy"
-          />
-        </div>
+      <Card icon="eb11" title="Signing key" size="lg" interactive={false} className="dl-key-card reveal">
+        <CopyButton
+          slot="head"
+          value={signingKey.fingerprint}
+          label="Copy full fingerprint"
+          className="dl-key-copy"
+        />
         <div class="dl-key">
           <span class="dl-key-uid">{signingKey.uid}</span>
           <span class="dl-key-fp">{signingKey.fingerprintTop}</span>
@@ -260,7 +245,7 @@ const flashTools = [
           </a>{" "}
           by email, so there is no keyserver and nothing to import by hand.
         </p>
-      </div>
+      </Card>
     </div>
 
     <div class="dl-steps reveal">
@@ -313,13 +298,7 @@ const flashTools = [
     <div class="card-grid grid-flash">
       {
         flashTools.map((tool) => (
-          <div class="card card-pad-md flash-card">
-            <div class="card-head">
-              <span class="icon-tile" aria-hidden="true">
-                <span class="nf-icon">{glyph(tool.icon)}</span>
-              </span>
-              <h3>{tool.title}</h3>
-            </div>
+          <Card icon={tool.icon} title={tool.title} interactive={false} className="flash-card">
             <ol class="flash-steps">
               {tool.steps.map((step) => (
                 <li set:html={step.replace("{isoFilename}", isoFilename)} />
@@ -338,7 +317,7 @@ const flashTools = [
                 {tool.cta.label}
               </a>
             )}
-          </div>
+          </Card>
         ))
       }
     </div>

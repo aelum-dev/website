@@ -1,5 +1,16 @@
 ---
-// Reusable glassy card. Optional colored icon + badge keep feature cards DRY.
+// THE card of this site. Every icon-headed card on every page comes through
+// here: the surface, the padding tiers, the icon + title head, the badge, the
+// numbered variant and the hover treatment. A section adds a grid preset and
+// its own slot content — never the card's own head/body spacing (that lives
+// with .card in base.css, see the Cards section).
+//
+// `size` couples the padding to the title size; "md" is the default so a
+// plain grid of cards is the home page's facts row, everywhere.
+// `interactive` opts into the pointer glow + rim + lift; a panel that holds
+// content rather than invites a pick (the Download page's cards) passes false.
+// `num` inlines a step numeral into the head row (install.css → .grid-steps
+// used to hand-build this; base.css → .card--numbered lays it out).
 
 interface Props {
   title?: string;
@@ -7,7 +18,9 @@ interface Props {
   color?: string;
   icon?: string;
   badge?: string;
+  num?: string;
   size?: "md" | "lg";
+  interactive?: boolean;
   className?: string;
 }
 
@@ -17,12 +30,16 @@ const {
   color = "var(--accent)",
   icon = undefined,
   badge = undefined,
-  size = "lg",
+  num = undefined,
+  size = "md",
+  interactive = true,
   className = "",
 } = Astro.props;
 
 const glyph = icon ? String.fromCodePoint(parseInt(icon, 16)) : null;
-const classes = ["card", `card-pad-${size}`, "card--interactive", className].filter(Boolean).join(" ");
+const classes = ["card", `card-pad-${size}`, num && "card--numbered", interactive && "card--interactive", className]
+  .filter(Boolean)
+  .join(" ");
 ---
 
 <div class={classes}>
@@ -42,9 +59,17 @@ const classes = ["card", `card-pad-${size}`, "card--interactive", className].fil
           )}
           <h3>{title}</h3>
         </div>
+        <slot name="head" />
       </div>
     )
   }
   {description && <p>{description}</p>}
+  {
+    num && (
+      <span class="step-num nums" aria-hidden="true">
+        {num}
+      </span>
+    )
+  }
   <slot />
 </div>

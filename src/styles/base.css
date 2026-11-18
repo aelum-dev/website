@@ -1059,9 +1059,49 @@ code {
   font-size: 1.16rem;
   font-weight: 700;
   letter-spacing: -0.01em;
+  /* On a short card a long title wraps — balance it so it breaks as two even
+     lines, never one trailing word. */
+  text-wrap: balance;
 }
 .card-pad-md .card-head h3 {
   font-size: 1.06rem;
+}
+
+/* One air everywhere: the body sits as far below the icon + title row as the
+   title sits to the right of the tile (the 0.85rem .card-head gap above).
+   This belongs to the card, not to a grid — a section must not restate it,
+   and a new card grid must not have to add it. (The centered software tiles
+   on the Features page stack with a flex gap instead and reset this in
+   features.css → .tile-software p.) */
+.card > .card-head + p {
+  margin-top: 0.85rem;
+}
+
+/* A numbered card: the step numeral shares the title's line at the head's
+   right edge. The card is a grid and every child names its own area, so the
+   numeral can be the last DOM child while still sitting on the title's line,
+   and the body stays adjacent to the head for the margin rule above. The
+   title is boxed between the tile and the numeral and can never slide under
+   it. */
+.card--numbered {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  /* The grid stretches to the card's full height. Without this, the default
+     align-content: stretch pours the card's unused height into the row
+     tracks, so the head sits at a different depth per card. */
+  align-content: start;
+  column-gap: 0.85rem;
+}
+.card--numbered .card-head {
+  grid-area: 1 / 1 / 2 / 3;
+}
+.card--numbered .step-num {
+  grid-area: 1 / 3;
+  justify-self: end;
+}
+.card--numbered > p {
+  grid-column: 1 / -1;
 }
 
 /* Step/kicker badge above a card title. */
@@ -1123,17 +1163,12 @@ code {
   color: var(--text-dim);
 }
 
-/* The oversized outline numeral that numbers a card in a sequence. The default
-   parks it in the card's top-right corner (inset by the card's own --space-7
-   padding). Both step grids on the site instead inline it into the head row so
-   it shares the title's line without ever sitting under it — home's flow row
-   (home.css → .flow-step .step-num) and the install page's step grid
-   (install.css → .step-card .step-num). The step order is the loudest thing in
-   the row. */
+/* The oversized outline numeral that numbers a card in a sequence. Both step
+   grids on the site inline it into the head row so it shares the title's line
+   without ever sitting under it — home's flow row (home.css → .flow-step
+   .step-num) and the numbered card variant above. The step order is the
+   loudest thing in the row. */
 .step-num {
-  position: absolute;
-  top: var(--space-7);
-  right: var(--space-7);
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 4.5vw, 3.4rem);
   font-weight: 800;

@@ -38,6 +38,9 @@
   font-size: 1rem;
 }
 .tile-software p {
+  /* The tiles stack with a flex gap, so the card's own head→body margin
+     (base.css → .card > .card-head + p) would double it. */
+  margin-top: 0;
   font-size: 0.88rem;
   line-height: 1.5;
 }

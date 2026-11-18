@@ -99,8 +99,15 @@ src/
   `/` → `Hero` + `Facts` + `Flow` + `Questions` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` + `Languages` + `CLI` ·
   `/features/` → `Desktop` + `Look` + `Features` · `/faq/` → `FAQ`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
-  the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard
-  button with copy/check icons) are reusable building blocks. `Facts.astro` (the four first-visit
+  the page. `Card.astro` is the **one** card of the site — every icon-headed card on every page renders
+  through it (`size="md"` is the default, so a plain card grid is the home facts row; `num=` gives the
+  numbered install-step variant; `interactive={false}` for content panels like the Download page's; the
+  named `head` slot holds a head's right-edge control). Its chrome — surface, head, the 0.85rem
+  head→body air, rim/glow — is owned by base.css → Cards; a section stylesheet adds only a grid preset
+  (`--cell-min`/`--grid-gap`) and slot-content styles, **never card head spacing or body margins** (that
+  restatement is what made every card tweak a three-page fix). `CopyButton.astro` (clipboard button with
+  copy/check icons) is the other reusable building block.
+  `Facts.astro` (the four first-visit
   answers) and `Questions.astro` (the closing FAQ/Discord step) are home-only and read
   `homeFacts`/`homeClosing` from `site.ts`; `Flow.astro` (the three-move strip) is home-only and
   reads `flow` from `site.ts`.
