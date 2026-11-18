@@ -441,9 +441,9 @@ html.js .hero-accent {
   --cell-min: 240px;
   --grid-gap: var(--space-4);
 }
-/* The text sits the same distance below the icon + title row as the title
-   sits to the right of the tile — one air, not two. (0.85rem is the shared
-   .card-head gap in base.css; keep the two in step if it ever moves.) */
+/* One air everywhere: the text sits as far below the icon + title row as the
+   title sits to the right of the tile. (0.85rem is the shared .card-head gap
+   in base.css; keep the two in step if it ever moves.) */
 .grid-facts .card p {
   margin-top: 0.85rem;
 }
@@ -497,11 +497,20 @@ html.js .hero-accent {
   }
 }
 
+/* Same head as the site's cards: tile left, title on the tile's line, text
+   below — one 0.85rem air everywhere (the shared .card-head gap). */
 .flow-step {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  /* The three cards are stretched to equal height. Without this, the default
+     align-content: stretch pours each card's unused height (cards differ in
+     how many text lines they hold) into the auto row tracks, so the head row
+     sits at a different depth per card and the text gap varies card to card.
+     Park the leftover at the card's bottom edge instead. */
+  align-content: start;
+  column-gap: 0.85rem;
   padding: var(--space-7);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius);
@@ -511,6 +520,16 @@ html.js .hero-accent {
     border-color 0.45s var(--ease),
     box-shadow 0.45s var(--ease);
 }
+.flow-step .icon-tile {
+  grid-area: 1 / 1;
+}
+/* In this strip the numeral is a grid cell, not the shared corner absolute —
+   on the title's line it must not sit under the title (base.css → .step-num). */
+.flow-step .step-num {
+  position: static;
+  grid-area: 1 / 3;
+  justify-self: end;
+}
 .flow-step:hover {
   transform: translateY(-5px);
   border-color: var(--accent-line);
@@ -519,9 +538,19 @@ html.js .hero-accent {
 /* Oversized outline numeral: see base.css → Cards (shared with the install
    page's step grid). The card is position:relative so it can hold it. */
 .flow-step h3 {
-  font-size: 1.2rem;
+  grid-area: 1 / 2;
+  align-self: center;
+  /* Same size as the md card titles (the facts row) — small enough to keep
+     every step title on one line beside the tile and the numeral at the
+     narrowest desktop width the three-column layout survives. */
+  font-size: 1.06rem;
+  /* On a short card a long step title can still wrap — balance it so it
+     breaks as two even lines, never one trailing word. */
+  text-wrap: balance;
 }
 .flow-step p {
+  grid-column: 1 / -1;
+  margin-top: 0.85rem;
   color: var(--text-dim);
   font-size: 0.95rem;
 }
