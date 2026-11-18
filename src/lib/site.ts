@@ -333,7 +333,7 @@ export const homeFacts: HomeFact[] = [
     icon: "f02da", // nerd-fonts: history
     title: "Just Arch afterwards",
     description:
-      "After the first reboot, updates work the way they do on any Arch machine: sudo pacman -Syu from Arch's repositories, the AUR included. You never reinstall to stay current. On a btrfs install, you can roll back a bad update from the boot menu.",
+      "After the first reboot, updates keep coming from Arch's repositories, the AUR included. You apply them in the Packages window, which is already installed. You never reinstall to stay current, and on a btrfs install you can roll back a bad update from the boot menu.",
   },
   {
     icon: "f09b", // nerd-fonts: github
