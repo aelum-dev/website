@@ -187,13 +187,44 @@ picture.shot img {
   --grid-gap: var(--space-4);
   margin-top: var(--head-margin);
 }
+/* The same head as the site's cards and the home page's numbered flow row:
+   tile left, title on the tile's line, the numeral inline at the line's right,
+   text below — one 0.85rem air everywhere (the shared .card-head gap). It is a
+   grid so the title is boxed between the tile and the numeral and can never
+   slide under it; the DOM order (numeral first) is irrelevant to the layout
+   because every child names its own area. */
 .step-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  align-content: start;
+  column-gap: 0.85rem;
 }
-/* The step number itself is base.css → Cards (.step-num), the same numeral the
-   home page's flow row uses: order first, decoration never. */
+.step-card .icon-tile {
+  grid-area: 1 / 1;
+}
+.step-card h3 {
+  grid-area: 1 / 2;
+  align-self: center;
+  /* Same size as the home page's card titles (facts row and flow row). */
+  font-size: 1.06rem;
+  /* A short card lets a long step title wrap — balance it so it breaks as two
+     even lines, never one trailing word. */
+  text-wrap: balance;
+}
+/* The step number is base.css → Cards (.step-num), inlined into the head row
+   exactly as home's flow row does (home.css → .flow-step .step-num): order
+   first, and on the title's line so it never sits under it. */
+.step-card .step-num {
+  position: static;
+  grid-area: 1 / 3;
+  justify-self: end;
+}
+.step-card p {
+  grid-column: 1 / -1;
+  margin-top: 0.85rem;
+  font-size: 0.95rem;
+}
 
 /* Disk selection step (DiskModes.astro) — the two cards that say what the disk
    question decides. They are ordinary site cards: same glassy surface, same
@@ -202,6 +233,12 @@ picture.shot img {
 .grid-disk-modes {
   --cell-min: 320px;
   --grid-gap: var(--space-6);
+}
+/* One air everywhere: the body sits 0.85rem below the icon + title row rather
+   than tight against it — the same head→text gap as the home facts cards
+   (home.css → .grid-facts .card p) and the step cards (.step-card p). */
+.grid-disk-modes .card p {
+  margin-top: 0.85rem;
 }
 /* Each card's own footnote, under its description. */
 .disk-mode-points {

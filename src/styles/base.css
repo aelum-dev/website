@@ -1123,11 +1123,12 @@ code {
   color: var(--text-dim);
 }
 
-/* The oversized outline numeral that numbers a card in a sequence — the
-   install page's step grid uses it as written here (corner absolute, inset by
-   the card's own --space-7 padding); home's flow row inlines it into its head
-   grid instead, so it shares the title's line without ever sitting under it
-   (home.css → .flow-step .step-num). The step order is the loudest thing in
+/* The oversized outline numeral that numbers a card in a sequence. The default
+   parks it in the card's top-right corner (inset by the card's own --space-7
+   padding). Both step grids on the site instead inline it into the head row so
+   it shares the title's line without ever sitting under it — home's flow row
+   (home.css → .flow-step .step-num) and the install page's step grid
+   (install.css → .step-card .step-num). The step order is the loudest thing in
    the row. */
 .step-num {
   position: absolute;
