@@ -441,10 +441,11 @@ html.js .hero-accent {
   --cell-min: 240px;
   --grid-gap: var(--space-4);
 }
-/* The text sits clear of the icon + title row instead of starting right
-   under it. */
+/* The text sits the same distance below the icon + title row as the title
+   sits to the right of the tile — one air, not two. (0.85rem is the shared
+   .card-head gap in base.css; keep the two in step if it ever moves.) */
 .grid-facts .card p {
-  margin-top: var(--space-5);
+  margin-top: 0.85rem;
 }
 
 /* ============================================================
