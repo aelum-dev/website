@@ -441,6 +441,11 @@ html.js .hero-accent {
   --cell-min: 240px;
   --grid-gap: var(--space-4);
 }
+/* The text sits clear of the icon + title row instead of starting right
+   under it. */
+.grid-facts .card p {
+  margin-top: var(--space-5);
+}
 
 /* ============================================================
    Flow — the three moves
