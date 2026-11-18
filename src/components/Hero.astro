@@ -1,5 +1,5 @@
 ---
-import { controlCenterShot, isoFilename, isoSizeLabel, languages } from "../lib/site";
+import { controlCenterShot, languages } from "../lib/site";
 import Shot from "./Shot.astro";
 
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
@@ -60,13 +60,6 @@ const stats = [
         <div class="hero-actions">
           <slot name="actions" />
         </div>
-
-        {/* The exact file the Download button leads to, named in mono and
-            sized from release.ts — the same file the Download page serves. */}
-        <p class="hero-release">
-          <code>{isoFilename}</code>
-          <span>{isoSizeLabel}</span>
-        </p>
 
         <ul class="hero-points">
           {
