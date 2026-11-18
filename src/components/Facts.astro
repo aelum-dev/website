@@ -1,0 +1,35 @@
+---
+import { homeFacts, homeFactsPanel } from "../lib/site";
+import Card from "./Card.astro";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">{glyph(homeFactsPanel.icon)}</span>
+        </span>
+        {homeFactsPanel.eyebrow}
+      </span>
+      <h2 class="section-title">{homeFactsPanel.title}</h2>
+      <p class="section-sub">{homeFactsPanel.sub}</p>
+    </div>
+
+    <div class="card-grid grid-facts" data-stagger>
+      {
+        homeFacts.map((fact) => (
+          <Card
+            className="reveal"
+            title={fact.title}
+            icon={fact.icon}
+            description={fact.description}
+            size="md"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

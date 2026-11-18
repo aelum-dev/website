@@ -305,6 +305,59 @@ export const flow: FlowStep[] = [
   },
 ];
 
+// The four facts that answer a first visit's questions before the download
+// decision: what lands on the disk, how it updates afterwards, what it costs,
+// and what the machine needs. Each is stated once here; the Install, Features
+// and FAQ pages keep the detail.
+export interface HomeFact {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export const homeFactsPanel = {
+  icon: "f03d6", // nerd-fonts: package_variant (what's in the box)
+  eyebrow: "Every Aelum install",
+  title: "What you get, and what you need",
+  sub: "Four facts that hold for every install, automatic or manual.",
+};
+
+export const homeFacts: HomeFact[] = [
+  {
+    icon: "f108", // nerd-fonts: desktop
+    title: "A complete desktop",
+    description:
+      "The desktop in the screenshot is what you get: Hyprland with Dux Shell, the Dux Greeter login, Firefox, the Foot terminal, and Aelum's media player and package manager — and your wallpaper sets the colors of all of it from the first login.",
+  },
+  {
+    icon: "f02da", // nerd-fonts: history
+    title: "Just Arch afterwards",
+    description:
+      "After the first reboot, updates work the way they do on any Arch machine: sudo pacman -Syu from Arch's repositories, the AUR included. You never reinstall to stay current. On a btrfs install, you can roll back a bad update from the boot menu.",
+  },
+  {
+    icon: "f09b", // nerd-fonts: github
+    title: "Free and open source",
+    description:
+      "The live session, the installer and the pipeline that builds the ISO are GPL-3.0 and public on GitHub. Every release is signed with the key published on this domain.",
+  },
+  {
+    icon: "f0379", // nerd-fonts: monitor
+    title: "What your machine needs",
+    description:
+      "A 64-bit x86_64 machine that boots UEFI, and at least 8 GB free on the disk you install to. There is no graphics driver to look up beforehand: the matching driver set is installed with the system.",
+  },
+];
+
+// The closing step for a visitor who read the whole page and did not
+// download: the two places left that answer questions.
+export const homeClosing = {
+  icon: "f0ac", // nerd-fonts: globe
+  eyebrow: "Still deciding",
+  title: "Still have questions?",
+  body: "The FAQ answers what people ask before they boot the ISO. The people who build Aelum answer on Discord.",
+};
+
 // ---------------------------------------------------------------------------
 // The disk question — what gets destroyed
 //

@@ -57,8 +57,8 @@ src/
   pages/                  # index · download · install · features · faq · 404 — one document per route
                           # robots.txt.ts is the one generated route: the sitemap line comes from `site`
   layouts/Layout.astro    # head + site chrome: ambient field, progress bar, Nav, CTA, Footer
-  components/             # Hero Flow Desktop Look Install DiskModes Languages CLI Download FAQ
-                          # CTA Footer Nav Card CopyButton Shot
+  components/             # Hero Facts Flow Questions Desktop Look Install DiskModes Languages
+                          # CLI Download FAQ CTA Footer Nav Card CopyButton Shot
   lib/site.ts             # all copy: nav, features, steps, disk modes, languages, links, faqGroups
   lib/release.ts          # generated per release (release-type.ts is the hand-written typing)
   lib/images.ts           # generated screenshot manifest
@@ -96,12 +96,14 @@ src/
   titles are fine; running prose is not a feature log. Facts, numbers, sizes and commands are never
   softened or dropped for style.
 - **Sections are components** under `src/components/`, composed by the page that owns them:
-  `/` → `Hero` + `Flow` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` + `Languages` + `CLI` ·
+  `/` → `Hero` + `Facts` + `Flow` + `Questions` · `/download/` → `Download` · `/install/` → `Install` + `DiskModes` + `Languages` + `CLI` ·
   `/features/` → `Desktop` + `Look` + `Features` · `/faq/` → `FAQ`.
   Each section is a small `.astro` component. Add new sections as new components and insert them in
   the page. `Card.astro` (glassy card with a colored icon tile) and `CopyButton.astro` (clipboard
-  button with copy/check icons) are reusable building blocks. `Flow.astro` (the three-move strip) is
-  home-only and reads `flow` from `site.ts`.
+  button with copy/check icons) are reusable building blocks. `Facts.astro` (the four first-visit
+  answers) and `Questions.astro` (the closing FAQ/Discord step) are home-only and read
+  `homeFacts`/`homeClosing` from `site.ts`; `Flow.astro` (the three-move strip) is home-only and
+  reads `flow` from `site.ts`.
 - **The FAQ is a data-driven accordion.** `FAQ.astro` renders `faqGroups` (in `site.ts`) as native
   `<details>`/`<summary>` — openable with no JavaScript, keyboard-operable, no accordion script — grouped
   by topic under a jump row of fragment links. Answer copy may carry `<code>` / `<strong>` and is rendered

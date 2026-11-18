@@ -1,0 +1,30 @@
+---
+// The home page's closing step: for the visitor who read everything and did
+// not download, the two places left that answer questions. It deliberately
+// carries no download button — the hero already owns that.
+import { discordUrl, homeClosing } from "../lib/site";
+
+const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <span class="eyebrow">
+        <span class="eyebrow-chip" aria-hidden="true">
+          <span class="nf-icon">{glyph(homeClosing.icon)}</span>
+        </span>
+        {homeClosing.eyebrow}
+      </span>
+      <h2 class="section-title">{homeClosing.title}</h2>
+      <p class="section-sub">{homeClosing.body}</p>
+      <div class="cta-actions">
+        <a class="btn btn-ghost btn-lg" href="/faq/">Read the FAQ</a>
+        <a class="btn btn-ghost btn-lg" href={discordUrl} target="_blank" rel="noopener">
+          <span class="nf-icon" aria-hidden="true">{glyph("f1ff")}</span>
+          Ask on Discord
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

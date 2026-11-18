@@ -1,8 +1,10 @@
 ---
 import "../styles/base.css";
 import "../styles/home.css";
+import Facts from "../components/Facts.astro";
 import Flow from "../components/Flow.astro";
 import Hero from "../components/Hero.astro";
+import Questions from "../components/Questions.astro";
 import Layout from "../layouts/Layout.astro";
 import { siteOrigin } from "../lib/site";
 
@@ -39,5 +41,9 @@ const appJsonLd = JSON.stringify({
     </Fragment>
   </Hero>
 
+  <Facts />
+
   <Flow />
+
+  <Questions />
 </Layout>

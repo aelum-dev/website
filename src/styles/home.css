@@ -100,6 +100,23 @@ html.js .hero-accent {
   gap: var(--space-3);
 }
 
+/* The exact file the Download button leads to. Version, arch and size all
+   live in the filename, so naming it in mono and adding the shared size
+   label is enough to say what you are about to download. */
+.hero-release {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--text-faint);
+}
+.hero-release code {
+  color: var(--text-dim);
+}
+
 /* Inline value props under the actions. */
 .hero-points {
   display: flex;
@@ -411,6 +428,18 @@ html.js .hero-accent {
   .hero-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* ============================================================
+   Facts — the four answers a first visit needs
+   Four compact cards in one row on a wide screen; the shared
+   .card-grid handles the wrapping. No section CSS beyond the
+   cell width — the cards carry their own reveal + rim.
+   ============================================================ */
+
+.grid-facts {
+  --cell-min: 240px;
+  --grid-gap: var(--space-4);
 }
 
 /* ============================================================
