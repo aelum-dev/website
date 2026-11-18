@@ -851,6 +851,10 @@ export const faqGroups: FaqGroup[] = [
         q: "Bluetooth, brightness, power?",
         a: "Bluetooth is installed and enabled, as is NetworkManager. Screen brightness goes through <code>brightnessctl</code>, external-monitor power through <code>ddcutil</code>, and power profiles through <code>power-profiles-daemon</code> — all of them already wired to the shell's controls.",
       },
+      {
+        q: "Can I use a VPN?",
+        a: "Yes — the shell carries a VPN toggle in the bar and the control center, and every install ships the protocols for it to speak. OpenVPN and the AnyConnect family (GlobalProtect, Fortinet) arrive as NetworkManager plugins; WireGuard needs no plugin at all, because NetworkManager and the kernel carry it, and the <code>wg</code>/<code>wg-quick</code> tools your provider's setup doc names ship too. The VPN page of Dux Shell's settings imports the <code>.ovpn</code> or <code>.conf</code> file you were given and answers its authentication prompts. Anything else is a package install away: IKEv2 takes <code>networkmanager-strongswan</code>, L2TP takes <code>networkmanager-l2tp</code>, and the shell lists whatever plugin pacman puts in place.",
+      },
     ],
   },
   {
