@@ -306,9 +306,11 @@ export const flow: FlowStep[] = [
 ];
 
 // The four facts that answer a first visit's questions before the download
-// decision: what lands on the disk, how it updates afterwards, what it costs,
+// decision: how it installs, what it is afterwards, what a bad update costs,
 // and what the machine needs. Each is stated once here; the Install, Features
-// and FAQ pages keep the detail.
+// and FAQ pages keep the detail. (That Aelum is free and GPL-3.0 — the fact
+// this panel carried before — is answered where a visitor checks it, the FAQ,
+// and the signing key is verified on the Download page.)
 export interface HomeFact {
   icon: string;
   title: string;
@@ -324,22 +326,22 @@ export const homeFactsPanel = {
 
 export const homeFacts: HomeFact[] = [
   {
-    icon: "f108", // nerd-fonts: desktop
-    title: "A complete desktop",
+    icon: "f05aa", // nerd-fonts: wifi_off
+    title: "The install needs no internet",
     description:
-      "The desktop in the screenshot is what you get: Hyprland with Dux Shell, the Dux Greeter login, Firefox, the Foot terminal, and Aelum's media player and package manager — and your wallpaper sets the colors of all of it from the first login.",
+      "Every package the installer uses is on the USB stick you booted. The install never opens a connection, so a down mirror cannot stop it. A machine with no cable plugged in still ends up with the complete desktop.",
   },
   {
-    icon: "f02da", // nerd-fonts: history
+    icon: "f0965", // nerd-fonts: file_download (updates keep arriving)
     title: "Just Arch afterwards",
     description:
-      "After the first reboot, updates keep coming from Arch's repositories, the AUR included. You apply them in the Packages window, which is already installed. You never reinstall to stay current, and on a btrfs install you can roll back a bad update from the boot menu.",
+      "After the first reboot, your system moves forward the way any Arch machine does: the same pacman, the same repositories, the same AUR. You never reinstall to stay current. The distro's own apps arrive through one signed extra repository, which the installer enables during the install.",
   },
   {
-    icon: "f09b", // nerd-fonts: github
-    title: "Free and open source",
+    icon: "f02da", // nerd-fonts: history (the same glyph as the Features snapshot card)
+    title: "Roll back a bad update",
     description:
-      "The live session, the installer and the pipeline that builds the ISO are GPL-3.0 and public on GitHub. Every release is signed with the key published on this domain.",
+      "On a btrfs install — the default — every pacman update leaves two snapshots behind, one before and one after. If an update breaks something, the Aelum entry in the boot menu lists your states by date; boot one, and after you log in a prompt asks whether to restore it as the system.",
   },
   {
     icon: "f0379", // nerd-fonts: monitor
