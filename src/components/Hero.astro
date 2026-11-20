@@ -1,11 +1,16 @@
 ---
-import { controlCenterShot, languages } from "../lib/site";
+import { controlCenterShot } from "../lib/site";
 import Shot from "./Shot.astro";
 
 const glyph = (code: string) => String.fromCodePoint(parseInt(code, 16));
 
 const points = [
   { icon: "f05aa", label: "Offline installer — every package comes from the USB stick" },
+  {
+    icon: "f03d8",
+    label: "Colors of the whole desktop and apps are set by your wallpaper",
+  },
+  { icon: "f02da", label: "Easy rollbacks to a previous state" },
   { icon: "f012c", label: "ISO is signed, and its checksums are published" },
 ];
 
@@ -17,16 +22,18 @@ const lines = [
   { text: "with material elegance", accent: true },
 ];
 
-// The three numbers a first-time visitor actually compares. "Install time" is
-// the end-to-end span measured in this project's own QEMU install matrix
-// (docker/logs/matrix → first step to "Installation completed successfully");
-// "Installed size" states the ceiling a btrfs install stays under (the FAQ
-// keeps the exact figure). The count-up reads the decimal places straight out
-// of the string so "3.2" never renders as "3.20".
+// The three numbers a first-time visitor actually compares. "Install time"
+// states the ceiling the end-to-end span measured in this project's own QEMU
+// install matrix stays under (docker/logs/matrix → first step to "Installation
+// completed successfully"); "Installed size" states the ceiling a btrfs
+// install stays under (the FAQ keeps the exact figure). "Languages" is the
+// desktop shell's translation count; the installer's own UI languages (28)
+// are listed on /install/#languages. The count-up reads the decimal places
+// straight out of the string so "3.2" never renders as "3.20".
 const stats = [
-  { dt: "Install time", value: "1.5", prefix: "~", unit: "min" },
+  { dt: "Install time", value: "2", prefix: "<", unit: "min" },
   { dt: "Installed size", value: "4", prefix: "<", unit: "GB" },
-  { dt: "Languages", value: String(languages.length) },
+  { dt: "Languages", value: "23" },
 ];
 ---
 
@@ -53,8 +60,7 @@ const stats = [
 
         <p class="hero-lead">
           An Arch-based distro with a fully offline installer, focused on
-          stability, beauty and speed: you can roll back any update, and the
-          colors of the whole desktop are set by your wallpaper.
+          stability, beauty and speed.
         </p>
 
         <div class="hero-actions">
