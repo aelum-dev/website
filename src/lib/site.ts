@@ -306,7 +306,7 @@ export const flow: FlowStep[] = [
 ];
 
 // The four facts that answer a first visit's questions before the download
-// decision: how it installs, what it is afterwards, what a bad update costs,
+// decision: how it installs, how it stays current, what a bad update costs,
 // and what the machine needs. Each is stated once here; the Install, Features
 // and FAQ pages keep the detail. (That Aelum is free and GPL-3.0 — the fact
 // this panel carried before — is answered where a visitor checks it, the FAQ,
@@ -333,15 +333,15 @@ export const homeFacts: HomeFact[] = [
   },
   {
     icon: "f0965", // nerd-fonts: file_download (updates keep arriving)
-    title: "Just Arch afterwards",
+    title: "Update the system in a few clicks",
     description:
-      "After the first reboot, your system moves forward the way any Arch machine does: the same pacman, the same repositories, the same AUR. You never reinstall to stay current. The distro's own apps arrive through one signed extra repository, which the installer enables during the install.",
+      "Your system moves forward the way any Arch machine does. Open Packages. On the Updates page, every update is listed. One click on Update All starts the system upgrade.",
   },
   {
     icon: "f02da", // nerd-fonts: history (the same glyph as the Features snapshot card)
     title: "Roll back a bad update",
     description:
-      "On a btrfs install — the default — every pacman update leaves two snapshots behind, one before and one after. If an update breaks something, the Aelum entry in the boot menu lists your states by date; boot one, and after you log in a prompt asks whether to restore it as the system.",
+      "On a btrfs install, every pacman update leaves a snapshot behind. If an update breaks something, boot an earlier state from the boot menu and restore it as the system.",
   },
   {
     icon: "f0379", // nerd-fonts: monitor
