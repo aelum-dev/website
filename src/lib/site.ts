@@ -163,29 +163,14 @@ export const software: Software[] = [
     description: "A fast login screen that matches the desktop theme.",
   },
   {
-    icon: "f03d8", // nerd-fonts: palette
-    title: "Matugen",
-    description: "Generates matching GTK, Qt, and shell colors from your wallpaper.",
-  },
-  {
     icon: "ee26", // nerd-fonts: brush
     title: "GTK + Qt theming",
     description: "Your apps pick up the current palette without you configuring them.",
   },
   {
-    icon: "f120", // nerd-fonts: terminal
-    title: "Foot",
-    description: "A fast, Wayland-native terminal.",
-  },
-  {
-    icon: "f0239", // nerd-fonts: firefox
-    title: "Firefox",
-    description: "The browser that ships here, themed to match the desktop.",
-  },
-  {
-    icon: "f040a", // nerd-fonts: play (the player's own icon glyph)
-    title: "Videos",
-    description: "Aelum's media player: GTK4 and libadwaita over mpv, following the desktop's palette.",
+    icon: "f02e9", // nerd-fonts: image (branded boot splash)
+    title: "Aelum splash",
+    description: "The branded Plymouth boot screen, which also asks for your LUKS passphrase.",
   },
   {
     icon: "f03d6", // nerd-fonts: package_variant (the app's own icon glyph)
@@ -193,9 +178,14 @@ export const software: Software[] = [
     description: "Aelum's package manager: browse, install, update and build AUR packages in a window.",
   },
   {
-    icon: "f02e9", // nerd-fonts: image (branded boot splash)
-    title: "Aelum splash",
-    description: "The branded Plymouth boot screen, which also asks for your LUKS passphrase.",
+    icon: "f040a", // nerd-fonts: play (the player's own icon glyph)
+    title: "Videos",
+    description: "Aelum's media player: GTK4 and libadwaita over mpv, following the desktop's palette.",
+  },
+  {
+    icon: "f0239", // nerd-fonts: firefox
+    title: "Firefox",
+    description: "The browser that ships here, themed to match the desktop.",
   },
 ];
 
