@@ -921,7 +921,16 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "How do I update the system?",
-        a: "<code>sudo pacman -Syu</code>, like any Arch machine. The mirrorlist in your system already points at Arch mirrors in the region you chose, and the <code>[aelum]</code> repository the installer enabled carries updates for the distro's own applications. The mirror inside the ISO is used while installing and nothing after that. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary shell aliases — change or delete them in that file if you would rather type the commands yourself.",
+        a: "Open <code>Packages</code> and go to its Updates page: the updates waiting are listed there, and one click on <strong>Update All</strong> starts the system upgrade as one transaction. In a terminal it is <code>sudo pacman -Syu</code>, like any Arch machine, and it is the same command the button runs. Both sync through the mirrorlist the installer wrote for the region you chose, and the <code>[aelum]</code> repository it enabled carries the distro's own applications into the same upgrade. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary aliases — change or delete them in that file whenever you like:",
+        commands: ["app-search <name>", "app-install <name>", "app-remove <name>"],
+      },
+      {
+        q: "My mirrors are slow or down. How do I change them?",
+        a: "The installer writes a mirrorlist of Arch mirrors for the region you chose, and <code>/etc/pacman.d/mirrorlist</code> is what every <code>pacman -Sy</code> reads. To change it in a window: open <code>Packages</code>, press <strong>Update mirrors</strong> in its menu, and search for a country — you get that country's twenty newest HTTPS mirrors, in the order of the download rate Arch measures for each. Leave the search empty for every mirror in Arch's list instead of one country's. <code>reflector</code>, the program that ranks mirrors, is not installed by default, so the first press installs it in the same transaction. From a terminal it is the same file, and you can edit it by hand as well:",
+        commands: [
+          "sudo pacman -S reflector",
+          "sudo reflector --latest 20 --protocol https --country de --sort rate --save /etc/pacman.d/mirrorlist",
+        ],
       },
       {
         q: "Where do Aelum's own applications come from?",
