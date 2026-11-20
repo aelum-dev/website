@@ -26,3 +26,4 @@ scripts/SymbolsNerdFont-Regular.ttf
 *.njsproj
 *.sln
 *.sw?
+.pi/mcp.json
