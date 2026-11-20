@@ -347,7 +347,7 @@ export const homeFacts: HomeFact[] = [
     icon: "f0379", // nerd-fonts: monitor
     title: "What your machine needs",
     description:
-      "A 64-bit x86_64 machine that boots UEFI, and at least 8 GB free on the disk you install to. There is no graphics driver to look up beforehand: the matching driver set is installed with the system.",
+      "A 64-bit x86_64 machine that boots UEFI, and at least 8 GB free on the disk you install to. The graphics driver set that matches your card is installed with the system.",
   },
 ];
 
