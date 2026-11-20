@@ -26,20 +26,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-bar-dark-800w.58ec1847.avif",
+        avif: "/images/desktop-bar-dark-800w.7d075adb.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-bar-dark-1280w.ddae43d2.avif",
+        avif: "/images/desktop-bar-dark-1280w.6ed83435.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-bar-dark-1920w.1901771f.avif",
+        avif: "/images/desktop-bar-dark-1920w.f6009a27.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-bar-dark-1280w.48ac6e78.webp",
+      webp: "/images/desktop-bar-dark-1280w.ccd2638b.webp",
     },
   },
   "desktop-bar-light": {
@@ -48,20 +48,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-bar-light-800w.2bd39f66.avif",
+        avif: "/images/desktop-bar-light-800w.dc8ed4e4.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-bar-light-1280w.5c41b5fe.avif",
+        avif: "/images/desktop-bar-light-1280w.e96651c5.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-bar-light-1920w.75fa4b04.avif",
+        avif: "/images/desktop-bar-light-1920w.415077fa.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-bar-light-1280w.b5c4159c.webp",
+      webp: "/images/desktop-bar-light-1280w.56865549.webp",
     },
   },
   "desktop-control-dark": {
@@ -70,20 +70,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-control-dark-800w.e865d35a.avif",
+        avif: "/images/desktop-control-dark-800w.e2a6d115.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-control-dark-1280w.824050b0.avif",
+        avif: "/images/desktop-control-dark-1280w.57d4d993.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-control-dark-1920w.0f637baf.avif",
+        avif: "/images/desktop-control-dark-1920w.f827a4c3.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-control-dark-1280w.f53c4e75.webp",
+      webp: "/images/desktop-control-dark-1280w.0930a3ba.webp",
     },
   },
   "desktop-control-light": {
@@ -92,20 +92,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-control-light-800w.fbf3eba0.avif",
+        avif: "/images/desktop-control-light-800w.6aba2638.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-control-light-1280w.21d792a8.avif",
+        avif: "/images/desktop-control-light-1280w.26ff85fd.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-control-light-1920w.7fadafa6.avif",
+        avif: "/images/desktop-control-light-1920w.37c167b5.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-control-light-1280w.d9397af0.webp",
+      webp: "/images/desktop-control-light-1280w.d705f8f8.webp",
     },
   },
   "desktop-launcher-dark": {
@@ -114,20 +114,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-launcher-dark-800w.48b9569e.avif",
+        avif: "/images/desktop-launcher-dark-800w.dc0c2da1.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-launcher-dark-1280w.e9975403.avif",
+        avif: "/images/desktop-launcher-dark-1280w.2f73525c.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-launcher-dark-1920w.5165a2ed.avif",
+        avif: "/images/desktop-launcher-dark-1920w.3c12703b.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-launcher-dark-1280w.ae569259.webp",
+      webp: "/images/desktop-launcher-dark-1280w.fd9714f2.webp",
     },
   },
   "desktop-launcher-light": {
@@ -136,20 +136,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-launcher-light-800w.d8ddc36e.avif",
+        avif: "/images/desktop-launcher-light-800w.9ff5ca1f.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-launcher-light-1280w.0bfed6b4.avif",
+        avif: "/images/desktop-launcher-light-1280w.23a1004c.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-launcher-light-1920w.8a1f5afc.avif",
+        avif: "/images/desktop-launcher-light-1920w.5444566c.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-launcher-light-1280w.9c932065.webp",
+      webp: "/images/desktop-launcher-light-1280w.9b992f18.webp",
     },
   },
   "desktop-settings-dark": {
@@ -158,20 +158,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-settings-dark-800w.8a5c9a48.avif",
+        avif: "/images/desktop-settings-dark-800w.c40ad597.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-settings-dark-1280w.200bab3c.avif",
+        avif: "/images/desktop-settings-dark-1280w.4cb1d1e8.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-settings-dark-1920w.62cf9ed9.avif",
+        avif: "/images/desktop-settings-dark-1920w.5d281228.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-settings-dark-1280w.1921718b.webp",
+      webp: "/images/desktop-settings-dark-1280w.bb884a3a.webp",
     },
   },
   "desktop-settings-light": {
@@ -180,20 +180,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-settings-light-800w.11752f36.avif",
+        avif: "/images/desktop-settings-light-800w.8e85a838.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-settings-light-1280w.0acdef7a.avif",
+        avif: "/images/desktop-settings-light-1280w.e942bc56.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-settings-light-1920w.a6f73373.avif",
+        avif: "/images/desktop-settings-light-1920w.94e61f74.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-settings-light-1280w.fd14c050.webp",
+      webp: "/images/desktop-settings-light-1280w.ca616b37.webp",
     },
   },
   "desktop-terminal-dark": {
@@ -202,20 +202,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-terminal-dark-800w.d6a290b7.avif",
+        avif: "/images/desktop-terminal-dark-800w.edbe6faf.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-terminal-dark-1280w.7465648b.avif",
+        avif: "/images/desktop-terminal-dark-1280w.95b37020.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-terminal-dark-1920w.9b6b6c7f.avif",
+        avif: "/images/desktop-terminal-dark-1920w.26c4dea3.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-terminal-dark-1280w.a581989d.webp",
+      webp: "/images/desktop-terminal-dark-1280w.fc9444d0.webp",
     },
   },
   "desktop-terminal-light": {
@@ -224,20 +224,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-terminal-light-800w.6ec39e39.avif",
+        avif: "/images/desktop-terminal-light-800w.2443eeba.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-terminal-light-1280w.6e29669d.avif",
+        avif: "/images/desktop-terminal-light-1280w.884b7dc5.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-terminal-light-1920w.b4386e83.avif",
+        avif: "/images/desktop-terminal-light-1920w.2be820a1.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-terminal-light-1280w.10f466ee.webp",
+      webp: "/images/desktop-terminal-light-1280w.fde5daad.webp",
     },
   },
   "desktop-weather-dark": {
@@ -246,20 +246,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-weather-dark-800w.a27d3dea.avif",
+        avif: "/images/desktop-weather-dark-800w.08d8959e.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-weather-dark-1280w.97393f3f.avif",
+        avif: "/images/desktop-weather-dark-1280w.66b333ed.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-weather-dark-1920w.f3f45ce3.avif",
+        avif: "/images/desktop-weather-dark-1920w.3b7dc9e5.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-weather-dark-1280w.3b00ffb9.webp",
+      webp: "/images/desktop-weather-dark-1280w.737a6297.webp",
     },
   },
   "desktop-weather-light": {
@@ -268,20 +268,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/desktop-weather-light-800w.4fdadbe0.avif",
+        avif: "/images/desktop-weather-light-800w.d6506826.avif",
       },
       {
         width: 1280,
-        avif: "/images/desktop-weather-light-1280w.4155ace9.avif",
+        avif: "/images/desktop-weather-light-1280w.53117bb0.avif",
       },
       {
         width: 1920,
-        avif: "/images/desktop-weather-light-1920w.dd7a54b7.avif",
+        avif: "/images/desktop-weather-light-1920w.9bc8d2e7.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/desktop-weather-light-1280w.17941b06.webp",
+      webp: "/images/desktop-weather-light-1280w.27cf6968.webp",
     },
   },
   "installer-step-1-dark": {
