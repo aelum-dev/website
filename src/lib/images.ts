@@ -285,255 +285,311 @@ export const images: Record<string, ShotSource> = {
     },
   },
   "installer-step-1-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-1-dark-800w.cc3dce3b.avif",
+        avif: "/images/installer-step-1-dark-800w.bbb0f11d.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-1-dark-1200w.3c3c4e64.avif",
+        width: 1280,
+        avif: "/images/installer-step-1-dark-1280w.e4cd33bd.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-1-dark-1920w.b73e2dac.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-1-dark-1200w.ac1aff03.webp",
+      width: 1280,
+      webp: "/images/installer-step-1-dark-1280w.d842269f.webp",
     },
   },
   "installer-step-1-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-1-light-800w.2db32ffa.avif",
+        avif: "/images/installer-step-1-light-800w.838739b8.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-1-light-1200w.2bf17f2d.avif",
+        width: 1280,
+        avif: "/images/installer-step-1-light-1280w.17b46688.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-1-light-1920w.7862ce2b.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-1-light-1200w.b13e7d70.webp",
+      width: 1280,
+      webp: "/images/installer-step-1-light-1280w.3af394fa.webp",
     },
   },
   "installer-step-2-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-2-dark-800w.6e6a898f.avif",
+        avif: "/images/installer-step-2-dark-800w.a37170f2.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-2-dark-1200w.d8739c82.avif",
+        width: 1280,
+        avif: "/images/installer-step-2-dark-1280w.10502f36.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-2-dark-1920w.be2de51d.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-2-dark-1200w.d97e0f59.webp",
+      width: 1280,
+      webp: "/images/installer-step-2-dark-1280w.efaddebc.webp",
     },
   },
   "installer-step-2-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-2-light-800w.aefb344f.avif",
+        avif: "/images/installer-step-2-light-800w.21baac79.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-2-light-1200w.e7ec5ff3.avif",
+        width: 1280,
+        avif: "/images/installer-step-2-light-1280w.14338f75.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-2-light-1920w.d21fea1a.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-2-light-1200w.62b48cd4.webp",
+      width: 1280,
+      webp: "/images/installer-step-2-light-1280w.37082e80.webp",
     },
   },
   "installer-step-3-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-3-dark-800w.237fdcac.avif",
+        avif: "/images/installer-step-3-dark-800w.4eae6469.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-3-dark-1200w.bc7f8901.avif",
+        width: 1280,
+        avif: "/images/installer-step-3-dark-1280w.08972700.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-3-dark-1920w.ad477be1.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-3-dark-1200w.daf3ac1b.webp",
+      width: 1280,
+      webp: "/images/installer-step-3-dark-1280w.93d01a08.webp",
     },
   },
   "installer-step-3-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-3-light-800w.b78b332e.avif",
+        avif: "/images/installer-step-3-light-800w.94580ea0.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-3-light-1200w.b4a97783.avif",
+        width: 1280,
+        avif: "/images/installer-step-3-light-1280w.c646744c.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-3-light-1920w.e88c5a21.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-3-light-1200w.3afc3b72.webp",
+      width: 1280,
+      webp: "/images/installer-step-3-light-1280w.992c30db.webp",
     },
   },
   "installer-step-4-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-4-dark-800w.a41b5845.avif",
+        avif: "/images/installer-step-4-dark-800w.ab91c142.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-4-dark-1200w.ffce7e8e.avif",
+        width: 1280,
+        avif: "/images/installer-step-4-dark-1280w.f76c6ddb.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-4-dark-1920w.e7637226.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-4-dark-1200w.54c22373.webp",
+      width: 1280,
+      webp: "/images/installer-step-4-dark-1280w.4e70e48b.webp",
     },
   },
   "installer-step-4-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-4-light-800w.940350c3.avif",
+        avif: "/images/installer-step-4-light-800w.31bfa10c.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-4-light-1200w.328aff33.avif",
+        width: 1280,
+        avif: "/images/installer-step-4-light-1280w.c6ab0abb.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-4-light-1920w.4ef4aab1.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-4-light-1200w.d2981c91.webp",
+      width: 1280,
+      webp: "/images/installer-step-4-light-1280w.7093f543.webp",
     },
   },
   "installer-step-5-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-5-dark-800w.a241dbda.avif",
+        avif: "/images/installer-step-5-dark-800w.f2ee934c.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-5-dark-1200w.a2cbb91a.avif",
+        width: 1280,
+        avif: "/images/installer-step-5-dark-1280w.63140577.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-5-dark-1920w.c8213401.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-5-dark-1200w.a25dfe32.webp",
+      width: 1280,
+      webp: "/images/installer-step-5-dark-1280w.2c8e89ec.webp",
     },
   },
   "installer-step-5-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-5-light-800w.efc743f8.avif",
+        avif: "/images/installer-step-5-light-800w.3b118c34.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-5-light-1200w.0eedbe1b.avif",
+        width: 1280,
+        avif: "/images/installer-step-5-light-1280w.8ba5d3a2.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-5-light-1920w.b49747a1.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-5-light-1200w.0020656a.webp",
+      width: 1280,
+      webp: "/images/installer-step-5-light-1280w.d6b427c3.webp",
     },
   },
   "installer-step-6-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-6-dark-800w.36ab010e.avif",
+        avif: "/images/installer-step-6-dark-800w.1093f67d.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-6-dark-1200w.2ba1a945.avif",
+        width: 1280,
+        avif: "/images/installer-step-6-dark-1280w.3dbc6bcd.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-6-dark-1920w.5f6a7654.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-6-dark-1200w.8c546239.webp",
+      width: 1280,
+      webp: "/images/installer-step-6-dark-1280w.e5dcc24f.webp",
     },
   },
   "installer-step-6-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-6-light-800w.dd3fc02d.avif",
+        avif: "/images/installer-step-6-light-800w.0d8fda40.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-6-light-1200w.d96aee91.avif",
+        width: 1280,
+        avif: "/images/installer-step-6-light-1280w.065dbcfb.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-6-light-1920w.b546f704.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-6-light-1200w.23f2e9f7.webp",
+      width: 1280,
+      webp: "/images/installer-step-6-light-1280w.f82f795d.webp",
     },
   },
   "installer-step-7-dark": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-7-dark-800w.cd221c44.avif",
+        avif: "/images/installer-step-7-dark-800w.96ad3cf8.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-7-dark-1200w.6dd7a208.avif",
+        width: 1280,
+        avif: "/images/installer-step-7-dark-1280w.6120d68f.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-7-dark-1920w.68ea2aa1.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-7-dark-1200w.2fb7fb18.webp",
+      width: 1280,
+      webp: "/images/installer-step-7-dark-1280w.15910382.webp",
     },
   },
   "installer-step-7-light": {
-    width: 1200,
-    height: 800,
+    width: 2700,
+    height: 1800,
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-7-light-800w.0cb1730d.avif",
+        avif: "/images/installer-step-7-light-800w.b634eeae.avif",
       },
       {
-        width: 1200,
-        avif: "/images/installer-step-7-light-1200w.8772efb5.avif",
+        width: 1280,
+        avif: "/images/installer-step-7-light-1280w.2bf673f0.avif",
+      },
+      {
+        width: 1920,
+        avif: "/images/installer-step-7-light-1920w.c0e278ae.avif",
       },
     ],
     fallback: {
-      width: 1200,
-      webp: "/images/installer-step-7-light-1200w.4d395836.webp",
+      width: 1280,
+      webp: "/images/installer-step-7-light-1280w.2b0d66dd.webp",
     },
   },
 };

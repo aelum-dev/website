@@ -26,7 +26,9 @@ npm run lint       # biome lint . (optional; Prettier never linted)
 npm run check      # biome format . && astro check   # run before committing
 
 # Generated assets (run manually, commit the output — see Assets → Screenshots)
+cd ../installer/frontend && npm run shots                       # the installer walkthrough, both themes
 python3 scripts/prepare-sources.py --light <dir> --dark <dir>  # crop desktop captures into assets/
+python3 scripts/prepare-sources.py --single …                  # a capture that is already its subject
 python3 scripts/build-images.py  # rebuild public/images + src/lib/images.ts from assets/
 npm run format                # the generated manifest is committed biome-formatted
 ```
@@ -336,6 +338,8 @@ changes if that email ever changes.
 ### Screenshots (generated)
 
 ```
+installer/frontend `npm run shots`        the wizard, driven by the real app (see below)
+  -> $TMPDIR/aelum-installer-shots/installer-step-<n>-<light|dark>.png   already the window
 <Pictures>/installer-{light,dark}/N.png   a desktop capture with the installer window in it
   -> assets/<key>.png                     scripts/prepare-sources.py crops the window out
 assets/<key>.png                          the screenshots themselves — the only copy, never served
@@ -344,8 +348,22 @@ assets/<key>.png                          the screenshots themselves — the onl
   -> src/lib/images.ts              generated manifest: key -> variants + fallback
 ```
 
-- A capture off a display is **not** a source: it is the whole desktop with the installer window in it
-  (1200x800 inside 2560x1440). `scripts/prepare-sources.py` finds the window — the largest block of
+- **The installer walkthrough's seven screens are captured, not photographed.** From
+  `installer/frontend`: `npm run shots` (`e2e/screenshots.spec.ts`) drives the real wizard — same
+  harness as `npm run e2e`, fake disks and dry-run — at the shipped window size (900×600, fixed in
+  `installer/main.go`) and a 3× device scale, dark and light, and writes
+  `installer-step-<n>-<theme>.png`. Feed them in with `--single` (they are already the window, so
+  there is nothing to crop):
+  `SHOTS=${TMPDIR:-/tmp}/aelum-installer-shots; for n in 1 2 3 4 5 6 7; do for t in light dark; do
+  args+=(--single "installer-step-$n-$t=$SHOTS/installer-step-$n-$t.png"); done; done;
+  python3 scripts/prepare-sources.py "${args[@]}" && python3 scripts/build-images.py`.
+  The old frames were 1200×800 desktop captures: a window the installer no longer uses, at 1×, so a
+  HiDPI visitor got a screenshot that had been rescaled twice before it was ever encoded. The capture
+  also parks the pointer and hides the DRY RUN badge — that badge marks the dev-mode session the
+  capture runs in, and the installer a visitor runs never shows it. It is the only frame source that
+  can put the same disk, user and language in all fourteen frames, which is what a walkthrough is.
+- A capture off a display is **not** a source: it is the whole desktop with the installer window in it.
+  `scripts/prepare-sources.py` finds the window — the largest block of
   pixels that differ from the capture's corner colour — and crops it, so the geometry is written down
   instead of hand-guessed at each re-shoot. It refuses to write a crop it is not confident about.
 - Whole-desktop shots (the hero, the desktop features) are the exception — their subject **is** the
@@ -370,9 +388,11 @@ assets/<key>.png                          the screenshots themselves — the onl
 - The hashes exist because GitHub Pages has no header control: a filename that changes with its
   content can be cached forever.
 - Cost, for reference: the hero went from 804 KB (PNG) to 30 KB AVIF at 1920 px, and the old markup
-  fetched light **and** dark. An installer step is 4–27 KB per file at the `ui` profile (the same
-  screenshots were 2.7–23 KB at the `desktop` one); the whole served set — 16 screenshots in two themes,
-  50 files — is ~700 KB.
+  fetched light **and** dark. Measured over the whole served set: 26 sources in two themes, 104 files,
+  ~2.5 MB — ~1.3 MB of desktop captures and ~1.2 MB of installer frames, whose 1920 px rungs are 0.4 MB
+  of that and only fetch on a 3× screen. What a visitor actually downloads for one walkthrough frame is
+  the 1280 px AVIF: ~19 KB (the 1× captures it replaced were ~12 KB, of a window 300 px wider than the
+  installer's, so those bytes bought a softer picture).
 
 ### Other assets
 
