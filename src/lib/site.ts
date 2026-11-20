@@ -933,6 +933,16 @@ export const faqGroups: FaqGroup[] = [
         ],
       },
       {
+        q: "Why does pacman say a package's signature is invalid or its key is missing?",
+        a: "Pacman checks every package and every repository database against the signing keys in <code>/etc/pacman.d/gnupg</code>, and when that check fails you get <code>required key missing from keyring</code>, <code>invalid PGP signature</code>, or <code>invalid or corrupted package (PGP signature)</code>. Those keys are themselves a package — <code>archlinux-keyring</code> — so on a machine that has not been updated for a few months they can simply be older than the keys Arch signs current packages with. A damaged keyring directory, or one left with permissions pacman cannot use, ends the same way; <code>pacman-key</code> names that case by telling you to run it with <code>--init</code>. One repair covers both, and it downloads nothing: the keys come from files already on your system. In a window, open <code>Packages</code> and press <strong>Repair signing keys</strong> in its menu. In a terminal it is the first two commands below — the first creates whatever the keyring is missing, its local signing key and its file permissions among them, and the second imports the keys <code>archlinux-keyring</code> ships and signs them. The last two bring the current <code>archlinux-keyring</code> onto your system, then update as usual. That single-package sync leaves your databases newer than your system until you finish it, so run the full upgrade straight after:",
+        commands: [
+          "sudo pacman-key --init",
+          "sudo pacman-key --populate",
+          "sudo pacman -Sy archlinux-keyring",
+          "sudo pacman -Syu",
+        ],
+      },
+      {
         q: "Where do Aelum's own applications come from?",
         a: "From the <code>[aelum]</code> repository, which the installer turns on and trusts for you. It is an ordinary signed pacman repository on the same CDN as the ISOs, signed with the Aelum release key, and it holds the distro's applications: the media player, the package manager, and whatever comes next. A fresh install already has those apps from the ISO's own mirror; the repository is what carries their updates into <code>pacman -Syu</code>. Another Arch system can use it too — add the repository block to <code>pacman.conf</code> and import the key once:",
         commands: [
