@@ -301,7 +301,7 @@ export const flow: FlowStep[] = [
     icon: "f0379", // nerd-fonts: monitor
     title: "Reboot into the desktop",
     description:
-      "Nothing is downloaded during the install, so it takes about a minute and a half. Reboot, log in at the Dux Greeter, and your desktop is already themed and ready.",
+      "The install takes less than 2 minutes, with nothing fetched from the network. Reboot, log in at the Dux Greeter, and your desktop is already themed and ready.",
   },
 ];
 
@@ -417,7 +417,7 @@ export const installSteps: Step[] = [
     icon: "f0ac", // nerd-fonts: globe
     title: "Pick a language",
     description:
-      "Choose from 28 languages. The installer and your new system's locale follow that choice, and the installed system gets an Arch mirror list for your region (the worldwide list where Arch has no section for it).",
+      "Choose from 28 languages: the installer's words and your new system's locale follow that choice. The location on the same screen, filled in from the language, sets the timezone, the keyboard, the Arch mirrors and the desktop's weather.",
   },
   {
     num: "02",
@@ -526,9 +526,10 @@ export const verifyCommands = {
 // (backend/install/*, backend/shared/config.go), the live ISO profile, and the
 // installer's TROUBLESHOOTING.md. Every number here is a constant or a measured
 // figure from those repos, not a rounding: 8 GiB is shared.MinDiskSizeBytes,
-// 512 MB is shared.EFIPartitionSizeMB, the 3.2 GB / 4.7 GB usage and the
-// ~1.5 minute install are what the live ISO's README states, and the snapshot
-// commands are the ones the shipped helper and the pacman hooks run.
+// 512 MB is shared.EFIPartitionSizeMB, the 3.2 GB / 4.7 GB usage and the install
+// time are what the live ISO's README states (about 1.5 minutes, which the copy
+// rounds up to "less than 2 minutes"), and the snapshot commands are the ones the
+// shipped helper and the pacman hooks run.
 //
 // Answer copy may contain <code> and <strong>; FAQ.astro renders it as HTML
 // (the same pattern the Download page's flash steps use).
@@ -658,15 +659,15 @@ export const faqGroups: FaqGroup[] = [
     icon: "f012c",
     title: "Running the installer",
     blurb:
-      "Four questions, eight steps, about a minute and a half. The window and the command line run the same implementation, so they end in the same system.",
+      "Four questions, eight steps, less than 2 minutes. The window and the command line run the same implementation, so they end in the same system.",
     items: [
       {
         q: "What does the installer actually ask?",
-        a: "Four things, in this order: a language, a username and password, a disk, and a confirmation. Filesystem, encryption and the partitioning mode are all on the disk screen, so there is no fifth question waiting for you later.",
+        a: "Four things, in this order: a language, a username and password, a disk, and a confirmation. The language screen also shows a location, filled in from the language, for the case where your country is a different one. Filesystem, encryption and the partitioning mode are all on the disk screen, so there is no fifth question waiting for you later.",
       },
       {
         q: "How long does an install take?",
-        a: "About a minute and a half on a modern disk. Two package-install stages do nearly all of it; partitioning, the boot loader and configuration take the rest. Each step is named in the window as it runs.",
+        a: "Less than 2 minutes on a modern disk. Two package-install stages do nearly all of it; partitioning, the boot loader and configuration take the rest. Each step is named in the window as it runs.",
       },
       {
         q: "What happens after I press confirm?",
@@ -700,7 +701,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Does it set my keyboard layout, timezone and locale?",
-        a: "Yes, from the language you choose. Each of the 28 languages maps to a region, and that one choice writes the system locale, the keyboard layout, the timezone, NTP, and a mirror list of Arch mirrors in your region. Change any of it later with <code>localectl</code> or <code>timedatectl</code>.",
+        a: "Yes, from the two answers on the first screen. Your language sets the system locale. The location beside it sets the timezone and NTP, the keyboard layout in the console and in the desktop session, the mirror list, and the weather the desktop reports. That location is already filled in from your language, so you change it only when your country is a different one; the choices are every country Arch's mirror list names a section for, plus a worldwide entry. The mirror list written for you takes that country's mirrors first and the worldwide ones after them. Change any of it later with <code>localectl</code> or <code>timedatectl</code>.",
         links: [{ label: "The 28 languages", href: "/install/#languages" }],
       },
       {
@@ -921,12 +922,12 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "How do I update the system?",
-        a: "Open <code>Packages</code> and go to its Updates page: the updates waiting are listed there, and one click on <strong>Update All</strong> starts the system upgrade as one transaction. In a terminal it is <code>sudo pacman -Syu</code>, like any Arch machine, and it is the same command the button runs. Both sync through the mirrorlist the installer wrote for the region you chose, and the <code>[aelum]</code> repository it enabled carries the distro's own applications into the same upgrade. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary aliases — change or delete them in that file whenever you like:",
+        a: "Open <code>Packages</code> and go to its Updates page: the updates waiting are listed there, and one click on <strong>Update All</strong> starts the system upgrade as one transaction. In a terminal it is <code>sudo pacman -Syu</code>, like any Arch machine, and it is the same command the button runs. Both sync through the mirrorlist the installer wrote for the location you chose, and the <code>[aelum]</code> repository it enabled carries the distro's own applications into the same upgrade. Your home also starts with three shortcuts in <code>~/.bashrc</code>: <code>app-search</code> (<code>pacman -Ss</code>) to look for a package, <code>app-install</code> (<code>sudo pacman -Syu</code>) to update and install, and <code>app-remove</code> (<code>sudo pacman -Rsn</code>) to drop one along with the dependencies nobody else needs. They are ordinary aliases — change or delete them in that file whenever you like:",
         commands: ["app-search <name>", "app-install <name>", "app-remove <name>"],
       },
       {
         q: "My mirrors are slow or down. How do I change them?",
-        a: "The installer writes a mirrorlist of Arch mirrors for the region you chose, and <code>/etc/pacman.d/mirrorlist</code> is what every <code>pacman -Sy</code> reads. To change it in a window: open <code>Packages</code>, press <strong>Update mirrors</strong> in its menu, and search for a country — you get that country's twenty newest HTTPS mirrors, in the order of the download rate Arch measures for each. Leave the search empty for every mirror in Arch's list instead of one country's. <code>reflector</code>, the program that ranks mirrors, is not installed by default, so the first press installs it in the same transaction. From a terminal it is the same file, and you can edit it by hand as well:",
+        a: "The installer writes a mirrorlist of Arch mirrors for the location you chose, and <code>/etc/pacman.d/mirrorlist</code> is what every <code>pacman -Sy</code> reads. To change it in a window: open <code>Packages</code>, press <strong>Update mirrors</strong> in its menu, and search for a country — you get that country's twenty newest HTTPS mirrors, in the order of the download rate Arch measures for each. Leave the search empty for every mirror in Arch's list instead of one country's. <code>reflector</code>, the program that ranks mirrors, is not installed by default, so the first press installs it in the same transaction. From a terminal it is the same file, and you can edit it by hand as well:",
         commands: [
           "sudo pacman -S reflector",
           "sudo reflector --latest 20 --protocol https --country de --sort rate --save /etc/pacman.d/mirrorlist",
@@ -934,7 +935,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Why does pacman say a package's signature is invalid or its key is missing?",
-        a: "Pacman checks every package and every repository database against the signing keys in <code>/etc/pacman.d/gnupg</code>, and when that check fails you get <code>required key missing from keyring</code>, <code>invalid PGP signature</code>, or <code>invalid or corrupted package (PGP signature)</code>. Those keys are themselves a package — <code>archlinux-keyring</code> — so on a machine that has not been updated for a few months they can simply be older than the keys Arch signs current packages with. A damaged keyring directory, or one left with permissions pacman cannot use, ends the same way; <code>pacman-key</code> names that case by telling you to run it with <code>--init</code>. One repair covers both, and it downloads nothing: the keys come from files already on your system. In a window, open <code>Packages</code> and press <strong>Repair signing keys</strong> in its menu. In a terminal it is the first two commands below — the first creates whatever the keyring is missing, its local signing key and its file permissions among them, and the second imports the keys <code>archlinux-keyring</code> ships and signs them. The last two bring the current <code>archlinux-keyring</code> onto your system, then update as usual. That single-package sync leaves your databases newer than your system until you finish it, so run the full upgrade straight after:",
+        a: "Pacman checks every package and every repository database against the signing keys in <code>/etc/pacman.d/gnupg</code>, and when that check fails you get <code>required key missing from keyring</code>, <code>invalid PGP signature</code>, or <code>invalid or corrupted package (PGP signature)</code>. Those keys are themselves a package — <code>archlinux-keyring</code> — so on a machine that has not been updated for a few months they can simply be older than the keys Arch signs current packages with. A damaged keyring directory, or one left with permissions pacman cannot use, ends the same way; <code>pacman-key</code> names that case by telling you to run it with <code>--init</code>. One repair covers both, and it needs no network: the keys come from files already on your system. In a window, open <code>Packages</code> and press <strong>Repair signing keys</strong> in its menu. In a terminal it is the first two commands below — the first creates whatever the keyring is missing, its local signing key and its file permissions among them, and the second imports the keys <code>archlinux-keyring</code> ships and signs them. The last two bring the current <code>archlinux-keyring</code> onto your system, then update as usual. That single-package sync leaves your databases newer than your system until you finish it, so run the full upgrade straight after:",
         commands: [
           "sudo pacman-key --init",
           "sudo pacman-key --populate",

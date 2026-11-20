@@ -22,17 +22,20 @@ const lines = [
   { text: "with material elegance", accent: true },
 ];
 
-// The three numbers a first-time visitor actually compares. "Install time"
+// The four numbers a first-time visitor actually compares. "Install time"
 // states the ceiling the end-to-end span measured in this project's own QEMU
 // install matrix stays under (docker/logs/matrix → first step to "Installation
 // completed successfully"); "Installed size" states the ceiling a btrfs
-// install stays under (the FAQ keeps the exact figure). "Languages" is the
+// install stays under (the FAQ keeps the exact figure); "RAM usage" is what the
+// running desktop holds in memory — no harness in these repos measures it, so
+// re-check it against a booted install before changing it. "Languages" is the
 // desktop shell's translation count; the installer's own UI languages (28)
 // are listed on /install/#languages. The count-up reads the decimal places
 // straight out of the string so "3.2" never renders as "3.20".
 const stats = [
   { dt: "Install time", value: "2", prefix: "<", unit: "min" },
   { dt: "Installed size", value: "4", prefix: "<", unit: "GB" },
+  { dt: "RAM usage", value: "1", prefix: "<", unit: "GB" },
   { dt: "Languages", value: "23" },
 ];
 ---

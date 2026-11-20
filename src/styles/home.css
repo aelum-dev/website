@@ -122,10 +122,13 @@ html.js .hero-accent {
 }
 
 /* Stat tiles — a full-width strip under both hero columns, so the numbers read
-   as one band instead of three boxes squeezed under the copy. */
+   as one band instead of a row of boxes squeezed under the copy. Four across
+   only works while a tile is wide enough for its label to hold one line; below
+   860px the uppercase labels ("INSTALLED SIZE") start to break, so the strip
+   becomes two rows of two there. */
 .hero-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-3);
   margin-top: clamp(1.5rem, 3vw, 2.25rem);
   width: 100%;
@@ -407,7 +410,7 @@ html.js .hero-accent {
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 860px) {
   .hero-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
