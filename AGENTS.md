@@ -362,6 +362,14 @@ assets/<key>.png                          the screenshots themselves — the onl
   also parks the pointer and hides the DRY RUN badge — that badge marks the dev-mode session the
   capture runs in, and the installer a visitor runs never shows it. It is the only frame source that
   can put the same disk, user and language in all fourteen frames, which is what a walkthrough is.
+- **`npm run shots` needs the desktop session's display.** It starts a real `wails dev`,
+  which opens the installer window on screen for the length of the run. A shell that is not
+  part of that session — SSH, a service, an agent harness — has no `WAYLAND_DISPLAY`/`DISPLAY`,
+  and the run does not fail there: the app dies at `gtk_init_check` while the watcher keeps
+  running, so `e2e.sh` waits its full 300 s and says only that `:34115` never served. Read
+  `/tmp/aelum-e2e-wails-dev.log` for the real line. The command that works, and the dead ends
+  (`xvfb-run` is not installed here, `broadwayd` never opens its socket), are in
+  `installer/frontend/e2e/README.md` → Setup.
 - A capture off a display is **not** a source: it is the whole desktop with the installer window in it.
   `scripts/prepare-sources.py` finds the window — the largest block of
   pixels that differ from the capture's corner colour — and crops it, so the geometry is written down
