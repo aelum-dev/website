@@ -290,20 +290,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-1-dark-800w.bbb0f11d.avif",
+        avif: "/images/installer-step-1-dark-800w.340d1660.avif",
       },
       {
         width: 1280,
-        avif: "/images/installer-step-1-dark-1280w.e4cd33bd.avif",
+        avif: "/images/installer-step-1-dark-1280w.89b8b412.avif",
       },
       {
         width: 1920,
-        avif: "/images/installer-step-1-dark-1920w.b73e2dac.avif",
+        avif: "/images/installer-step-1-dark-1920w.6697c2c2.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/installer-step-1-dark-1280w.d842269f.webp",
+      webp: "/images/installer-step-1-dark-1280w.dec83bd1.webp",
     },
   },
   "installer-step-1-light": {
@@ -312,20 +312,20 @@ export const images: Record<string, ShotSource> = {
     variants: [
       {
         width: 800,
-        avif: "/images/installer-step-1-light-800w.838739b8.avif",
+        avif: "/images/installer-step-1-light-800w.c2f1420c.avif",
       },
       {
         width: 1280,
-        avif: "/images/installer-step-1-light-1280w.17b46688.avif",
+        avif: "/images/installer-step-1-light-1280w.86831d07.avif",
       },
       {
         width: 1920,
-        avif: "/images/installer-step-1-light-1920w.7862ce2b.avif",
+        avif: "/images/installer-step-1-light-1920w.04eecab9.avif",
       },
     ],
     fallback: {
       width: 1280,
-      webp: "/images/installer-step-1-light-1280w.3af394fa.webp",
+      webp: "/images/installer-step-1-light-1280w.8c1caba0.webp",
     },
   },
   "installer-step-2-dark": {
