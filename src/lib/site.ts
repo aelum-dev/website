@@ -70,11 +70,11 @@ export const languages = [
   "Bahasa Indonesia",
 ];
 
-// System requirements, copied from the installer's own welcome screen
-// (installer/frontend/src/translations/*.json → page.welcome.req*). No partition
-// scheme is listed: automatic mode erases the disk and writes its own layout.
-// The manual mode additionally wants one 512 MB Boot and one 7680 MB System
-// partition.
+// System requirements, as the live-ISO README states them ("Needs UEFI and at
+// least 8 GB of disk") and the installer enforces them (shared.MinDiskSizeBytes).
+// No partition scheme is listed: automatic mode erases the disk and writes its
+// own layout. The manual mode additionally wants one 512 MB Boot and one 7680 MB
+// System partition.
 export const requirements = ["UEFI boot", "At least 8 GB of disk space"];
 
 export interface Feature {
@@ -106,7 +106,7 @@ export const features: Feature[] = [
     icon: "f0328", // nerd-fonts: layers
     title: "Volumes you can resize later",
     description:
-      "Turn on LVM on the disk screen and the System partition becomes one volume group holding two logical volumes, root and home, so space between them is yours to move later. Booting is unchanged: the fstab and the boot entries still name filesystem UUIDs, and LUKS still sits below LVM when you choose both.",
+      "Turn on LVM on the disk screen and the System partition becomes a volume group rather than a fixed partition: one logical volume holding the whole btrfs layout, or a separate root and home on ext4, so the space is yours to resize later. Booting is unchanged: the fstab and the boot entries still name filesystem UUIDs, and LUKS still sits below LVM when you choose both.",
   },
   {
     icon: "f0581", // nerd-fonts: volume_off (silent / no noise)
@@ -691,7 +691,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Does it set my keyboard layout, timezone and locale?",
-        a: "Yes, from the two answers on the first screen. Your language sets the system locale. The location beside it sets the timezone and NTP, the keyboard layout in the console and in the desktop session, the mirror list, and the weather the desktop reports. That location is already filled in from your language, so you change it only when your country is a different one; the choices are every country Arch's mirror list names a section for, plus a worldwide entry. The mirror list written for you takes that country's mirrors first and the worldwide ones after them. Change any of it later with <code>localectl</code> or <code>timedatectl</code>.",
+        a: "Yes, from the two answers on the first screen. Your language sets the system locale. The location beside it sets the timezone and NTP, the keyboard layout in the console and in the desktop session, the mirror list, and the weather the desktop reports. That location is already filled in from your language, so you change it only when your country is a different one; the choices are every country, plus a worldwide entry — a country Arch's mirror list has no section for is still offered, and its system simply starts on the worldwide mirrors. The mirror list written for you takes that country's mirrors first and the worldwide ones after them. Change any of it later with <code>localectl</code> or <code>timedatectl</code>.",
         links: [{ label: "The 28 languages", href: "/install/#languages" }],
       },
       {
@@ -757,7 +757,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "What does LVM buy me?",
-        a: "One physical volume on the System partition, one volume group named after the install, and two logical volumes, <code>root</code> and <code>home</code>, which you can resize or move later. It changes nothing about how the system boots: the fstab and the boot entries reference filesystem UUIDs, never <code>/dev/mapper</code> paths.",
+        a: "One physical volume on the System partition and one volume group named after the install. On btrfs — the default — that group holds a single logical volume, because <code>@home</code> and the other subvolumes already split the layout; on ext4 it holds two, <code>root</code> and <code>home</code>, whose sizes you can move apart later. Either way the group wants a System partition of at least 16 GB, so an LVM install is refused on a smaller disk before anything is written. It changes nothing about how the system boots: the fstab and the boot entries reference filesystem UUIDs, never <code>/dev/mapper</code> paths.",
       },
       {
         q: "Swap: partition or file?",
@@ -862,7 +862,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "How do I install or remove programs?",
-        a: "Open <code>Packages</code> — it is already installed. It has a page for what you installed, one for everything in your repositories, one for Aelum's own applications, one for the AUR, and one for whatever has an update waiting. Installing, removing and updating authenticate once through polkit, the same action the snapshot restore uses, and every transaction shows pacman's real output, so a failure is never silent. Double-clicking a <code>.pkg.tar.zst</code> installs it through the same window, and <code>pacman</code> in a terminal still does exactly what it always did.",
+        a: "Open <code>Packages</code> — it is already installed. It has a page for what you installed, one for everything in your repositories, one for Aelum's own applications, one for the AUR, and one for whatever has an update waiting. Installing, removing and updating authenticate once through polkit, and every transaction shows pacman's real output, so a failure is never silent. Double-clicking a <code>.pkg.tar.zst</code> installs it through the same window, and <code>pacman</code> in a terminal still does exactly what it always did.",
         points: [
           "The AUR page searches the AUR when you type, and installing a result brings in its repository dependencies, builds the PKGBUILD on your own machine with <code>makepkg</code>, and installs what the build produced — one log for the whole request.",
           "Nothing is fetched from the AUR until you ask: the tab carries no badge and the app makes no unasked call to it.",
